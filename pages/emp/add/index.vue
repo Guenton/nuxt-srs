@@ -2,7 +2,7 @@
   <div>
     <NavbarHome />
     <b-container class="mt-5">
-      <h3 class="text-center">Add new employee</h3>
+      <h3 class="text-center mb-3">Add new employee</h3>
       <b-form novalidate @submit="onSubmit" @reset="onReset">
         <b-form-row>
           <b-col>
@@ -56,6 +56,20 @@
           </b-col>
         </b-form-row>
       </b-form>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="response.success" variant="success">
+            {{ response.success }}
+          </b-alert>
+        </b-col>
+      </b-row>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="response.error" variant="danger">
+            {{ response.error }}
+          </b-alert>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -75,6 +89,10 @@ export default {
       validation: {
         firstname: null,
         lastname: null
+      },
+      response: {
+        success: null,
+        error: null
       }
     };
   },
@@ -112,15 +130,32 @@ export default {
     validFeedback() {
       return "Great!";
     },
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault();
+      try {
+        const response = await this.$axios.$post(
+          "http://localhost:3000/api/emp",
+          this.form
+        );
+        if (response.err) {
+          this.response.error = response.err;
+          return;
+        } else {
+          this.response.success = response.suc;
+          return;
+        }
+      } catch (error) {
+        this.response.error = error;
+      }
     },
     onReset(event) {
       event.preventDefault();
-      this.form.shorthand = "";
-      this.form.title = "";
-      this.validation.shorthand = null;
-      this.validation.title = null;
+      this.form.firstname = "";
+      this.form.lastname = "";
+      this.validation.firstname = null;
+      this.validation.lastname = null;
+      this.response.success = null;
+      this.response.error = null;
     }
   }
 };
