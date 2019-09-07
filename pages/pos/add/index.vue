@@ -1,61 +1,83 @@
 <template>
   <div>
     <NavbarHome />
-    <b-container class="mt-5">
-      <h3 class="text-center">Add new position</h3>
-      <b-form novalidate @submit="onSubmit" @reset="onReset">
-        <b-form-row>
-          <b-col>
-            <!-- Shorthand Input - Validates with 2 characters -->
+    <b-container>
+      <b-row class="mt-4">
+        <b-col>
+          <h3 class="text-center mb-3">Add new position</h3>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <b-form novalidate @submit="onSubmit" @reset="onReset">
             <b-form-row>
               <b-col>
-                <b-form-group
-                  label="Shorthand:"
-                  :state="validation.shorthand"
-                  :invalid-feedback="invalidShorthand()"
-                  :valid-feedback="validFeedback()"
-                >
-                  <b-form-input
-                    v-model="form.shorthand"
-                    :state="validation.shorthand"
-                    trim
-                    @focus="shorthandValidator()"
-                    @keyup="shorthandValidator()"
-                  />
-                </b-form-group>
+                <!-- Shorthand Input - Validates with 2 characters -->
+                <b-form-row>
+                  <b-col>
+                    <b-form-group
+                      label="Shorthand:"
+                      :state="validation.shorthand"
+                      :invalid-feedback="invalidShorthand()"
+                      :valid-feedback="validFeedback()"
+                    >
+                      <b-form-input
+                        v-model="form.shorthand"
+                        :state="validation.shorthand"
+                        trim
+                        @focus="shorthandValidator()"
+                        @keyup="shorthandValidator()"
+                      />
+                    </b-form-group>
+                  </b-col>
+                </b-form-row>
+                <!-- Shorthand Input - Validates with 5 characters -->
+                <b-form-row>
+                  <b-col>
+                    <b-form-group
+                      label="Title:"
+                      :state="validation.title"
+                      :invalid-feedback="invalidTitle()"
+                      :valid-feedback="validFeedback()"
+                    >
+                      <b-form-input
+                        v-model="form.title"
+                        :state="validation.title"
+                        trim
+                        @focus="titleValidator()"
+                        @keyup="titleValidator()"
+                      />
+                    </b-form-group>
+                  </b-col>
+                </b-form-row>
+                <!-- Submit & Reset Buttons -->
+                <b-form-row>
+                  <b-col class="text-right">
+                    <b-button type="submit" variant="success">Submit</b-button>
+                  </b-col>
+                  <b-col class="text-left">
+                    <b-button type="reset" variant="secondary">Reset</b-button>
+                  </b-col>
+                </b-form-row>
               </b-col>
             </b-form-row>
-            <!-- Shorthand Input - Validates with 5 characters -->
-            <b-form-row>
-              <b-col>
-                <b-form-group
-                  label="Title:"
-                  :state="validation.title"
-                  :invalid-feedback="invalidTitle()"
-                  :valid-feedback="validFeedback()"
-                >
-                  <b-form-input
-                    v-model="form.title"
-                    :state="validation.title"
-                    trim
-                    @focus="titleValidator()"
-                    @keyup="titleValidator()"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-form-row>
-            <!-- Submit & Reset Buttons -->
-            <b-form-row>
-              <b-col class="text-right">
-                <b-button type="submit" variant="success">Submit</b-button>
-              </b-col>
-              <b-col class="text-left">
-                <b-button type="reset" variant="secondary">Reset</b-button>
-              </b-col>
-            </b-form-row>
-          </b-col>
-        </b-form-row>
-      </b-form>
+          </b-form>
+        </b-col>
+      </b-row>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="response.success" variant="success">
+            {{ response.success }}
+          </b-alert>
+        </b-col>
+      </b-row>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="response.error" variant="danger">
+            {{ response.error }}
+          </b-alert>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -75,11 +97,17 @@ export default {
       validation: {
         shorthand: null,
         title: null
+      },
+      response: {
+        success: null,
+        error: null
       }
     };
   },
   methods: {
     shorthandValidator() {
+      this.response.success = null;
+      this.response.error = null;
       if (this.form.shorthand.length >= 2) {
         this.validation.shorthand = true;
       } else {
@@ -87,6 +115,8 @@ export default {
       }
     },
     titleValidator() {
+      this.response.success = null;
+      this.response.error = null;
       if (this.form.title.length >= 5) {
         this.validation.title = true;
       } else {
@@ -121,6 +151,8 @@ export default {
       this.form.title = "";
       this.validation.shorthand = null;
       this.validation.title = null;
+      this.response.success = null;
+      this.response.error = null;
     }
   }
 };
