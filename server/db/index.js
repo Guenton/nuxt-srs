@@ -1,18 +1,9 @@
 const { promisify } = require("util");
 const mysql = require("mysql");
-
-// DB Configuration Object
-const db = {
-  connectionLimit: 10,
-  host: "localhost",
-  user: "Nuxt_User",
-  password: "$NuxtPass",
-  database: "vue_srs",
-  port: 3306
-};
+const dbconfig = require("./dbconfig");
 
 // Configure Connection Pool with Configuration Object
-const pool = mysql.createPool(db);
+const pool = mysql.createPool(dbconfig);
 
 // Connect to database or react to errors.
 pool.getConnection((err, connection) => {

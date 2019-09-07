@@ -2,7 +2,7 @@
   <div>
     <NavbarHome />
     <b-container>
-      <H3header h3text="Subsidiaries" />
+      <H3header h3text="Employees" />
     </b-container>
   </div>
 </template>

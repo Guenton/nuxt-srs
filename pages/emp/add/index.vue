@@ -2,11 +2,7 @@
   <div>
     <NavbarHome />
     <b-container>
-      <b-row class="mt-4">
-        <b-col>
-          <h3 class="text-center mb-3">Add new employee</h3>
-        </b-col>
-      </b-row>
+      <H3header h3text="Add new Employee" />
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
@@ -85,9 +81,11 @@
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
+import H3header from "~/components/H3header";
 export default {
   components: {
-    NavbarHome
+    NavbarHome,
+    H3header
   },
   data() {
     return {

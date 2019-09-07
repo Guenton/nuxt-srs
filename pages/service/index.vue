@@ -1,11 +1,20 @@
 <template>
   <div>
-    <h1>Working on It</h1>
+    <NavbarHome />
+    <b-container>
+      <H3header h3text="Services" />
+    </b-container>
   </div>
 </template>
 
 <script>
-export default {};
-</script>
+import NavbarHome from "~/components/NavbarHome";
+import H3header from "~/components/H3header";
 
-<style></style>
+export default {
+  components: {
+    NavbarHome,
+    H3header
+  }
+};
+</script>

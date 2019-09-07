@@ -4,6 +4,13 @@
       <b-navbar-brand to="/home">S&I SRS</b-navbar-brand>
       <b-navbar-nav>
         <!-- Navbar dropdowns -->
+        <b-nav-item-dropdown text="Navigate" right>
+          <b-dropdown-item to="/emp/">Employees</b-dropdown-item>
+          <b-dropdown-item to="/pos/">Positions</b-dropdown-item>
+          <b-dropdown-item to="/sub/">Subsidiaries</b-dropdown-item>
+          <b-dropdown-item to="/service/">Services</b-dropdown-item>
+          <b-dropdown-item to="/task/">Tasks</b-dropdown-item>
+        </b-nav-item-dropdown>
         <b-nav-item-dropdown text="Add" right>
           <b-dropdown-item to="/emp/add">Employees</b-dropdown-item>
           <b-dropdown-item to="/pos/add">Positions</b-dropdown-item>
