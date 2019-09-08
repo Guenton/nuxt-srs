@@ -6,7 +6,7 @@ get.emp = async id => {
   const res = {};
   if (!id) {
     try {
-      res.emp = await db.query(
+      res.data = await db.query(
         "SELECT emp_id, firstname, lastname FROM employee"
       );
     } catch (err) {
@@ -17,7 +17,7 @@ get.emp = async id => {
     return res;
   } else {
     try {
-      res.emp = await db.query(
+      res.data = await db.query(
         "SELECT emp_id, firstname, lastname FROM employee WHERE emp_id = ?",
         [id]
       );

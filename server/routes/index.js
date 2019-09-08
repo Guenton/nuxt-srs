@@ -5,18 +5,18 @@ const router = express.Router();
 const post = require("../api/post");
 const get = require("../api/get");
 
-router.post("/emp", (req, res) => {
-  const response = post.emp(req.body);
+router.post("/emp", async (req, res) => {
+  const response = await post.emp(req.body);
   res.json(response);
 });
 
-router.get("/emp", (req, res) => {
-  const response = get.emp();
+router.get("/emp", async (req, res) => {
+  const response = await get.emp();
   res.json(response);
 });
 
-router.get("/emp/:id", (req, res) => {
-  const response = get.emp(req.params.id);
+router.get("/emp/:id", async (req, res) => {
+  const response = await get.emp(req.params.id);
   res.json(response);
 });
 
