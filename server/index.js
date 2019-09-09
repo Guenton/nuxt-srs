@@ -7,9 +7,6 @@ const app = express();
 const config = require("../nuxt.config.js");
 config.dev = process.env.NODE_ENV !== "production";
 
-// Convert Body to JSON
-app.use(express.json());
-
 async function start() {
   // Init Nuxt.js
   const nuxt = new Nuxt(config);

@@ -2,22 +2,27 @@ const express = require("express");
 const router = express.Router();
 
 // Api CRUD imports
-const post = require("../api/post");
 const get = require("../api/get");
-
-router.post("/emp", async (req, res) => {
-  const response = await post.emp(req.body);
-  res.json(response);
-});
+const post = require("../api/post");
 
 router.get("/emp", async (req, res) => {
   const response = await get.emp();
-  res.json(response);
+  res.send(response);
 });
 
 router.get("/emp/:id", async (req, res) => {
   const response = await get.emp(req.params.id);
-  res.json(response);
+  res.send(response);
+});
+
+router.post("/emp", async (req, res) => {
+  const response = await post.emp(req.body);
+  res.send(response);
+});
+
+router.put("/emp", (req, res) => {
+  console.log(req.body);
+  res.send({ suc: "working" });
 });
 
 module.exports = router;
