@@ -2,21 +2,44 @@
   <div>
     <NavbarHome />
     <b-container>
-      <H3header h3text="Employees" />
+      <b-row class="mt-4">
+        <b-col class="text-left">
+          <h3>Employees</h3>
+        </b-col>
+        <b-col class="text-right mb-2">
+          <b-button variant="secondary" @click="resetPage">
+            Refresh
+          </b-button>
+          <b-button variant="info" to="/emp/add">
+            Add Employee
+          </b-button>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col>
           <b-table
             striped
             selectable
             hover
+            sticky-header
             :items="tableData"
+            :fields="tableFields"
             @row-selected="onRowSelected"
-          ></b-table>
+          >
+          </b-table>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col class="text-right">
+          <b-button variant="danger" to="/emp/delete">
+            Delete Employee
+          </b-button>
+        </b-col>
+      </b-row>
+      <!-- Edit Employee Table -->
       <b-row v-show="showtable">
         <b-col>
-          <b-form novalidate @submit="onSubmit" @reset="onReset">
+          <b-form novalidate @submit="onSubmit" @reset="resetPage">
             <H3header h3text="Edit Employees" />
             <b-form-row
               v-for="(employee, index) in form"
@@ -24,10 +47,16 @@
             >
               <b-col sm="2" align-v="center" class="text-center">
                 <b-row>
-                  <strong>Edit Employee #{{ employee.emp_id }}:</strong>
-                </b-row>
-                <b-row>
-                  {{ employee.firstname }} {{ employee.lastname }}
+                  <b-col sm="12">
+                    <b-row>
+                      <strong>Employee #{{ employee.emp_id }}:</strong>
+                    </b-row>
+                  </b-col>
+                  <b-col sm="12">
+                    <b-row>
+                      {{ employee.firstname }} {{ employee.lastname }}
+                    </b-row>
+                  </b-col>
                 </b-row>
               </b-col>
               <b-col>
@@ -47,20 +76,25 @@
                 <b-button type="submit" variant="success">Update</b-button>
               </b-col>
               <b-col class="text-left">
-                <b-button type="reset" variant="secondary">Reset</b-button>
+                <b-button type="reset" variant="secondary">Cancel</b-button>
               </b-col>
             </b-form-row>
             <!-- Success & Error Alert Containers -->
-            <b-form-row>
+            <b-form-row class="mt-4">
               <b-col>
-                <b-alert :show="error" variant="danger">
-                  {{ error }}
+                <b-alert :show="hasUpdate" variant="info">
+                  <p>Update Results:</p>
+                  <ul>
+                    <li v-for="item in update" :key="item.id">
+                      {{ item }}
+                    </li>
+                  </ul>
                 </b-alert>
               </b-col>
             </b-form-row>
-            <b-form-row>
+            <b-form-row class="mt-4">
               <b-col>
-                <b-alert :show="error" variant="danger">
+                <b-alert :show="hasError" variant="danger">
                   {{ error }}
                 </b-alert>
               </b-col>
@@ -83,12 +117,25 @@ export default {
   },
   data() {
     return {
+      tableFields: [
+        { key: "emp_id", label: "Employee #", sortable: true },
+        { key: "firstname", label: "First Name", sortable: true },
+        { key: "lastname", label: "Last Name", sortable: true }
+      ],
       tableData: [],
       form: [],
+      update: [],
       showtable: false,
-      error: null,
-      success: null
+      error: null
     };
+  },
+  computed: {
+    hasUpdate() {
+      return this.update.length > 0;
+    },
+    hasError() {
+      return this.error !== null;
+    }
   },
   async mounted() {
     try {
@@ -103,35 +150,30 @@ export default {
       this.form = items;
       this.showtable = items.length > 0;
     },
-    async onSubmit(event) {
-      event.preventDefault();
-      try {
-        const response = await this.$axios.$put(
-          "http://localhost:3000/api/emp",
-          JSON.stringify(this.form)
-        );
-        if (response.err) {
-          this.error = response.err;
-          return;
-        } else {
-          this.success = response.suc;
-          return;
-        }
-      } catch (error) {
-        this.error = error;
-      }
-    },
-    async onReset(event) {
+    async resetPage(event) {
       event.preventDefault();
       this.tableData = [];
-      this.error = null;
       this.form = [];
+      this.update = [];
+      this.error = null;
       this.showtable = false;
       try {
         const response = await this.$axios.$get(
           "http://localhost:3000/api/emp"
         );
         this.tableData = response.data;
+      } catch (error) {
+        this.error = error;
+      }
+    },
+    async onSubmit(event) {
+      event.preventDefault();
+      try {
+        const response = await this.$axios.$put(
+          "http://localhost:3000/api/emp",
+          this.form
+        );
+        this.update = response;
       } catch (error) {
         this.error = error;
       }

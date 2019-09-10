@@ -1,25 +1,29 @@
 const db = require("../db");
 
+// prepare put module for export
 const put = {};
 
-// emp async function takes empployee "emp" object and returns a response "res" object
+// emp async function takes one empployee object and updates the DB
 put.emp = async emp => {
-  const res = {};
   try {
-    await db.query("INSERT INTO employee SET ?", [emp]);
+    await db.query(
+      "UPDATE employee SET firstname = ?, lastname = ? WHERE emp_id = ?",
+      [emp.firstname, emp.lastname, emp.emp_id]
+    );
   } catch (err) {
-    if (err.code === "ER_DUP_ENTRY") {
-      res.err = "This employee already exists in the Database";
-      return res;
-    } else {
-      console.log(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
-      return res;
-    }
+    return `${emp.firstname} ${emp.lastname} could not be updated: DB Error`;
   }
-  res.suc = `${emp.firstname} 
-  ${emp.lastname} has successfully been added to the Database`;
-  return res;
+  return `${emp.firstname} ${emp.lastname} was updated successfully`;
+};
+
+// severalEmp async function takes an employee object, maps it out and waits for emp results
+put.severalEmp = async empArr => {
+  const mapping = empArr.map(async emp => {
+    const results = await put.emp(emp);
+    return results;
+  });
+  const response = await Promise.all(mapping);
+  return response;
 };
 
 module.exports = put;

@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS employee (
   firstname varchar(50) NOT NULL,
   lastname varchar(50) NOT NULL,
   pos_id INT DEFAULT NULL,
-  sub_id INT DEFAULT NULL,
-  UNIQUE INDEX unique_fullname (firstname, lastname)
+  sub_id INT DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS sub (

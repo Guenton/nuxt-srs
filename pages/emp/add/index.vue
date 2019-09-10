@@ -75,6 +75,20 @@
           </b-alert>
         </b-col>
       </b-row>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="queryHasResult" variant="info">
+            <p>Found the Following Employees with similar names</p>
+            <ul>
+              <li v-for="employee in queryResult" :key="employee.emp_id">
+                <strong>Employee #{{ employee.emp_id }}:</strong>
+                {{ employee.firstname }}
+                {{ employee.lastname }}
+              </li>
+            </ul>
+          </b-alert>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -100,8 +114,14 @@ export default {
       response: {
         success: null,
         error: null
-      }
+      },
+      queryResult: []
     };
+  },
+  computed: {
+    queryHasResult() {
+      return this.queryResult.length > 0;
+    }
   },
   methods: {
     firstnameValidator() {
@@ -109,6 +129,8 @@ export default {
       this.response.error = null;
       if (this.form.firstname.length >= 2) {
         this.validation.firstname = true;
+        this.queryResult = [];
+        this.searchInput("firstname");
       } else {
         this.validation.firstname = false;
       }
@@ -118,6 +140,8 @@ export default {
       this.response.error = null;
       if (this.form.lastname.length >= 2) {
         this.validation.lastname = true;
+        this.queryResult = [];
+        this.searchInput("lastname");
       } else {
         this.validation.lastname = false;
       }
@@ -141,6 +165,24 @@ export default {
     validFeedback() {
       return "Great!";
     },
+    async searchInput(fieldString) {
+      const query =
+        fieldString === "firstname" ? this.form.firstname : this.form.lastname;
+      try {
+        const response = await this.$axios.$get(
+          "http://localhost:3000/api/search/emp",
+          { params: { query } }
+        );
+        if (response.err) {
+          this.response.error = response.err;
+        } else {
+          this.queryResult = response.data;
+          console.log(response.data);
+        }
+      } catch (error) {
+        this.response.error = error;
+      }
+    },
     async onSubmit(event) {
       event.preventDefault();
       try {
@@ -150,10 +192,8 @@ export default {
         );
         if (response.err) {
           this.response.error = response.err;
-          return;
         } else {
           this.response.success = response.suc;
-          return;
         }
       } catch (error) {
         this.response.error = error;
@@ -167,6 +207,7 @@ export default {
       this.validation.lastname = null;
       this.response.success = null;
       this.response.error = null;
+      this.queryResult = [];
     }
   }
 };

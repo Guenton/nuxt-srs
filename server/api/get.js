@@ -12,7 +12,6 @@ get.emp = async id => {
     } catch (err) {
       console.log(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
-      return res;
     }
     return res;
   } else {
@@ -24,10 +23,24 @@ get.emp = async id => {
     } catch (err) {
       console.log(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
-      return res;
     }
     return res;
   }
+};
+
+get.empSearch = async query => {
+  const res = {};
+  query = "%" + query.toString() + "%";
+  try {
+    res.data = await db.query(
+      "SELECT emp_id, firstname, lastname FROM employee WHERE firstname LIKE ? OR lastname LIKE ?",
+      [query, query]
+    );
+  } catch (err) {
+    console.log(err.code);
+    res.err = "Your Request could not be completed: DATABASE ERROR";
+  }
+  return res;
 };
 
 module.exports = get;
