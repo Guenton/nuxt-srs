@@ -2,6 +2,7 @@
   <div>
     <NavbarHome />
     <b-container>
+      <!-- Header with Buttons -->
       <b-row class="mt-4">
         <b-col class="text-left">
           <h3>Employees</h3>
@@ -15,6 +16,7 @@
           </b-button>
         </b-col>
       </b-row>
+      <!-- Async table with get request -->
       <b-row>
         <b-col>
           <b-table
@@ -36,7 +38,7 @@
           </b-button>
         </b-col>
       </b-row>
-      <!-- Edit Employee Table -->
+      <!-- Edit table hidden until selection was made -->
       <b-row v-show="showtable">
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="resetPage">
@@ -79,27 +81,27 @@
                 <b-button type="reset" variant="secondary">Cancel</b-button>
               </b-col>
             </b-form-row>
-            <!-- Success & Error Alert Containers -->
-            <b-form-row class="mt-4">
-              <b-col>
-                <b-alert :show="hasUpdate" variant="info">
-                  <p>Update Results:</p>
-                  <ul>
-                    <li v-for="item in update" :key="item.id">
-                      {{ item }}
-                    </li>
-                  </ul>
-                </b-alert>
-              </b-col>
-            </b-form-row>
-            <b-form-row class="mt-4">
-              <b-col>
-                <b-alert :show="hasError" variant="danger">
-                  {{ error }}
-                </b-alert>
-              </b-col>
-            </b-form-row>
           </b-form>
+        </b-col>
+      </b-row>
+      <!-- Success & Error Alert Containers -->
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="hasUpdate" variant="info">
+            <p>Update Results:</p>
+            <ul>
+              <li v-for="item in update" :key="item.id">
+                {{ item }}
+              </li>
+            </ul>
+          </b-alert>
+        </b-col>
+      </b-row>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="hasError" variant="danger">
+            {{ error }}
+          </b-alert>
         </b-col>
       </b-row>
     </b-container>

@@ -2,7 +2,7 @@ const db = require("../db");
 
 const post = {};
 
-// emp async function takes empployee "emp" object and returns a response "res" object
+// Employee async function takes empployee "emp" object and returns a response "res" object with "err" and "suc" containers
 post.emp = async emp => {
   const res = {};
   try {
@@ -20,6 +20,20 @@ post.emp = async emp => {
   res.suc = `${emp.firstname} 
   ${emp.lastname} has successfully been added to the Database`;
   return res;
+};
+
+// Position async function takes position "pos" object and returns a response "res" object with "err" and "suc" containers
+post.pos = async pos => {
+  const res = {};
+  try {
+    await db.query("INSERT INTO employee SET ?", [pos]);
+    res.suc = `${pos.title} has successfully been added to the Database`;
+    return res;
+  } catch (err) {
+    console.log(err.code);
+    res.err = "Your Request could not be completed: DATABASE ERROR";
+    return res;
+  }
 };
 
 module.exports = post;

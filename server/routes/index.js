@@ -7,13 +7,9 @@ const post = require("../api/post");
 const put = require("../api/put");
 const del = require("../api/delete");
 
+// Employee related server calls
 router.get("/emp", async (req, res) => {
-  const response = await get.emp();
-  res.json(response);
-});
-
-router.get("/emp/:id", async (req, res) => {
-  const response = await get.emp(req.params.id);
+  const response = await get.emp(req.query.id);
   res.json(response);
 });
 
@@ -29,6 +25,27 @@ router.put("/emp", async (req, res) => {
 
 router.delete("/emp", async (req, res) => {
   const response = await del.emp(req.query.id);
+  res.json(response);
+});
+
+// Position related server calls
+router.get("/pos", async (req, res) => {
+  const response = await get.pos(req.query.id);
+  res.json(response);
+});
+
+router.post("/pos", async (req, res) => {
+  const response = await post.pos(req.body);
+  res.json(response);
+});
+
+router.put("/pos", async (req, res) => {
+  const response = await put.severalPos(req.body);
+  res.json(response);
+});
+
+router.delete("/pos", async (req, res) => {
+  const response = await del.pos(req.query.id);
   res.json(response);
 });
 
