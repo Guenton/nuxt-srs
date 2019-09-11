@@ -198,6 +198,10 @@ export default {
           this.response.error = response.err;
         } else {
           this.response.success = response.suc;
+          this.form.firstname = "";
+          this.form.lastname = "";
+          this.validation.firstname = null;
+          this.validation.lastname = null;
         }
       } catch (error) {
         this.response.error = error;

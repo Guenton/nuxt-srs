@@ -7,7 +7,7 @@ get.emp = async id => {
   if (!id) {
     try {
       res.data = await db.query(
-        "SELECT emp_id, firstname, lastname FROM employee"
+        "SELECT emp_id, firstname, lastname FROM employee WHERE is_deleted IS FALSE "
       );
     } catch (err) {
       console.log(err.code);
@@ -17,7 +17,7 @@ get.emp = async id => {
   } else {
     try {
       res.data = await db.query(
-        "SELECT emp_id, firstname, lastname FROM employee WHERE emp_id = ?",
+        "SELECT emp_id, firstname, lastname FROM employee WHERE emp_id = ? AND is_deleted IS FALSE",
         [id]
       );
     } catch (err) {
@@ -33,7 +33,7 @@ get.empSearch = async query => {
   query = "%" + query.toString() + "%";
   try {
     res.data = await db.query(
-      "SELECT emp_id, firstname, lastname FROM employee WHERE firstname LIKE ? OR lastname LIKE ?",
+      "SELECT emp_id, firstname, lastname FROM employee WHERE firstname LIKE ? AND is_deleted IS FALSE OR lastname LIKE ? AND is_deleted IS FALSE",
       [query, query]
     );
   } catch (err) {

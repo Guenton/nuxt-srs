@@ -162,7 +162,7 @@ export default {
       try {
         const response = await this.$axios.$delete(
           "http://localhost:3000/api/emp",
-          this.form
+          { params: { id: this.form.emp_id } }
         );
         this.result = response;
       } catch (error) {

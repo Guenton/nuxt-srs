@@ -5,13 +5,14 @@ const router = express.Router();
 const get = require("../api/get");
 const post = require("../api/post");
 const put = require("../api/put");
+const del = require("../api/delete");
 
 router.get("/emp", async (req, res) => {
   const response = await get.emp();
   res.json(response);
 });
 
-router.get("/emp/:id", async (req, res, next) => {
+router.get("/emp/:id", async (req, res) => {
   const response = await get.emp(req.params.id);
   res.json(response);
 });
@@ -23,6 +24,11 @@ router.post("/emp", async (req, res) => {
 
 router.put("/emp", async (req, res) => {
   const response = await put.severalEmp(req.body);
+  res.json(response);
+});
+
+router.delete("/emp", async (req, res) => {
+  const response = await del.emp(req.query.id);
   res.json(response);
 });
 
