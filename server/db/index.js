@@ -9,17 +9,19 @@ const pool = mysql.createPool(dbconfig);
 pool.getConnection((err, connection) => {
   if (err) {
     if (err.code === "PROTOCOL_CONNECTION_LOST") {
-      console.error("Database Connection was lost");
+      return console.error("Database Connection was lost");
     } else if (err.code === "ER_CON_COUNT_ERROR") {
-      console.error("Database is at maximum simultaneous Connections");
+      return console.error("Database is at maximum simultaneous Connections");
     } else if (err.code === "ECONNREFUSED") {
-      console.error("Database Connection was Refused");
+      return console.error("Database Connection was Refused");
     } else {
-      console.error(err.code);
+      return console.error(err.code);
     }
   }
-  if (connection) connection.release();
-  console.log("Database Connection was Successful");
+  if (connection) {
+    connection.release();
+    return console.log("Database Connection was Successful");
+  }
 });
 
 // Prepare pool for Async Await using promisify

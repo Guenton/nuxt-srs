@@ -7,16 +7,11 @@
       Deletions are Permanent
     </b-alert>
     <b-container v-if="showDeleteMenu">
-      <b-row class="mt-4">
-        <b-col class="text-left">
-          <h3>Delete Employees</h3>
-        </b-col>
-        <b-col class="text-right mb-2">
-          <b-button variant="secondary" to="/emp">
-            Cancel and Return
-          </b-button>
-        </b-col>
-      </b-row>
+      <H3withButton
+        h3text="Delete Employees"
+        button-text="Cancel and Return"
+        link-to="/emp"
+      />
       <b-row>
         <b-col>
           <b-table
@@ -91,11 +86,13 @@
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
+import H3withButton from "~/components/H3withButton";
 import H3header from "~/components/H3header";
 
 export default {
   components: {
     NavbarHome,
+    H3withButton,
     H3header
   },
   data() {
