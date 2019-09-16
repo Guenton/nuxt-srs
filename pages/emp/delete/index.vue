@@ -10,7 +10,7 @@
       <H3withButton
         h3text="Delete Employees"
         button-text="Cancel and Return"
-        link-to="/emp"
+        link-to="/emp/edit"
       />
       <b-row>
         <b-col>
@@ -75,8 +75,8 @@
           </b-button>
         </b-col>
         <b-col class="text-center">
-          <b-button variant="secondary" to="/emp">
-            Return to Main Page
+          <b-button variant="secondary" to="/emp/edit">
+            Return to Edit Page
           </b-button>
         </b-col>
       </b-row>

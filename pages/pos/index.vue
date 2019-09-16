@@ -11,7 +11,7 @@
           <b-button variant="secondary" @click="resetPage">
             Refresh
           </b-button>
-          <b-button variant="info" to="/emp/add">
+          <b-button variant="info" to="/pos/add">
             Add Position
           </b-button>
         </b-col>
@@ -33,7 +33,7 @@
       </b-row>
       <b-row>
         <b-col class="text-right">
-          <b-button variant="danger" to="/emp/delete">
+          <b-button variant="danger" to="/pos/delete">
             Delete Position
           </b-button>
         </b-col>

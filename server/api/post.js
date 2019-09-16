@@ -1,4 +1,4 @@
-const db = require("../db");
+const db = require("../db/mysql");
 
 const post = {};
 
@@ -7,19 +7,13 @@ post.emp = async emp => {
   const res = {};
   try {
     await db.query("INSERT INTO employee SET ?", [emp]);
+    return `${emp.firstname} ${emp.lastname} 
+      has successfully been added to the Database`;
   } catch (err) {
-    if (err.code === "ER_DUP_ENTRY") {
-      res.err = "This employee already exists in the Database";
-      return res;
-    } else {
-      console.log(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
-      return res;
-    }
+    console.error(err.code);
+    res.err = "Your Request could not be completed: DB ERROR";
+    return res;
   }
-  res.suc = `${emp.firstname} 
-  ${emp.lastname} has successfully been added to the Database`;
-  return res;
 };
 
 // Position async function takes position "pos" object and returns a response "res" object with "err" and "suc" containers
@@ -31,7 +25,7 @@ post.pos = async pos => {
     return res;
   } catch (err) {
     console.log(err.code);
-    res.err = "Your Request could not be completed: DATABASE ERROR";
+    res.err = "Your Request could not be completed: DB ERROR";
     return res;
   }
 };

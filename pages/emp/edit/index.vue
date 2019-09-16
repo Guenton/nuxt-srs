@@ -5,14 +5,14 @@
       <!-- Header with Buttons -->
       <b-row class="mt-4">
         <b-col class="text-left">
-          <h3>Employees</h3>
+          <h3>Edit Employees</h3>
         </b-col>
         <b-col class="text-right mb-2">
           <b-button variant="secondary" @click="resetPage">
             Refresh
           </b-button>
-          <b-button variant="info" to="/emp/edit">
-            Edit Employees
+          <b-button variant="info" to="/emp/add">
+            Add Employee
           </b-button>
         </b-col>
       </b-row>

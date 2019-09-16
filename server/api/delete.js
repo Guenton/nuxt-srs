@@ -1,4 +1,4 @@
-const db = require("../db");
+const db = require("../db/mysql");
 
 // prepare put module for export
 const del = {};

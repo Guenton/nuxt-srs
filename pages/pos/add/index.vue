@@ -2,13 +2,17 @@
   <div>
     <NavbarHome />
     <b-container>
-      <H3header h3text="Add new Position" />
+      <H3withButton
+        h3text="Add new Position"
+        button-text="Cancel and Return"
+        link-to="/pos"
+      />
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
             <b-form-row>
               <b-col>
-                <!-- Shorthand Input - Validates with 2 characters -->
+                <!-- First Name Input - Validates with 2 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
@@ -22,12 +26,12 @@
                         :state="validation.shorthand"
                         trim
                         @focus="shorthandValidator()"
-                        @keyup="shorthandValidator()"
+                        @keydown="shorthandValidator()"
                       />
                     </b-form-group>
                   </b-col>
                 </b-form-row>
-                <!-- Shorthand Input - Validates with 5 characters -->
+                <!-- Last Name Input - Validates with 5 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
@@ -41,7 +45,7 @@
                         :state="validation.title"
                         trim
                         @focus="titleValidator()"
-                        @keyup="titleValidator()"
+                        @keydown="titleValidator()"
                       />
                     </b-form-group>
                   </b-col>
@@ -60,6 +64,7 @@
           </b-form>
         </b-col>
       </b-row>
+      <!-- Success & Error Alert Containers -->
       <b-row class="mt-4">
         <b-col>
           <b-alert :show="response.success" variant="success">
@@ -74,17 +79,31 @@
           </b-alert>
         </b-col>
       </b-row>
+      <b-row class="mt-4">
+        <b-col>
+          <b-alert :show="queryHasResult" variant="info">
+            <p>Found the Following Positions with similar names</p>
+            <ul>
+              <li v-for="position in queryResult" :key="position.pos_id">
+                <strong>Position #{{ position.pos_id }}:</strong>
+                {{ position.shorthand }}
+                {{ position.title }}
+              </li>
+            </ul>
+          </b-alert>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
-import H3header from "~/components/H3header";
+import H3withButton from "~/components/H3withButton";
 export default {
   components: {
     NavbarHome,
-    H3header
+    H3withButton
   },
   data() {
     return {
@@ -99,24 +118,34 @@ export default {
       response: {
         success: null,
         error: null
-      }
+      },
+      queryResult: []
     };
+  },
+  computed: {
+    queryHasResult() {
+      return this.queryResult.length > 0;
+    }
   },
   methods: {
     shorthandValidator() {
-      this.response.success = null;
-      this.response.error = null;
       if (this.form.shorthand.length >= 2) {
+        this.response.success = null;
+        this.response.error = null;
         this.validation.shorthand = true;
+        this.queryResult = [];
+        this.searchInput("shorthand");
       } else {
         this.validation.shorthand = false;
       }
     },
     titleValidator() {
-      this.response.success = null;
-      this.response.error = null;
-      if (this.form.title.length >= 5) {
+      if (this.form.title.length >= 2) {
+        this.response.success = null;
+        this.response.error = null;
         this.validation.title = true;
+        this.queryResult = [];
+        this.searchInput("title");
       } else {
         this.validation.title = false;
       }
@@ -131,7 +160,7 @@ export default {
     },
     invalidTitle() {
       if (this.form.title.length > 0) {
-        const remainingChars = 5 - this.form.title.length;
+        const remainingChars = 2 - this.form.title.length;
         return `Enter at least ${remainingChars} more characters`;
       } else {
         return "Please enter something";
@@ -140,8 +169,43 @@ export default {
     validFeedback() {
       return "Great!";
     },
-    onSubmit(event) {
+    async searchInput(fieldString) {
+      const query =
+        fieldString === "shorthand" ? this.form.shorthand : this.form.title;
+      try {
+        const response = await this.$axios.$get(
+          "http://localhost:3000/api/search/pos",
+          { params: { query } }
+        );
+        if (response.err) {
+          this.response.error = response.err;
+        } else {
+          this.queryResult = response.data;
+          console.log(response.data);
+        }
+      } catch (error) {
+        this.response.error = error;
+      }
+    },
+    async onSubmit(event) {
       event.preventDefault();
+      try {
+        const response = await this.$axios.$post(
+          "http://localhost:3000/api/pos",
+          this.form
+        );
+        if (response.err) {
+          this.response.error = response.err;
+        } else {
+          this.form.shorthand = "";
+          this.form.title = "";
+          this.validation.shorthand = null;
+          this.validation.title = null;
+          this.response.success = response.suc;
+        }
+      } catch (error) {
+        this.response.error = error;
+      }
     },
     onReset(event) {
       event.preventDefault();
@@ -151,6 +215,7 @@ export default {
       this.validation.title = null;
       this.response.success = null;
       this.response.error = null;
+      this.queryResult = [];
     }
   }
 };

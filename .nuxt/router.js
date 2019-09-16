@@ -12,6 +12,7 @@ const _cf5f0446 = () => interopDefault(import('..\\pages\\sub\\index.vue' /* web
 const _3e84b51c = () => interopDefault(import('..\\pages\\task\\index.vue' /* webpackChunkName: "pages_task_index" */))
 const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
 const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
+const _775f9e4b = () => interopDefault(import('..\\pages\\emp\\edit\\index.vue' /* webpackChunkName: "pages_emp_edit_index" */))
 const _5376b02a = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
 const _5d0ec40b = () => interopDefault(import('..\\pages\\service\\add\\index.vue' /* webpackChunkName: "pages_service_add_index" */))
 const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
@@ -63,6 +64,10 @@ export const routerOptions = {
       path: "/emp/delete",
       component: _2d47e94a,
       name: "emp-delete"
+    }, {
+      path: "/emp/edit",
+      component: _775f9e4b,
+      name: "emp-edit"
     }, {
       path: "/pos/add",
       component: _5376b02a,

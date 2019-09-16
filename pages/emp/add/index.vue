@@ -5,7 +5,7 @@
       <H3withButton
         h3text="Add new Employee"
         button-text="Cancel and Return"
-        link-to="/emp"
+        link-to="/emp/edit"
       />
       <b-row>
         <b-col>
@@ -26,7 +26,7 @@
                         :state="validation.firstname"
                         trim
                         @focus="firstnameValidator()"
-                        @keyup="firstnameValidator()"
+                        @keydown="firstnameValidator()"
                       />
                     </b-form-group>
                   </b-col>
@@ -45,7 +45,7 @@
                         :state="validation.lastname"
                         trim
                         @focus="lastnameValidator()"
-                        @keyup="lastnameValidator()"
+                        @keydown="lastnameValidator()"
                       />
                     </b-form-group>
                   </b-col>
@@ -129,9 +129,9 @@ export default {
   },
   methods: {
     firstnameValidator() {
-      this.response.success = null;
-      this.response.error = null;
       if (this.form.firstname.length >= 2) {
+        this.response.success = null;
+        this.response.error = null;
         this.validation.firstname = true;
         this.queryResult = [];
         this.searchInput("firstname");
@@ -140,9 +140,9 @@ export default {
       }
     },
     lastnameValidator() {
-      this.response.success = null;
-      this.response.error = null;
       if (this.form.lastname.length >= 2) {
+        this.response.success = null;
+        this.response.error = null;
         this.validation.lastname = true;
         this.queryResult = [];
         this.searchInput("lastname");
@@ -197,11 +197,11 @@ export default {
         if (response.err) {
           this.response.error = response.err;
         } else {
-          this.response.success = response.suc;
           this.form.firstname = "";
           this.form.lastname = "";
           this.validation.firstname = null;
           this.validation.lastname = null;
+          this.response.success = response.suc;
         }
       } catch (error) {
         this.response.error = error;

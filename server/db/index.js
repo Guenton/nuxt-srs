@@ -1,30 +1,46 @@
-const { promisify } = require("util");
-const mysql = require("mysql");
-const dbconfig = require("./dbconfig");
+// Bring in both Databases
+const dbmy = require("./mysql");
+const dbms = require("./mssql");
 
-// Configure Connection Pool with Configuration Object
-const pool = mysql.createPool(dbconfig);
+// Prepare export containers
+const mysql = {};
+const mssql = {};
 
-// Connect to database or react to errors.
-pool.getConnection((err, connection) => {
-  if (err) {
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
-      return console.error("Database Connection was lost");
-    } else if (err.code === "ER_CON_COUNT_ERROR") {
-      return console.error("Database is at maximum simultaneous Connections");
-    } else if (err.code === "ECONNREFUSED") {
-      return console.error("Database Connection was Refused");
-    } else {
-      return console.error(err.code);
+mysql.newEmp = emp => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await dbmy.query("INSERT INTO employee SET ?", [emp]);
+      resolve(
+        `${emp.firstname} ${
+          emp.lastname
+        } has successfully been added to the Database`
+      );
+    } catch (err) {
+      console.error(err.code);
+      reject(err);
     }
-  }
-  if (connection) {
-    connection.release();
-    return console.log("Database Connection was Successful");
-  }
-});
+  });
+};
 
-// Prepare pool for Async Await using promisify
-pool.query = promisify(pool.query);
+mssql.newEmp = emp => {
+  return new Promise(async (resolve, reject) => {
+    const pool = await dbms;
+    try {
+      const request = pool.request();
+      request.query(
+        `INSERT INTO employee (firstname, lastname) VALUES 
+          ${emp.firstname}, ${emp.lastname}`
+      );
+      resolve(
+        `${emp.firstname} ${
+          emp.lastname
+        } has successfully been added to the Database`
+      );
+    } catch (err) {
+      console.error(err.code);
+      reject(err);
+    }
+  });
+};
 
-module.exports = pool;
+module.exports = { mysql, mssql };
