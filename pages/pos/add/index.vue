@@ -5,14 +5,15 @@
       <H3withButton
         h3text="Add new Position"
         button-text="Cancel and Return"
-        link-to="/pos"
+        link-to="/pos/edit"
       />
+      <!-- Add new Position Form -->
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
             <b-form-row>
               <b-col>
-                <!-- First Name Input - Validates with 2 characters -->
+                <!-- Shorthand (Abbreviation) Input - Validates with 2 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
@@ -31,7 +32,7 @@
                     </b-form-group>
                   </b-col>
                 </b-form-row>
-                <!-- Last Name Input - Validates with 5 characters -->
+                <!-- Title Input - Validates with 5 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
@@ -65,20 +66,9 @@
         </b-col>
       </b-row>
       <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="response.success" variant="success">
-            {{ response.success }}
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="response.error" variant="danger">
-            {{ response.error }}
-          </b-alert>
-        </b-col>
-      </b-row>
+      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
+      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+      <!-- Dynamic Search Result Container -->
       <b-row class="mt-4">
         <b-col>
           <b-alert :show="queryHasResult" variant="info">
@@ -86,8 +76,7 @@
             <ul>
               <li v-for="position in queryResult" :key="position.pos_id">
                 <strong>Position #{{ position.pos_id }}:</strong>
-                {{ position.shorthand }}
-                {{ position.title }}
+                {{ position.shorthand }} - {{ position.title }}
               </li>
             </ul>
           </b-alert>
@@ -100,10 +89,13 @@
 <script>
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
+import AlertBox from "~/components/AlertBox";
+
 export default {
   components: {
     NavbarHome,
-    H3withButton
+    H3withButton,
+    AlertBox
   },
   data() {
     return {
@@ -116,13 +108,19 @@ export default {
         title: null
       },
       response: {
-        success: null,
-        error: null
+        success: "",
+        error: ""
       },
       queryResult: []
     };
   },
   computed: {
+    hasSuc() {
+      return this.response.success.length > 0;
+    },
+    hasErr() {
+      return this.response.error.length > 0;
+    },
     queryHasResult() {
       return this.queryResult.length > 0;
     }
@@ -130,8 +128,8 @@ export default {
   methods: {
     shorthandValidator() {
       if (this.form.shorthand.length >= 2) {
-        this.response.success = null;
-        this.response.error = null;
+        this.response.success = "";
+        this.response.error = "";
         this.validation.shorthand = true;
         this.queryResult = [];
         this.searchInput("shorthand");
@@ -141,8 +139,8 @@ export default {
     },
     titleValidator() {
       if (this.form.title.length >= 2) {
-        this.response.success = null;
-        this.response.error = null;
+        this.response.success = "";
+        this.response.error = "";
         this.validation.title = true;
         this.queryResult = [];
         this.searchInput("title");
@@ -213,8 +211,8 @@ export default {
       this.form.title = "";
       this.validation.shorthand = null;
       this.validation.title = null;
-      this.response.success = null;
-      this.response.error = null;
+      this.response.success = "";
+      this.response.error = "";
       this.queryResult = [];
     }
   }

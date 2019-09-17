@@ -4,7 +4,10 @@
       <h3>{{ h3text }}</h3>
     </b-col>
     <b-col class="text-right mb-2">
-      <b-button :variant="buttonVariant" :to="linkTo">
+      <b-button variant="secondary" @click="refresh()">
+        Refresh
+      </b-button>
+      <b-button variant="info" :to="linkTo">
         {{ buttonText }}
       </b-button>
     </b-col>
@@ -20,16 +23,17 @@ export default {
     },
     buttonText: {
       type: String,
-      required: true
+      required: false,
+      default: "Add"
     },
     linkTo: {
       type: String,
       required: true
-    },
-    buttonVariant: {
-      type: String,
-      default: "secondary",
-      required: false
+    }
+  },
+  methods: {
+    refresh() {
+      this.$emit("refresh");
     }
   }
 };

@@ -14,7 +14,10 @@ const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /
 const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
 const _775f9e4b = () => interopDefault(import('..\\pages\\emp\\edit\\index.vue' /* webpackChunkName: "pages_emp_edit_index" */))
 const _5376b02a = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
+const _75c34784 = () => interopDefault(import('..\\pages\\pos\\delete\\index.vue' /* webpackChunkName: "pages_pos_delete_index" */))
+const _545e3e3f = () => interopDefault(import('..\\pages\\pos\\edit\\index.vue' /* webpackChunkName: "pages_pos_edit_index" */))
 const _5d0ec40b = () => interopDefault(import('..\\pages\\service\\add\\index.vue' /* webpackChunkName: "pages_service_add_index" */))
+const _d772e36e = () => interopDefault(import('..\\pages\\service\\nav\\index.vue' /* webpackChunkName: "pages_service_nav_index" */))
 const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
 const _7b8eb1a1 = () => interopDefault(import('..\\pages\\task\\add\\index.vue' /* webpackChunkName: "pages_task_add_index" */))
 const _696cd157 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
@@ -73,9 +76,21 @@ export const routerOptions = {
       component: _5376b02a,
       name: "pos-add"
     }, {
+      path: "/pos/delete",
+      component: _75c34784,
+      name: "pos-delete"
+    }, {
+      path: "/pos/edit",
+      component: _545e3e3f,
+      name: "pos-edit"
+    }, {
       path: "/service/add",
       component: _5d0ec40b,
       name: "service-add"
+    }, {
+      path: "/service/nav",
+      component: _d772e36e,
+      name: "service-nav"
     }, {
       path: "/sub/add",
       component: _06cd37d4,
