@@ -61,7 +61,33 @@ CREATE TABLE IF NOT EXISTS service_archtype (
 
 INSERT INTO service_archtype (shorthand, archtype)
 VALUES
+  ("Lead", "Security Leadership"),
   ("Inv", "Investigations"),
   ("Equip", "Security Equipment"),
-  ("Prot", "Asset Protection")
+  ("Prot", "Asset Protection"),
+  ("Exec", "Executive Protection")
+;
+
+CREATE TABLE IF NOT EXISTS service_type (
+  type_id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  arch_id INT,
+  FOREIGN KEY (arch_id) REFERENCES service_archtype(arch_id)
+);
+
+INSERT INTO service_type (title, arch_id)
+VALUES
+  ("Management", 1),
+  ("Supervision", 1),
+  ("General Investigations", 2),
+  ("Electronic Investigations", 2),
+  ("Screening", 2),
+  ("Inspection/Maintenance", 3),
+  ("Purchasing/Installation", 3),
+  ("Guarding", 4),
+  ("Patrolling", 4),
+  ("Roving", 4),
+  ("Shadowing", 5),
+  ("Transportation", 5),
+  ("Domicile Protection", 5)
 ;
