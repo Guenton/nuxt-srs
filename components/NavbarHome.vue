@@ -5,25 +5,22 @@
       <b-navbar-nav>
         <!-- Navbar dropdowns -->
         <b-nav-item-dropdown text="Navigate" right>
-          <b-dropdown-item to="/emp/nav">Employees</b-dropdown-item>
-          <b-dropdown-item to="/pos/nav">Positions</b-dropdown-item>
-          <b-dropdown-item to="/sub/nav">Subsidiaries</b-dropdown-item>
-          <b-dropdown-item to="/service/nav">Services</b-dropdown-item>
-          <b-dropdown-item to="/task/nav">Tasks</b-dropdown-item>
+          <b-dropdown-item to="/emp/">Employees</b-dropdown-item>
+          <b-dropdown-item to="/pos/">Positions</b-dropdown-item>
+          <b-dropdown-item to="/sub/">Subsidiaries</b-dropdown-item>
+          <b-dropdown-item to="/service/">Services</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown text="Statistics" right>
           <b-dropdown-item to="/emp/stat">Employees</b-dropdown-item>
           <b-dropdown-item to="/pos/stat">Positions</b-dropdown-item>
           <b-dropdown-item to="/sub/stat">Subsidiaries</b-dropdown-item>
           <b-dropdown-item to="/service/stat">Services</b-dropdown-item>
-          <b-dropdown-item to="/task/stat">Tasks</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown text="Edit" right>
           <b-dropdown-item to="/emp/edit">Employees</b-dropdown-item>
           <b-dropdown-item to="/pos/edit">Positions</b-dropdown-item>
           <b-dropdown-item to="/sub/edit">Subsidiaries</b-dropdown-item>
           <b-dropdown-item to="/service/edit">Services</b-dropdown-item>
-          <b-dropdown-item to="/task/edit">Tasks</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>

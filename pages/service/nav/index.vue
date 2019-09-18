@@ -25,7 +25,7 @@
         </b-col>
       </b-row>
       <!--Error Alert Container -->
-      <ErrorAlert :show="hasError" :err-msg="error" />
+      <AlertBox :show="hasError" variant="danger" :err-msg="error" />
     </b-container>
   </div>
 </template>
@@ -33,13 +33,13 @@
 <script>
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
-import ErrorAlert from "~/components/ErrorAlert";
+import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
     NavbarHome,
     H3withButton,
-    ErrorAlert
+    AlertBox
   },
   data() {
     return {

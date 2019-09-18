@@ -9,7 +9,6 @@ const _3f59a9d8 = () => interopDefault(import('..\\pages\\home\\index.vue' /* we
 const _431e156e = () => interopDefault(import('..\\pages\\pos\\index.vue' /* webpackChunkName: "pages_pos_index" */))
 const _3e3b8e70 = () => interopDefault(import('..\\pages\\service\\index.vue' /* webpackChunkName: "pages_service_index" */))
 const _cf5f0446 = () => interopDefault(import('..\\pages\\sub\\index.vue' /* webpackChunkName: "pages_sub_index" */))
-const _3e84b51c = () => interopDefault(import('..\\pages\\task\\index.vue' /* webpackChunkName: "pages_task_index" */))
 const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
 const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
 const _775f9e4b = () => interopDefault(import('..\\pages\\emp\\edit\\index.vue' /* webpackChunkName: "pages_emp_edit_index" */))
@@ -19,7 +18,8 @@ const _545e3e3f = () => interopDefault(import('..\\pages\\pos\\edit\\index.vue' 
 const _5d0ec40b = () => interopDefault(import('..\\pages\\service\\add\\index.vue' /* webpackChunkName: "pages_service_add_index" */))
 const _d772e36e = () => interopDefault(import('..\\pages\\service\\nav\\index.vue' /* webpackChunkName: "pages_service_nav_index" */))
 const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
-const _7b8eb1a1 = () => interopDefault(import('..\\pages\\task\\add\\index.vue' /* webpackChunkName: "pages_task_add_index" */))
+const _428610d2 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
+const _60dbf05a = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
 const _696cd157 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
@@ -55,10 +55,6 @@ export const routerOptions = {
       path: "/sub",
       component: _cf5f0446,
       name: "sub"
-    }, {
-      path: "/task",
-      component: _3e84b51c,
-      name: "task"
     }, {
       path: "/emp/add",
       component: _02031e9e,
@@ -96,9 +92,13 @@ export const routerOptions = {
       component: _06cd37d4,
       name: "sub-add"
     }, {
-      path: "/task/add",
-      component: _7b8eb1a1,
-      name: "task-add"
+      path: "/sub/delete",
+      component: _428610d2,
+      name: "sub-delete"
+    }, {
+      path: "/sub/edit",
+      component: _60dbf05a,
+      name: "sub-edit"
     }, {
       path: "/",
       component: _696cd157,

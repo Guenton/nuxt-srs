@@ -50,4 +50,27 @@ put.severalPos = async posArr => {
   return response;
 };
 
+// pos async function takes one position object and updates the DB
+put.sub = async sub => {
+  try {
+    await db.query(
+      "UPDATE sub SET shorthand = ?, location = ?, title = ? WHERE sub_id = ?",
+      [sub.shorthand, sub.location, sub.title, sub.sub_id]
+    );
+  } catch (err) {
+    return `${sub.shorthand} - ${sub.title} could not be updated: DB Error`;
+  }
+  return `${sub.shorthand} - ${sub.title} was updated successfully`;
+};
+
+// severalSub async function takes a subsidiary object, maps it out and waits for sub() results
+put.severalSub = async subArr => {
+  const mapping = subArr.map(async sub => {
+    const results = await put.sub(sub);
+    return results;
+  });
+  const response = await Promise.all(mapping);
+  return response;
+};
+
 module.exports = put;

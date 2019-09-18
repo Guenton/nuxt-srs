@@ -20,13 +20,29 @@ post.emp = async emp => {
 // Position async function takes position "pos" object and returns a response "res" object with "err" and "suc" containers
 post.pos = async pos => {
   const res = {};
-  console.log(pos);
   try {
     await db.query("INSERT INTO pos (shorthand, title) VALUES (?, ?)", [
       pos.shorthand,
       pos.title
     ]);
     res.suc = `"${pos.title}" has successfully been added to the Database`;
+    return res;
+  } catch (err) {
+    console.log(err.code);
+    res.err = "Your Request could not be completed: DB ERROR";
+    return res;
+  }
+};
+
+// Subsidiary async function takes position "sub" object and returns a response "res" object with "err" and "suc" containers
+post.sub = async sub => {
+  const res = {};
+  try {
+    await db.query(
+      "INSERT INTO sub (shorthand, location, title) VALUES (?, ?, ?)",
+      [sub.shorthand, sub.location, sub.title]
+    );
+    res.suc = `"${sub.shorthand}" has successfully been added to the Database`;
     return res;
   } catch (err) {
     console.log(err.code);

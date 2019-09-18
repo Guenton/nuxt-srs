@@ -3,20 +3,21 @@
     <NavbarHome />
     <b-container>
       <H3withButton
-        h3text="Add new Position"
-        button-text="Cancel and Return"
-        link-to="/pos"
+        h3text="Add new Subsidiary"
+        button-text="Return to Edit Menu"
+        link-to="/sub/edit"
       />
+      <!-- Add new Subsidiary Form -->
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
             <b-form-row>
               <b-col>
-                <!-- First Name Input - Validates with 2 characters -->
+                <!-- Shorthand (Abbreviation) Input - Validates with 2 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
-                      label="Shorthand:"
+                      label="Abbreviation:"
                       :state="validation.shorthand"
                       :invalid-feedback="invalidShorthand()"
                       :valid-feedback="validFeedback()"
@@ -31,11 +32,30 @@
                     </b-form-group>
                   </b-col>
                 </b-form-row>
-                <!-- Last Name Input - Validates with 5 characters -->
+                <!-- Location (Subsidiary Location) Input - Validates with 5 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
-                      label="Title:"
+                      label="Subsidiary Location:"
+                      :state="validation.location"
+                      :invalid-feedback="invalidLocation()"
+                      :valid-feedback="validFeedback()"
+                    >
+                      <b-form-input
+                        v-model="form.location"
+                        :state="validation.location"
+                        trim
+                        @focus="locationValidator()"
+                        @keydown="locationValidator()"
+                      />
+                    </b-form-group>
+                  </b-col>
+                </b-form-row>
+                <!-- Title (Subsidiary Name) Input - Validates with 5 characters -->
+                <b-form-row>
+                  <b-col>
+                    <b-form-group
+                      label="Subsidiary Name:"
                       :state="validation.title"
                       :invalid-feedback="invalidTitle()"
                       :valid-feedback="validFeedback()"
@@ -65,29 +85,17 @@
         </b-col>
       </b-row>
       <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="response.success" variant="success">
-            {{ response.success }}
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="response.error" variant="danger">
-            {{ response.error }}
-          </b-alert>
-        </b-col>
-      </b-row>
+      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
+      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+      <!-- Dynamic Search Result Container -->
       <b-row class="mt-4">
         <b-col>
           <b-alert :show="queryHasResult" variant="info">
-            <p>Found the Following Positions with similar names</p>
+            <p>Found the Following Subsidiaries with similar names</p>
             <ul>
-              <li v-for="position in queryResult" :key="position.pos_id">
-                <strong>Position #{{ position.pos_id }}:</strong>
-                {{ position.shorthand }}
-                {{ position.title }}
+              <li v-for="sub in queryResult" :key="sub.sub_id">
+                <strong>Subsidiary #{{ sub.sub_id }}:</strong>
+                {{ sub.shorthand }} - {{ sub.title }}
               </li>
             </ul>
           </b-alert>
@@ -100,38 +108,62 @@
 <script>
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
+import AlertBox from "~/components/AlertBox";
+
 export default {
   components: {
     NavbarHome,
-    H3withButton
+    H3withButton,
+    AlertBox
   },
   data() {
     return {
       form: {
         shorthand: "",
+        location: "",
         title: ""
       },
       validation: {
         shorthand: null,
+        location: null,
         title: null
       },
       response: {
-        success: null,
-        error: null
+        success: "",
+        error: ""
       },
       queryResult: []
     };
   },
   computed: {
+    hasSuc() {
+      return this.response.success.length > 0;
+    },
+    hasErr() {
+      return this.response.error.length > 0;
+    },
     queryHasResult() {
       return this.queryResult.length > 0;
     }
   },
   methods: {
+    resetForm() {
+      this.form.shorthand = "";
+      this.form.location = "";
+      this.form.title = "";
+    },
+    resetValidation() {
+      this.validation.shorthand = null;
+      this.validation.location = null;
+      this.validation.title = null;
+    },
+    resetResponse() {
+      this.response.success = "";
+      this.response.error = "";
+    },
     shorthandValidator() {
       if (this.form.shorthand.length >= 2) {
-        this.response.success = null;
-        this.response.error = null;
+        this.resetResponse();
         this.validation.shorthand = true;
         this.queryResult = [];
         this.searchInput("shorthand");
@@ -139,10 +171,19 @@ export default {
         this.validation.shorthand = false;
       }
     },
+    locationValidator() {
+      if (this.form.location.length >= 2) {
+        this.resetResponse();
+        this.validation.location = true;
+        this.queryResult = [];
+        this.searchInput("location");
+      } else {
+        this.validation.location = false;
+      }
+    },
     titleValidator() {
       if (this.form.title.length >= 2) {
-        this.response.success = null;
-        this.response.error = null;
+        this.resetResponse();
         this.validation.title = true;
         this.queryResult = [];
         this.searchInput("title");
@@ -153,6 +194,14 @@ export default {
     invalidShorthand() {
       if (this.form.shorthand.length > 0) {
         const remainingChars = 2 - this.form.shorthand.length;
+        return `Enter at least ${remainingChars} more characters`;
+      } else {
+        return "Please enter something";
+      }
+    },
+    invalidLocation() {
+      if (this.form.location.length > 0) {
+        const remainingChars = 2 - this.form.location.length;
         return `Enter at least ${remainingChars} more characters`;
       } else {
         return "Please enter something";
@@ -170,11 +219,17 @@ export default {
       return "Great!";
     },
     async searchInput(fieldString) {
-      const query =
-        fieldString === "shorthand" ? this.form.shorthand : this.form.title;
+      let query;
+      if (fieldString === "shorthand") {
+        query = this.form.shorthand;
+      } else if (fieldString === "location") {
+        query = this.form.location;
+      } else {
+        query = this.form.title;
+      }
       try {
         const response = await this.$axios.$get(
-          "http://localhost:3000/api/search/pos",
+          "http://localhost:3000/api/search/sub",
           { params: { query } }
         );
         if (response.err) {
@@ -191,16 +246,14 @@ export default {
       event.preventDefault();
       try {
         const response = await this.$axios.$post(
-          "http://localhost:3000/api/pos",
+          "http://localhost:3000/api/sub",
           this.form
         );
         if (response.err) {
           this.response.error = response.err;
         } else {
-          this.form.shorthand = "";
-          this.form.title = "";
-          this.validation.shorthand = null;
-          this.validation.title = null;
+          this.resetForm();
+          this.resetValidation();
           this.response.success = response.suc;
         }
       } catch (error) {
@@ -208,13 +261,12 @@ export default {
       }
     },
     onReset(event) {
-      event.preventDefault();
-      this.form.shorthand = "";
-      this.form.title = "";
-      this.validation.shorthand = null;
-      this.validation.title = null;
-      this.response.success = null;
-      this.response.error = null;
+      if (event) {
+        event.preventDefault();
+      }
+      this.resetForm();
+      this.resetValidation();
+      this.resetResponse();
       this.queryResult = [];
     }
   }

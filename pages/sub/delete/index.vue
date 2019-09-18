@@ -5,11 +5,11 @@
     <DeleteAlert />
     <b-container v-if="showDeleteMenu">
       <H3withButton
-        h3text="Delete Position"
+        h3text="Delete Subsidiary"
         button-text="Cancel and Return"
-        link-to="/pos/edit"
+        link-to="/sub/edit"
       />
-      <!-- Async Positions Table -->
+      <!-- Async Subsidiary Table -->
       <b-row>
         <b-col>
           <b-table
@@ -30,7 +30,7 @@
       <b-row v-show="deleteSelected">
         <b-col>
           <b-form novalidate @submit="onSubmit">
-            <H3header h3text="Selected Employee" />
+            <H3header h3text="Selected Subsidiary" />
             <b-form-row>
               <b-col class="text-center">
                 <b-alert show variant="warning">
@@ -58,11 +58,11 @@
       <b-row v-if="!showDeleteMenu" class="mt-4">
         <b-col class="text-center">
           <b-button variant="danger" @click="resetPage()">
-            Delete Another Position
+            Delete Another Subsidiary
           </b-button>
         </b-col>
         <b-col class="text-center">
-          <b-button variant="secondary" to="/pos/edit">
+          <b-button variant="secondary" to="/sub/edit">
             Return to Edit Page
           </b-button>
         </b-col>
@@ -89,14 +89,16 @@ export default {
   data() {
     return {
       tableFields: [
-        { key: "pos_id", label: "Position #", sortable: true },
+        { key: "sub_id", label: "Subsidiary #", sortable: true },
         { key: "shorthand", label: "Abbreviation", sortable: true },
-        { key: "title", label: "Position Name", sortable: true }
+        { key: "location", label: "Subsidiary Location", sortable: true },
+        { key: "title", label: "Subsidiary Name", sortable: true }
       ],
       tableData: [],
       form: {
-        pos_id: "",
+        sub_id: "",
         shorthand: "",
+        location: "",
         title: ""
       },
       deleteSelected: false,
@@ -115,7 +117,7 @@ export default {
   },
   async mounted() {
     try {
-      const response = await this.$axios.$get("http://localhost:3000/api/pos");
+      const response = await this.$axios.$get("http://localhost:3000/api/sub");
       this.tableData = response.data;
     } catch (error) {
       this.error = error;
@@ -132,13 +134,14 @@ export default {
       this.tableData = [];
       this.form.pos_id = "";
       this.form.shorthand = "";
+      this.form.location = "";
       this.form.title = "";
       this.deleteSelected = false;
       this.result = null;
       this.error = null;
       try {
         const response = await this.$axios.$get(
-          "http://localhost:3000/api/pos"
+          "http://localhost:3000/api/sub"
         );
         this.tableData = response.data;
       } catch (error) {
@@ -151,8 +154,8 @@ export default {
       event.preventDefault();
       try {
         const response = await this.$axios.$delete(
-          "http://localhost:3000/api/pos",
-          { params: { id: this.form.pos_id } }
+          "http://localhost:3000/api/sub",
+          { params: { id: this.form.sub_id } }
         );
         this.result = response;
       } catch (error) {

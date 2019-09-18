@@ -4,7 +4,7 @@
     <b-container>
       <H3withButton
         h3text="Add new Position"
-        button-text="Cancel and Return"
+        button-text="Return to Edit Menu"
         link-to="/pos/edit"
       />
       <!-- Add new Position Form -->
@@ -17,7 +17,7 @@
                 <b-form-row>
                   <b-col>
                     <b-form-group
-                      label="Shorthand:"
+                      label="Abbreviation:"
                       :state="validation.shorthand"
                       :invalid-feedback="invalidShorthand()"
                       :valid-feedback="validFeedback()"
@@ -32,11 +32,11 @@
                     </b-form-group>
                   </b-col>
                 </b-form-row>
-                <!-- Title Input - Validates with 5 characters -->
+                <!-- Title (Position Name) Input - Validates with 5 characters -->
                 <b-form-row>
                   <b-col>
                     <b-form-group
-                      label="Title:"
+                      label="Position Name:"
                       :state="validation.title"
                       :invalid-feedback="invalidTitle()"
                       :valid-feedback="validFeedback()"

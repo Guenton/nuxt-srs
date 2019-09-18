@@ -89,6 +89,35 @@ get.service = async id => {
   }
 };
 
+// Subsidiary async function that returns id specific if given or all subsidiaries if no id was given
+get.sub = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(
+        "SELECT sub_id, shorthand, location, title FROM sub WHERE is_deleted IS FALSE "
+      );
+      return res;
+    } catch (err) {
+      console.log(err.code);
+      res.err = "Your Request could not be completed: DATABASE ERROR";
+      return res;
+    }
+  } else {
+    try {
+      res.data = await db.query(
+        "SELECT sub_id, shorthand, location, title FROM sub WHERE sub_id = ? AND is_deleted IS FALSE",
+        [id]
+      );
+      return res;
+    } catch (err) {
+      console.log(err.code);
+      res.err = "Your Request could not be completed: DATABASE ERROR";
+      return res;
+    }
+  }
+};
+
 // Search Queries
 
 // Employee async function that searches in employee table
@@ -116,6 +145,23 @@ get.posSearch = async query => {
     res.data = await db.query(
       "SELECT pos_id, shorthand, title FROM pos WHERE shorthand LIKE ? AND is_deleted IS FALSE OR title LIKE ? AND is_deleted IS FALSE",
       [query, query]
+    );
+    return res;
+  } catch (err) {
+    console.log(err.code);
+    res.err = "Active Search could not be completed: DATABASE ERROR";
+    return res;
+  }
+};
+
+// Subsidiary async function that searches in sub table
+get.subSearch = async query => {
+  const res = {};
+  query = "%" + query.toString() + "%";
+  try {
+    res.data = await db.query(
+      "SELECT sub_id, shorthand, location, title FROM sub WHERE shorthand LIKE ? AND is_deleted IS FALSE OR location LIKE ? AND is_deleted IS FALSE OR title LIKE ? AND is_deleted IS FALSE",
+      [query, query, query]
     );
     return res;
   } catch (err) {
