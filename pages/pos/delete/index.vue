@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavbarHome />
-    <!-- Dismissible Alert -->
+    <!-- Dismissible Delete Warning -->
     <DeleteAlert />
     <b-container v-if="showDeleteMenu">
       <H3withButton
@@ -53,7 +53,7 @@
     <b-container>
       <!-- Success & Error Alert Containers -->
       <AlertBox :show="hasResult" variant="info" :text="result" />
-      <AlertBox :show="hasError" variant="error" :text="error" />
+      <AlertBox :show="hasError" variant="danger" :text="error" />
       <!-- Show Option Buttons After Deletion -->
       <b-row v-if="!showDeleteMenu" class="mt-4">
         <b-col class="text-center">

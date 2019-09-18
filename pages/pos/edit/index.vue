@@ -81,7 +81,7 @@
       <!-- Success Alert Container -->
       <InfoAlertList :show="hasUpdate" :list-obj="update" />
       <!-- Error Alert Container -->
-      <ErrorAlert :show="hasError" :err-msg="error" />
+      <AlertBox :show="hasError" variant="danger" :text="error" />
     </b-container>
   </div>
 </template>
@@ -91,7 +91,7 @@ import NavbarHome from "~/components/NavbarHome";
 import H3withRefresh from "~/components/H3withRefresh";
 import H3header from "~/components/H3header";
 import InfoAlertList from "~/components/InfoAlertList";
-import ErrorAlert from "~/components/ErrorAlert";
+import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
@@ -99,7 +99,7 @@ export default {
     H3withRefresh,
     H3header,
     InfoAlertList,
-    ErrorAlert
+    AlertBox
   },
   data() {
     return {

@@ -3,19 +3,12 @@
     <NavbarHome />
     <b-container>
       <!-- Header with Buttons -->
-      <b-row class="mt-4">
-        <b-col class="text-left">
-          <h3>Edit Employees</h3>
-        </b-col>
-        <b-col class="text-right mb-2">
-          <b-button variant="secondary" @click="resetPage">
-            Refresh
-          </b-button>
-          <b-button variant="info" to="/emp/add">
-            Add Employee
-          </b-button>
-        </b-col>
-      </b-row>
+      <H3withRefresh
+        h3text="Edit Employees"
+        button-text="Add Employee"
+        link-to="/emp/add"
+        @refresh="resetPage"
+      />
       <!-- Async table with get request -->
       <b-row>
         <b-col>
@@ -31,6 +24,7 @@
           </b-table>
         </b-col>
       </b-row>
+      <!-- Delete Button below table -->
       <b-row>
         <b-col class="text-right">
           <b-button variant="danger" to="/emp/delete">
@@ -84,38 +78,28 @@
           </b-form>
         </b-col>
       </b-row>
-      <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasUpdate" variant="info">
-            <p>Update Results:</p>
-            <ul>
-              <li v-for="item in update" :key="item.id">
-                {{ item }}
-              </li>
-            </ul>
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasError" variant="danger">
-            {{ error }}
-          </b-alert>
-        </b-col>
-      </b-row>
+      <!-- Success Alert Container -->
+      <InfoAlertList :show="hasUpdate" :list-obj="update" />
+      <!-- Error Alert Container -->
+      <AlertBox :show="hasError" variant="danger" :text="error" />
     </b-container>
   </div>
 </template>
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
+import H3withRefresh from "~/components/H3withRefresh";
 import H3header from "~/components/H3header";
+import InfoAlertList from "~/components/InfoAlertList";
+import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
     NavbarHome,
-    H3header
+    H3withRefresh,
+    H3header,
+    InfoAlertList,
+    AlertBox
   },
   data() {
     return {

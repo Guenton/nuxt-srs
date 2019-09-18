@@ -4,9 +4,10 @@
     <b-container>
       <H3withButton
         h3text="Add new Employee"
-        button-text="Cancel and Return"
+        button-text="Return to Edit Menu"
         link-to="/emp/edit"
       />
+      <!-- Add Employee Form -->
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
@@ -65,20 +66,9 @@
         </b-col>
       </b-row>
       <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="response.success" variant="success">
-            {{ response.success }}
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="response.error" variant="danger">
-            {{ response.error }}
-          </b-alert>
-        </b-col>
-      </b-row>
+      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
+      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+      <!-- Dynamic Search Result Container -->
       <b-row class="mt-4">
         <b-col>
           <b-alert :show="queryHasResult" variant="info">
@@ -100,10 +90,13 @@
 <script>
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
+import AlertBox from "~/components/AlertBox";
+
 export default {
   components: {
     NavbarHome,
-    H3withButton
+    H3withButton,
+    AlertBox
   },
   data() {
     return {
@@ -116,13 +109,19 @@ export default {
         lastname: null
       },
       response: {
-        success: null,
-        error: null
+        success: "",
+        error: ""
       },
       queryResult: []
     };
   },
   computed: {
+    hasSuc() {
+      return this.response.success.length > 0;
+    },
+    hasErr() {
+      return this.response.error.length > 0;
+    },
     queryHasResult() {
       return this.queryResult.length > 0;
     }
@@ -130,8 +129,8 @@ export default {
   methods: {
     firstnameValidator() {
       if (this.form.firstname.length >= 2) {
-        this.response.success = null;
-        this.response.error = null;
+        this.response.success = "";
+        this.response.error = "";
         this.validation.firstname = true;
         this.queryResult = [];
         this.searchInput("firstname");
@@ -141,8 +140,8 @@ export default {
     },
     lastnameValidator() {
       if (this.form.lastname.length >= 2) {
-        this.response.success = null;
-        this.response.error = null;
+        this.response.success = "";
+        this.response.error = "";
         this.validation.lastname = true;
         this.queryResult = [];
         this.searchInput("lastname");
@@ -213,8 +212,8 @@ export default {
       this.form.lastname = "";
       this.validation.firstname = null;
       this.validation.lastname = null;
-      this.response.success = null;
-      this.response.error = null;
+      this.response.success = "";
+      this.response.error = "";
       this.queryResult = [];
     }
   }

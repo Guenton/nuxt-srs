@@ -1,17 +1,15 @@
 <template>
   <div>
     <NavbarHome />
-    <b-alert show dismissible variant="warning" class="text-center m-4">
-      <strong>*Caution*</strong>
-      <br />
-      Deletions are Permanent
-    </b-alert>
+    <!-- Dismissible Delete Warning -->
+    <DeleteAlert />
     <b-container v-if="showDeleteMenu">
       <H3withButton
         h3text="Delete Employees"
         button-text="Cancel and Return"
         link-to="/emp/edit"
       />
+      <!-- Async Employees Table -->
       <b-row>
         <b-col>
           <b-table
@@ -28,7 +26,7 @@
           </b-table>
         </b-col>
       </b-row>
-      <!-- Edit Employee Table -->
+      <!-- Delete Selected Employee Confirmation Alert -->
       <b-row v-show="deleteSelected">
         <b-col>
           <b-form novalidate @submit="onSubmit">
@@ -40,7 +38,7 @@
                 </b-alert>
               </b-col>
             </b-form-row>
-            <!-- Submit & Reset Buttons -->
+            <!-- Dynamic Delete Button -->
             <b-form-row>
               <b-col class="text-center">
                 <b-button variant="danger" type="submit">
@@ -54,20 +52,9 @@
     </b-container>
     <b-container>
       <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasResult" variant="info">
-            {{ result }}
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasError" variant="danger">
-            {{ error }}
-          </b-alert>
-        </b-col>
-      </b-row>
+      <AlertBox :show="hasResult" variant="info" :text="result" />
+      <AlertBox :show="hasError" variant="danger" :text="error" />
+      <!-- Show Option Buttons After Deletion -->
       <b-row v-if="!showDeleteMenu" class="mt-4">
         <b-col class="text-center">
           <b-button variant="danger" @click="resetPage()">
@@ -86,14 +73,18 @@
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
+import DeleteAlert from "~/components/DeleteAlert";
 import H3withButton from "~/components/H3withButton";
 import H3header from "~/components/H3header";
+import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
     NavbarHome,
+    DeleteAlert,
     H3withButton,
-    H3header
+    H3header,
+    AlertBox
   },
   data() {
     return {
