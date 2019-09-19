@@ -75,6 +75,11 @@ router.get("/service", async (req, res) => {
   res.json(response);
 });
 
+router.get("/service/:archId", async (req, res) => {
+  const response = await get.serviceByArch(req.params.archId);
+  res.json(response);
+});
+
 // //////////////////////////
 // Search Query Handlers ///
 // ////////////////////////

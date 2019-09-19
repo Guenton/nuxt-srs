@@ -77,7 +77,7 @@ get.service = async id => {
   } else {
     try {
       res.data = await db.query(
-        "SELECT service_type.type_id, service_type.title, service_archtype.archtype FROM service_type INNER JOIN service_archtype ON service_type.arch_id = service_archtype.arch_id; WHERE service_type.type_id = ?",
+        "SELECT service_type.type_id, service_type.title, service_archtype.archtype FROM service_type INNER JOIN service_archtype ON service_type.arch_id = service_archtype.arch_id WHERE service_type.type_id = ?",
         [id]
       );
       return res;
@@ -86,6 +86,21 @@ get.service = async id => {
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
+  }
+};
+
+get.serviceByArch = async archId => {
+  const res = {};
+  try {
+    res.data = await db.query(
+      "SELECT service_type.type_id, service_type.title, service_archtype.archtype FROM service_type INNER JOIN service_archtype ON service_type.arch_id = service_archtype.arch_id WHERE service_type.arch_id = ?",
+      [archId]
+    );
+    return res;
+  } catch (err) {
+    console.log(err.code);
+    res.err = "Your Request could not be completed: DATABASE ERROR";
+    return res;
   }
 };
 
@@ -118,7 +133,9 @@ get.sub = async id => {
   }
 };
 
-// Search Queries
+// //////////////////////////
+// Search Query Handlers ///
+// ////////////////////////
 
 // Employee async function that searches in employee table
 get.empSearch = async query => {
