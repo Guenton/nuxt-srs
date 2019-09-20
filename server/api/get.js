@@ -12,7 +12,7 @@ get.emp = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
@@ -24,7 +24,7 @@ get.emp = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
@@ -41,7 +41,7 @@ get.pos = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
@@ -53,14 +53,14 @@ get.pos = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
   }
 };
 
-// Service async function that returns id specific if given or all employees if no id was given
+// Service async function that returns id specific if given or all services if no id was given
 get.service = async id => {
   const res = {};
   if (!id) {
@@ -70,7 +70,7 @@ get.service = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
@@ -82,7 +82,7 @@ get.service = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
@@ -98,7 +98,7 @@ get.serviceByArch = async archId => {
     );
     return res;
   } catch (err) {
-    console.log(err.code);
+    console.error(err.code);
     res.err = "Your Request could not be completed: DATABASE ERROR";
     return res;
   }
@@ -114,7 +114,7 @@ get.sub = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
@@ -126,10 +126,38 @@ get.sub = async id => {
       );
       return res;
     } catch (err) {
-      console.log(err.code);
+      console.error(err.code);
       res.err = "Your Request could not be completed: DATABASE ERROR";
       return res;
     }
+  }
+};
+
+// /////////////////////////////////
+// Natural Assignation Requests ///
+// ///////////////////////////////
+
+get.normAsByPos = async posId => {
+  const res = {};
+  try {
+    const typeIdArr = await db.query(
+      "SELECT type_id FROM normalas WHERE pos_id = ?",
+      [posId]
+    );
+    const mapping = typeIdArr.map(async row => {
+      const results = await get.service(row.type_id);
+      return results;
+    });
+    const packet = await Promise.all(mapping);
+    res.data = [];
+    packet.forEach(item => {
+      res.data.push(item.data[0]);
+    });
+    return res;
+  } catch (err) {
+    console.error(err.code);
+    res.err = "Your Request could not be completed: DATABASE ERROR";
+    return res;
   }
 };
 
@@ -148,7 +176,7 @@ get.empSearch = async query => {
     );
     return res;
   } catch (err) {
-    console.log(err.code);
+    console.error(err.code);
     res.err = "Active Search could not be completed: DATABASE ERROR";
     return res;
   }
@@ -165,7 +193,7 @@ get.posSearch = async query => {
     );
     return res;
   } catch (err) {
-    console.log(err.code);
+    console.error(err.code);
     res.err = "Active Search could not be completed: DATABASE ERROR";
     return res;
   }
@@ -182,7 +210,7 @@ get.subSearch = async query => {
     );
     return res;
   } catch (err) {
-    console.log(err.code);
+    console.error(err.code);
     res.err = "Active Search could not be completed: DATABASE ERROR";
     return res;
   }

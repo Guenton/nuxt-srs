@@ -91,3 +91,11 @@ VALUES
   ("Transportation", 5),
   ("Domicile Protection", 5)
 ;
+
+CREATE TABLE IF NOT EXISTS normalas (
+  pos_id INT,
+  type_id INT,
+  PRIMARY KEY (pos_id, type_id),
+  FOREIGN KEY (pos_id) REFERENCES pos(pos_id),
+  FOREIGN KEY (type_id) REFERENCES service_type(type_id)
+);

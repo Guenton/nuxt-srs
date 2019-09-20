@@ -23,11 +23,34 @@
             striped
             selectable
             hover
-            sticky-header
+            sticky-header="65vh"
+            select-mode="single"
             :items="tableData"
             :fields="tableFields"
-            @row-selected="onRowSelected"
+            @row-clicked="onRowClicked"
           >
+            <template v-slot:row-details="row">
+              <b-card>
+                <b-row align-v="center">
+                  <b-col cols="10">
+                    <b-alert show variant="info" class="my-1">
+                      <p>Services Normally Assigned to this Position:</p>
+                      <ul>
+                        <li v-for="item in normAs" :key="item.id">
+                          <strong>{{ item.archtype }}:</strong>
+                          {{ item.title }}
+                        </li>
+                      </ul>
+                    </b-alert>
+                  </b-col>
+                  <b-col cols="2" class="pl-0">
+                    <b-button block to="/pos/add" variant="success">
+                      Add
+                    </b-button>
+                  </b-col>
+                </b-row>
+              </b-card>
+            </template>
           </b-table>
         </b-col>
       </b-row>
@@ -38,60 +61,7 @@
           </b-button>
         </b-col>
       </b-row>
-      <!-- Edit table hidden until selection was made -->
-      <b-row v-show="showtable">
-        <b-col>
-          <b-form novalidate @submit="onSubmit" @reset="resetPage">
-            <H3header h3text="Edit Employees" />
-            <b-form-row v-for="(pos, index) in form" :key="pos.emp_id">
-              <b-col sm="2" align-v="center" class="text-center">
-                <b-row>
-                  <b-col sm="12">
-                    <b-row>
-                      <strong>Position #{{ pos.pos_id }}:</strong>
-                    </b-row>
-                  </b-col>
-                  <b-col sm="12">
-                    <b-row>{{ pos.shorthand }} {{ pos.title }}</b-row>
-                  </b-col>
-                </b-row>
-              </b-col>
-              <b-col>
-                <b-form-group label="Abbreviation">
-                  <b-form-input v-model="form[index].shorthand" trim />
-                </b-form-group>
-              </b-col>
-              <b-col>
-                <b-form-group label="Title">
-                  <b-form-input v-model="form[index].title" trim />
-                </b-form-group>
-              </b-col>
-            </b-form-row>
-            <!-- Submit & Reset Buttons -->
-            <b-form-row>
-              <b-col class="text-right">
-                <b-button type="submit" variant="success">Update</b-button>
-              </b-col>
-              <b-col class="text-left">
-                <b-button type="reset" variant="secondary">Cancel</b-button>
-              </b-col>
-            </b-form-row>
-          </b-form>
-        </b-col>
-      </b-row>
-      <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasUpdate" variant="info">
-            <p>Update Results:</p>
-            <ul>
-              <li v-for="item in update" :key="item.id">
-                {{ item }}
-              </li>
-            </ul>
-          </b-alert>
-        </b-col>
-      </b-row>
+      <AlertBox :show="hasError" variant="danger" :text="error" />
       <b-row class="mt-4">
         <b-col>
           <b-alert :show="hasError" variant="danger">
@@ -105,12 +75,12 @@
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
-import H3header from "~/components/H3header";
+import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
     NavbarHome,
-    H3header
+    AlertBox
   },
   data() {
     return {
@@ -120,10 +90,9 @@ export default {
         { key: "title", label: "Title", sortable: true }
       ],
       tableData: [],
-      form: [],
-      update: [],
-      showtable: false,
-      error: null
+      normAs: [],
+      form: {},
+      error: ""
     };
   },
   computed: {
@@ -131,46 +100,59 @@ export default {
       return this.update.length > 0;
     },
     hasError() {
-      return this.error !== null;
+      return this.error.length > 0;
     }
   },
   async mounted() {
     try {
       const response = await this.$axios.$get("http://localhost:3000/api/pos");
+      if (response.err) {
+        this.error = response.err;
+      }
       this.tableData = response.data;
+      this.tableData.forEach(item => {
+        item._showDetails = false;
+      });
     } catch (error) {
       this.error = error;
     }
   },
   methods: {
-    onRowSelected(items) {
-      this.form = items;
-      this.showtable = items.length > 0;
+    async onRowClicked(item) {
+      this.form.pos_id = item.pos_id;
+      item._showDetails = !item._showDetails;
+      try {
+        const response = await this.$axios.$get(
+          "http://localhost:3000/api/normas",
+          { params: { posId: this.form.pos_id } }
+        );
+        if (response.err) {
+          this.error = response.err;
+        }
+        this.normAs = response.data;
+      } catch (err) {
+        this.error = err;
+      }
     },
     async resetPage(event) {
-      event.preventDefault();
+      if (event) {
+        event.preventDefault();
+      }
       this.tableData = [];
-      this.form = [];
-      this.update = [];
-      this.error = null;
-      this.showtable = false;
+      this.normAs = [];
+      this.form = {};
+      this.error = "";
       try {
         const response = await this.$axios.$get(
           "http://localhost:3000/api/pos"
         );
+        if (response.err) {
+          this.error = response.err;
+        }
         this.tableData = response.data;
-      } catch (error) {
-        this.error = error;
-      }
-    },
-    async onSubmit(event) {
-      event.preventDefault();
-      try {
-        const response = await this.$axios.$put(
-          "http://localhost:3000/api/pos",
-          this.form
-        );
-        this.update = response;
+        this.tableData.forEach(item => {
+          item._showDetails = false;
+        });
       } catch (error) {
         this.error = error;
       }

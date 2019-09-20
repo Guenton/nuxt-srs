@@ -80,6 +80,14 @@ router.get("/service/:archId", async (req, res) => {
   res.json(response);
 });
 
+// ////////////////////////////////
+// Normal Assignation Requests ///
+// //////////////////////////////
+router.get("/normas", async (req, res) => {
+  const response = await get.normAsByPos(req.query.posId);
+  res.json(response);
+});
+
 // //////////////////////////
 // Search Query Handlers ///
 // ////////////////////////
