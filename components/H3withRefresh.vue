@@ -7,7 +7,7 @@
       <b-button variant="secondary" @click="refresh()">
         Refresh
       </b-button>
-      <b-button variant="info" :to="linkTo">
+      <b-button :variant="variant" :to="linkTo">
         {{ buttonText }}
       </b-button>
     </b-col>
@@ -29,6 +29,11 @@ export default {
     linkTo: {
       type: String,
       required: true
+    },
+    variant: {
+      type: String,
+      required: false,
+      default: "info"
     }
   },
   methods: {

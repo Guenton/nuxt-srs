@@ -7,6 +7,7 @@
         h3text="Edit Employees"
         button-text="Add Employee"
         link-to="/emp/add"
+        variant="success"
         @refresh="resetPage"
       />
       <!-- Async table with get request -->

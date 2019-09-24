@@ -3,19 +3,12 @@
     <NavbarHome />
     <b-container>
       <!-- Header with Buttons -->
-      <b-row class="mt-4">
-        <b-col class="text-left">
-          <h3>Positions</h3>
-        </b-col>
-        <b-col class="text-right mb-2">
-          <b-button variant="secondary" @click="resetPage">
-            Refresh
-          </b-button>
-          <b-button variant="info" to="/pos/add">
-            Add Position
-          </b-button>
-        </b-col>
-      </b-row>
+      <H3withRefresh
+        h3text="Positions"
+        button-text="Edit Positions"
+        link-to="/pos/edit"
+        @refresh="resetPage"
+      />
       <!-- Async table with get request -->
       <b-row>
         <b-col>
@@ -44,7 +37,7 @@
                     </b-alert>
                   </b-col>
                   <b-col cols="2" class="pl-0">
-                    <b-button block to="/pos/add" variant="success">
+                    <b-button block to="/pos/normas" variant="success">
                       Add
                     </b-button>
                   </b-col>
@@ -75,12 +68,14 @@
 
 <script>
 import NavbarHome from "~/components/NavbarHome";
+import H3withRefresh from "~/components/H3withRefresh";
 import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
     NavbarHome,
-    AlertBox
+    AlertBox,
+    H3withRefresh
   },
   data() {
     return {
@@ -110,17 +105,20 @@ export default {
         this.error = response.err;
       }
       this.tableData = response.data;
-      this.tableData.forEach(item => {
-        item._showDetails = false;
+      this.tableData.forEach(row => {
+        row._showDetails = false;
       });
     } catch (error) {
       this.error = error;
     }
   },
   methods: {
-    async onRowClicked(item) {
-      this.form.pos_id = item.pos_id;
-      item._showDetails = !item._showDetails;
+    async onRowClicked(row) {
+      this.tableData.forEach(row => {
+        row._showDetails = false;
+      });
+      this.form.pos_id = row.pos_id;
+      row._showDetails = !row._showDetails;
       try {
         const response = await this.$axios.$get(
           "http://localhost:3000/api/normas",

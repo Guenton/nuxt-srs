@@ -6,12 +6,14 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _1af66a08 = () => interopDefault(import('..\\pages\\docs\\index.vue' /* webpackChunkName: "pages_docs_index" */))
 const _35ce4e55 = () => interopDefault(import('..\\pages\\emp\\index.vue' /* webpackChunkName: "pages_emp_index" */))
 const _3f59a9d8 = () => interopDefault(import('..\\pages\\home\\index.vue' /* webpackChunkName: "pages_home_index" */))
+const _0ab3e34e = () => interopDefault(import('..\\pages\\log\\index.vue' /* webpackChunkName: "pages_log_index" */))
 const _431e156e = () => interopDefault(import('..\\pages\\pos\\index.vue' /* webpackChunkName: "pages_pos_index" */))
 const _3e3b8e70 = () => interopDefault(import('..\\pages\\service\\index.vue' /* webpackChunkName: "pages_service_index" */))
 const _cf5f0446 = () => interopDefault(import('..\\pages\\sub\\index.vue' /* webpackChunkName: "pages_sub_index" */))
 const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
 const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
 const _775f9e4b = () => interopDefault(import('..\\pages\\emp\\edit\\index.vue' /* webpackChunkName: "pages_emp_edit_index" */))
+const _54d6c11a = () => interopDefault(import('..\\pages\\log\\add\\index.vue' /* webpackChunkName: "pages_log_add_index" */))
 const _5376b02a = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
 const _75c34784 = () => interopDefault(import('..\\pages\\pos\\delete\\index.vue' /* webpackChunkName: "pages_pos_delete_index" */))
 const _545e3e3f = () => interopDefault(import('..\\pages\\pos\\edit\\index.vue' /* webpackChunkName: "pages_pos_edit_index" */))
@@ -42,6 +44,10 @@ export const routerOptions = {
       component: _3f59a9d8,
       name: "home"
     }, {
+      path: "/log",
+      component: _0ab3e34e,
+      name: "log"
+    }, {
       path: "/pos",
       component: _431e156e,
       name: "pos"
@@ -65,6 +71,10 @@ export const routerOptions = {
       path: "/emp/edit",
       component: _775f9e4b,
       name: "emp-edit"
+    }, {
+      path: "/log/add",
+      component: _54d6c11a,
+      name: "log-add"
     }, {
       path: "/pos/add",
       component: _5376b02a,

@@ -16,7 +16,7 @@
             striped
             selectable
             hover
-            sticky-header
+            sticky-header="65vh"
             select-mode="single"
             selected-variant="danger"
             :items="tableData"

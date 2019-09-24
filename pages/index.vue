@@ -3,10 +3,10 @@
     <div>
       <logo />
       <h1 class="title">
-        Statistical Report System
+        SIBOX
       </h1>
       <h2 class="subtitle">
-        Redifining Statistical Reports
+        Statistical Report System
       </h2>
       <div class="links">
         <b-button to="/home" variant="success" size="lg">
@@ -24,6 +24,10 @@
 import Logo from "~/components/Logo.vue";
 
 export default {
+  transition: {
+    name: "fade",
+    mode: "out-in"
+  },
   components: {
     Logo
   }
@@ -60,5 +64,27 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+</style>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

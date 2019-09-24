@@ -2,6 +2,10 @@ const db = require("../db/mysql");
 
 const get = {};
 
+// ///////////////////////
+// Employee Requests ////
+// /////////////////////
+
 // Employee async function that returns id specific if given or all employees if no id was given
 get.emp = async id => {
   const res = {};
@@ -30,6 +34,10 @@ get.emp = async id => {
     }
   }
 };
+
+// ///////////////////////
+// Position Requests ////
+// /////////////////////
 
 // Position async function that returns id specific if given or all positions if no id was given
 get.pos = async id => {
@@ -60,6 +68,10 @@ get.pos = async id => {
   }
 };
 
+// //////////////////////
+// Service Requests ////
+// ////////////////////
+
 // Service async function that returns id specific if given or all services if no id was given
 get.service = async id => {
   const res = {};
@@ -88,7 +100,7 @@ get.service = async id => {
     }
   }
 };
-
+// Returns service type_id, title and matching archtype from given arch_id
 get.serviceByArch = async archId => {
   const res = {};
   try {
@@ -103,6 +115,10 @@ get.serviceByArch = async archId => {
     return res;
   }
 };
+
+// /////////////////////////
+// Subsidiary Requests ////
+// ///////////////////////
 
 // Subsidiary async function that returns id specific if given or all subsidiaries if no id was given
 get.sub = async id => {
@@ -134,9 +150,10 @@ get.sub = async id => {
 };
 
 // /////////////////////////////////
-// Natural Assignation Requests ///
+// Normal Assignation Requests ////
 // ///////////////////////////////
 
+// Returns Normal Assignations on basis of the given pos_id
 get.normAsByPos = async posId => {
   const res = {};
   try {
@@ -161,6 +178,36 @@ get.normAsByPos = async posId => {
   }
 };
 
+// ////////////////////////////
+// Service Scope Requests ////
+// //////////////////////////
+
+get.serviceScope = async scopeId => {
+  const res = {};
+  if (!scopeId) {
+    try {
+      res.data = await db.query("SELECT * FROM service_scope");
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = "Your Request could not be completed: DATABASE ERROR";
+      return res;
+    }
+  } else {
+    try {
+      res.data = await db.query(
+        "SELECT * FROM service_scope WHERE scope_id = ?",
+        [scopeId]
+      );
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = "Your Request could not be completed: DATABASE ERROR";
+      return res;
+    }
+  }
+};
+
 // //////////////////////////
 // Search Query Handlers ///
 // ////////////////////////
@@ -181,7 +228,6 @@ get.empSearch = async query => {
     return res;
   }
 };
-
 // Position async function that searches in pos table
 get.posSearch = async query => {
   const res = {};
@@ -198,7 +244,6 @@ get.posSearch = async query => {
     return res;
   }
 };
-
 // Subsidiary async function that searches in sub table
 get.subSearch = async query => {
   const res = {};

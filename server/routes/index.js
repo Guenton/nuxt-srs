@@ -80,6 +80,11 @@ router.get("/service/:archId", async (req, res) => {
   res.json(response);
 });
 
+router.get("/service-scope", async (req, res) => {
+  const response = await get.serviceScope(req.query.scopeId);
+  res.json(response);
+});
+
 // ////////////////////////////////
 // Normal Assignation Requests ///
 // //////////////////////////////

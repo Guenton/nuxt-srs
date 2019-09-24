@@ -7,6 +7,7 @@
         h3text="Edit Positions"
         button-text="Add Position"
         link-to="/pos/add"
+        variant="success"
         @refresh="resetPage"
       />
       <!-- Async table with get request -->
@@ -16,7 +17,7 @@
             striped
             selectable
             hover
-            sticky-header
+            sticky-header="65vh"
             :items="tableData"
             :fields="tableFields"
             @row-selected="onRowSelected"
