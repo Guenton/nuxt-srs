@@ -1,6 +1,10 @@
 const db = require("../db/mysql");
-
+// prepare object for export
 const get = {};
+
+// push standard error response to variable
+const dbErr = "Your Request could not be completed: DATABASE ERROR";
+const searchErr = "Active Search could not be completed: DATABASE ERROR";
 
 // ///////////////////////
 // Employee Requests ////
@@ -17,7 +21,7 @@ get.emp = async id => {
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   } else {
@@ -29,7 +33,7 @@ get.emp = async id => {
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   }
@@ -50,7 +54,7 @@ get.pos = async id => {
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   } else {
@@ -62,7 +66,7 @@ get.pos = async id => {
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   }
@@ -72,7 +76,7 @@ get.pos = async id => {
 // Service Requests ////
 // ////////////////////
 
-// Service async function that returns id specific if given or all services if no id was given
+// Service async function that returns id specific if given or all services types with their archtype if no id was given
 get.service = async id => {
   const res = {};
   if (!id) {
@@ -83,7 +87,7 @@ get.service = async id => {
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   } else {
@@ -95,7 +99,7 @@ get.service = async id => {
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   }
@@ -111,8 +115,88 @@ get.serviceByArch = async archId => {
     return res;
   } catch (err) {
     console.error(err.code);
-    res.err = "Your Request could not be completed: DATABASE ERROR";
+    res.err = dbErr;
     return res;
+  }
+};
+// Returns service Archtype if arch_id is given, else returns all service Archtypes
+get.serviceArchtype = async archId => {
+  const res = {};
+  if (!archId) {
+    try {
+      res.data = await db.query("SELECT * FROM service_archtype");
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  } else {
+    try {
+      res.data = await db.query(
+        "SELECT * FROM service_archtype WHERE arch_id = ?",
+        [archId]
+      );
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  }
+};
+
+// Returns Department Scope if depscope_id is given else returns all Department Scopes
+get.serviceDepScope = async depScopeId => {
+  const res = {};
+  if (!depScopeId) {
+    try {
+      res.data = await db.query("SELECT * FROM dep_scope");
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  } else {
+    try {
+      res.data = await db.query(
+        "SELECT * FROM dep_scope WHERE depscope_id = ?",
+        [depScopeId]
+      );
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  }
+};
+
+// Returns Super Scope if superscope_id is given else returns all Super Scopes
+get.serviceSuperScope = async superScopeId => {
+  const res = {};
+  if (!superScopeId) {
+    try {
+      res.data = await db.query("SELECT * FROM super_scope");
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  } else {
+    try {
+      res.data = await db.query(
+        "SELECT * FROM super_scope WHERE superscope_id = ?",
+        [superScopeId]
+      );
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
   }
 };
 
@@ -121,29 +205,29 @@ get.serviceByArch = async archId => {
 // ///////////////////////
 
 // Subsidiary async function that returns id specific if given or all subsidiaries if no id was given
-get.sub = async id => {
+get.sub = async subId => {
   const res = {};
-  if (!id) {
+  if (!subId) {
     try {
       res.data = await db.query(
-        "SELECT sub_id, shorthand, location, title FROM sub WHERE is_deleted IS FALSE "
+        "SELECT sub_id, shorthand, location, title FROM sub WHERE is_deleted IS FALSE"
       );
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   } else {
     try {
       res.data = await db.query(
         "SELECT sub_id, shorthand, location, title FROM sub WHERE sub_id = ? AND is_deleted IS FALSE",
-        [id]
+        [subId]
       );
       return res;
     } catch (err) {
       console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
+      res.err = dbErr;
       return res;
     }
   }
@@ -173,38 +257,8 @@ get.normAsByPos = async posId => {
     return res;
   } catch (err) {
     console.error(err.code);
-    res.err = "Your Request could not be completed: DATABASE ERROR";
+    res.err = dbErr;
     return res;
-  }
-};
-
-// ////////////////////////////
-// Service Scope Requests ////
-// //////////////////////////
-
-get.serviceScope = async scopeId => {
-  const res = {};
-  if (!scopeId) {
-    try {
-      res.data = await db.query("SELECT * FROM service_scope");
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
-      return res;
-    }
-  } else {
-    try {
-      res.data = await db.query(
-        "SELECT * FROM service_scope WHERE scope_id = ?",
-        [scopeId]
-      );
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = "Your Request could not be completed: DATABASE ERROR";
-      return res;
-    }
   }
 };
 
@@ -224,7 +278,7 @@ get.empSearch = async query => {
     return res;
   } catch (err) {
     console.error(err.code);
-    res.err = "Active Search could not be completed: DATABASE ERROR";
+    res.err = searchErr;
     return res;
   }
 };
@@ -240,7 +294,7 @@ get.posSearch = async query => {
     return res;
   } catch (err) {
     console.error(err.code);
-    res.err = "Active Search could not be completed: DATABASE ERROR";
+    res.err = searchErr;
     return res;
   }
 };
@@ -256,7 +310,7 @@ get.subSearch = async query => {
     return res;
   } catch (err) {
     console.error(err.code);
-    res.err = "Active Search could not be completed: DATABASE ERROR";
+    res.err = searchErr;
     return res;
   }
 };

@@ -9,56 +9,142 @@
       />
       <!-- Add Log Form -->
       <b-form class="mt-3" novalidate @submit="onSubmit" @reset="onReset">
-        <!-- Service Archtype Selector -->
-        <b-row align-v="center" class="my-2">
-          <b-col sm="3">
-            <label for="Archtype">Service Archtype</label>
-          </b-col>
-          <b-col sm="9">
-            <b-form-select
-              id="Archtype"
-              v-model="form.archType"
-              :options="archTypeOptions"
-              :state="validation.archType"
-              @change="serviceByArch"
+        <!-- Specification Box -->
+        <b-card bg-variant="light">
+          <b-form-group
+            label-cols-lg="3"
+            label="Specification"
+            label-size="lg"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
+          >
+            <!-- Archtype Selector -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Archtype:"
+              label-align-sm="right"
             >
-            </b-form-select>
-          </b-col>
-        </b-row>
-        <!-- Service Type Selector -->
-        <b-row align-v="center" class="my-2">
-          <b-col sm="3">
-            <label for="ServiceType">Service Type</label>
-          </b-col>
-          <b-col sm="9">
-            <b-form-select
-              id="ServiceType"
-              v-model="form.serviceType"
-              :disabled="archNotSelected"
-              :options="serviceTypeOptions"
-              :state="validation.serviceType"
-              @change="serviceValidator"
+              <b-form-select
+                v-model="form.archType"
+                :options="archTypeOptions"
+                :state="validation.archType"
+                @change="serviceByArch"
+              >
+              </b-form-select>
+            </b-form-group>
+            <!-- Type Selector -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Type:"
+              label-align-sm="right"
+              class="mb-2"
             >
-            </b-form-select>
-          </b-col>
-        </b-row>
-        <!-- Service Scope -->
-        <b-row align-v="center" class="my-2">
-          <b-col sm="3">
-            <label for="ServiceType">Service Type</label>
-          </b-col>
-          <b-col sm="9">
-            <b-form-select
-              id="ServiceType"
-              v-model="form.serviceType"
-              :disabled="archNotSelected"
-              :options="serviceTypeOptions"
-              :state="validation.serviceType"
-              @change="serviceValidator"
+              <b-form-select
+                v-model="form.serviceType"
+                :disabled="archNotSelected"
+                :options="serviceTypeOptions"
+                :state="validation.serviceType"
+                @change="serviceTypeValidator"
+              >
+              </b-form-select>
+            </b-form-group>
+          </b-form-group>
+        </b-card>
+        <!-- Scope Box -->
+        <b-card bg-variant="light" class="mt-4">
+          <b-form-group
+            label-cols-lg="3"
+            label="Scope"
+            label-size="lg"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
+          >
+            <!-- Origin -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Origin:"
+              label-align-sm="right"
+              class="mb-2"
             >
-            </b-form-select>
-          </b-col>
-        </b-row>
+              <b-form-select
+                v-model="form.depScope"
+                :options="depScopeOptions"
+                :state="validation.depScope"
+                @change="depScopeValidator"
+              >
+              </b-form-select>
+            </b-form-group>
+            <!-- Location -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Location:"
+              label-align-sm="right"
+              class="mb-2"
+            >
+              <b-form-select
+                v-model="form.superScope"
+                :options="superScopeOptions"
+                :state="validation.superScope"
+                @change="superScopeValidator"
+              >
+              </b-form-select>
+            </b-form-group>
+          </b-form-group>
+        </b-card>
+        <!-- Registry Box -->
+        <b-card bg-variant="light" class="mt-4">
+          <b-form-group
+            label-cols-lg="3"
+            label="Registry"
+            label-size="lg"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
+          >
+            <!-- Footprint # -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Footprint:"
+              label-align-sm="right"
+              class="mb-2"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <!-- Case Management # -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Case Management:"
+              label-align-sm="right"
+              class="mb-2"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <!-- Case Management # -->
+            <b-form-group
+              label-cols-sm="3"
+              label="Other:"
+              label-align-sm="right"
+              class="mb-2"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+          </b-form-group>
+        </b-card>
+        <!-- Description Box -->
+        <b-card bg-variant="light" class="mt-4">
+          <b-form-group
+            label-cols-lg="3"
+            label="Service Description"
+            label-size="lg"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
+          >
+            <b-form-textarea
+              placeholder="Enter a short description for this service..."
+              rows="3"
+              max-rows="6"
+            ></b-form-textarea>
+          </b-form-group>
+        </b-card>
       </b-form>
       <!-- Success & Error Alert Containers -->
       <b-row>
@@ -83,22 +169,21 @@ export default {
   },
   data() {
     return {
-      archTypeOptions: [
-        { value: null, text: "Select Service Archtype" },
-        { value: 1, text: "Security Leadership" },
-        { value: 2, text: "Investigations" },
-        { value: 3, text: "Security Equipment" },
-        { value: 4, text: "Asset Protection" },
-        { value: 5, text: "Excecutive Protection" }
-      ],
+      archTypeOptions: [{ value: null, text: "Select Service Archtype" }],
       serviceTypeOptions: [{ value: null, text: "Select Service Type" }],
+      depScopeOptions: [{ value: null, text: "Select Request Origin" }],
+      superScopeOptions: [{ value: null, text: "Select Origin Location" }],
       form: {
         archType: null,
-        serviceType: null
+        serviceType: null,
+        depScope: null,
+        superScope: null
       },
       validation: {
         archType: null,
-        serviceType: null
+        serviceType: null,
+        depScope: null,
+        superScope: null
       },
       response: {
         success: "",
@@ -118,26 +203,47 @@ export default {
     }
   },
   async mounted() {
-    const url = `${api}/service-scope`;
-    try {
-      const response = await this.$axios.$get(url);
-      if (response.err) {
-        this.response.error = response.err;
-      } else {
-        response.data.forEach(item => {
-          this.serviceTypeOptions.push({
-            value: item.type_id,
-            text: item.title
-          });
-        });
-        console.log(this.serviceTypeOptions);
-      }
-    } catch (error) {
-      this.response.error = error;
-    }
+    const archtypeUrl = `${api}/service-archtype`;
+    const archtypes = await this.dropdownRequest(archtypeUrl);
+    archtypes.forEach(element => {
+      this.archTypeOptions.push({
+        value: element.arch_id,
+        text: element.archtype
+      });
+    });
+    const depScopeUrl = `${api}/service-depscope`;
+    const depScopes = await this.dropdownRequest(depScopeUrl);
+    depScopes.forEach(element => {
+      this.depScopeOptions.push({
+        value: element.depscope_id,
+        text: element.depscope
+      });
+    });
+    const superScopeUrl = `${api}/service-superscope`;
+    const superScopes = await this.dropdownRequest(superScopeUrl);
+    superScopes.forEach(element => {
+      this.superScopeOptions.push({
+        value: element.superscope_id,
+        text: element.superscope
+      });
+    });
   },
   methods: {
-    archValidator() {
+    async dropdownRequest(url) {
+      try {
+        const response = await this.$axios.$get(url);
+        if (response.err) {
+          this.response.error = response.err;
+          return [];
+        } else {
+          return response.data;
+        }
+      } catch (error) {
+        this.response.error = error;
+        return [];
+      }
+    },
+    archTypeValidator() {
       if (this.form.archType === null) {
         this.validation.archType = false;
         return false;
@@ -148,7 +254,7 @@ export default {
         return true;
       }
     },
-    serviceValidator() {
+    serviceTypeValidator() {
       if (this.form.serviceType === null) {
         this.validation.serviceType = false;
       } else {
@@ -157,8 +263,26 @@ export default {
         this.response.error = "";
       }
     },
+    depScopeValidator() {
+      if (this.form.depScope === null) {
+        this.validation.depScope = false;
+      } else {
+        this.validation.depScope = true;
+        this.response.success = "";
+        this.response.error = "";
+      }
+    },
+    superScopeValidator() {
+      if (this.form.superScope === null) {
+        this.validation.superScope = false;
+      } else {
+        this.validation.superScope = true;
+        this.response.success = "";
+        this.response.error = "";
+      }
+    },
     async serviceByArch() {
-      if (!this.archValidator()) {
+      if (!this.archTypeValidator()) {
         return;
       }
       const arch = this.form.archType;

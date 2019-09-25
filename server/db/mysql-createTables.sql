@@ -37,22 +37,6 @@ CREATE TABLE IF NOT EXISTS service (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS service_scope (
-  scope_id INT AUTO_INCREMENT PRIMARY KEY,
-  shorthand VARCHAR(25) DEFAULT NULL,
-  scope VARCHAR(100) NOT NULL
-);
-
-INSERT INTO service_scope (shorthand, scope) 
-VALUES 
-	("IntraDL", "Intra-Department Local"),
-	("IntraDS", "Intra-Department Subsidiary"),
-  ("InterDL", "Inter-Department Local"),
-  ("InterDS", "Inter-Department Subsidiary"),
-  ("ExtL", "External Local"),
-  ("ExtG", "External Global")
-;
-
 CREATE TABLE IF NOT EXISTS service_archtype (
   arch_id INT AUTO_INCREMENT PRIMARY KEY,
   shorthand VARCHAR(25) DEFAULT NULL,
@@ -98,4 +82,24 @@ CREATE TABLE IF NOT EXISTS normalas (
   PRIMARY KEY (pos_id, type_id),
   FOREIGN KEY (pos_id) REFERENCES pos(pos_id),
   FOREIGN KEY (type_id) REFERENCES service_type(type_id)
+);
+
+CREATE TABLE IF NOT EXISTS super_scope (
+  superscope_id INT AUTO_INCREMENT PRIMARY KEY,
+  superscope VARCHAR(255) NOT NULL
+);
+INSERT INTO super_scope (superscope) VALUES ("Local"), ("Inter-Island"), ("International");
+
+CREATE TABLE IF NOT EXISTS dep_scope (
+  depscope_id INT AUTO_INCREMENT PRIMARY KEY,
+  depscope VARCHAR(255) NOT NULL
+);
+INSERT INTO dep_scope (depscope) VALUES ("Within S&I"), ("Other Department"), ("Outside Bank");
+
+CREATE TABLE IF NOT EXISTS service_scope (
+  superscope_id INT,
+  depscope_id INT,
+  PRIMARY KEY (superscope_id, depscope_id),
+  FOREIGN KEY (superscope_id) REFERENCES super_scope(superscope_id),
+  FOREIGN KEY (depscope_id) REFERENCES dep_scope(depscope_id)
 );

@@ -74,14 +74,20 @@ router.get("/service", async (req, res) => {
   const response = await get.service(req.query.id);
   res.json(response);
 });
-
 router.get("/service/:archId", async (req, res) => {
   const response = await get.serviceByArch(req.params.archId);
   res.json(response);
 });
-
-router.get("/service-scope", async (req, res) => {
-  const response = await get.serviceScope(req.query.scopeId);
+router.get("/service-archtype", async (req, res) => {
+  const response = await get.serviceArchtype(req.query.archId);
+  res.json(response);
+});
+router.get("/service-depscope", async (req, res) => {
+  const response = await get.serviceDepScope(req.query.depScopeId);
+  res.json(response);
+});
+router.get("/service-superscope", async (req, res) => {
+  const response = await get.serviceSuperScope(req.query.superScopeId);
   res.json(response);
 });
 
