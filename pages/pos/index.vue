@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import H3withRefresh from "~/components/H3withRefresh";
 import AlertBox from "~/components/AlertBox";
@@ -99,15 +100,17 @@ export default {
     }
   },
   async mounted() {
+    const url = `${api}/pos`;
     try {
-      const response = await this.$axios.$get("http://localhost:3000/api/pos");
+      const response = await this.$axios.$get(url);
       if (response.err) {
         this.error = response.err;
+      } else {
+        this.tableData = response.data;
+        this.tableData.forEach(row => {
+          row._showDetails = false;
+        });
       }
-      this.tableData = response.data;
-      this.tableData.forEach(row => {
-        row._showDetails = false;
-      });
     } catch (error) {
       this.error = error;
     }
@@ -119,15 +122,16 @@ export default {
       });
       this.form.pos_id = row.pos_id;
       row._showDetails = !row._showDetails;
+      const url = `${api}/normas`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/normas",
-          { params: { posId: this.form.pos_id } }
-        );
+        const response = await this.$axios.$get(url, {
+          params: { posId: this.form.pos_id }
+        });
         if (response.err) {
           this.error = response.err;
+        } else {
+          this.normAs = response.data;
         }
-        this.normAs = response.data;
       } catch (err) {
         this.error = err;
       }
@@ -140,17 +144,17 @@ export default {
       this.normAs = [];
       this.form = {};
       this.error = "";
+      const url = `${api}/pos`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/pos"
-        );
+        const response = await this.$axios.$get(url);
         if (response.err) {
           this.error = response.err;
+        } else {
+          this.tableData = response.data;
+          this.tableData.forEach(item => {
+            item._showDetails = false;
+          });
         }
-        this.tableData = response.data;
-        this.tableData.forEach(item => {
-          item._showDetails = false;
-        });
       } catch (error) {
         this.error = error;
       }

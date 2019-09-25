@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
 import AlertBox from "~/components/AlertBox";
@@ -170,16 +171,13 @@ export default {
     async searchInput(fieldString) {
       const query =
         fieldString === "shorthand" ? this.form.shorthand : this.form.title;
+      const url = `${api}/search/pos`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/search/pos",
-          { params: { query } }
-        );
+        const response = await this.$axios.$get(url, { params: { query } });
         if (response.err) {
           this.response.error = response.err;
         } else {
           this.queryResult = response.data;
-          console.log(response.data);
         }
       } catch (error) {
         this.response.error = error;
@@ -187,11 +185,9 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
+      const url = `${api}/pos`;
       try {
-        const response = await this.$axios.$post(
-          "http://localhost:3000/api/pos",
-          this.form
-        );
+        const response = await this.$axios.$post(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {

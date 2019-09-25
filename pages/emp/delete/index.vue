@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import DeleteAlert from "~/components/DeleteAlert";
 import H3withButton from "~/components/H3withButton";
@@ -114,9 +115,14 @@ export default {
     }
   },
   async mounted() {
+    const url = `${api}/emp`;
     try {
-      const response = await this.$axios.$get("http://localhost:3000/api/emp");
-      this.tableData = response.data;
+      const response = await this.$axios.$get(url);
+      if (response.err) {
+        this.error = response.err;
+      } else {
+        this.tableData = response.data;
+      }
     } catch (error) {
       this.error = error;
     }
@@ -126,7 +132,6 @@ export default {
       if (items.length > 0) {
         this.form = items[0];
       }
-      console.log(this.form);
       this.deleteSelected = items.length > 0;
     },
     async resetPage() {
@@ -137,11 +142,14 @@ export default {
       this.deleteSelected = false;
       this.result = null;
       this.error = null;
+      const url = `${api}/emp`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/emp"
-        );
-        this.tableData = response.data;
+        const response = await this.$axios.$get(url);
+        if (response.err) {
+          this.error = response.err;
+        } else {
+          this.tableData = response.data;
+        }
       } catch (error) {
         this.error = error;
       }
@@ -150,11 +158,11 @@ export default {
     async onSubmit(event) {
       this.showDeleteMenu = false;
       event.preventDefault();
+      const url = `${api}/emp`;
       try {
-        const response = await this.$axios.$delete(
-          "http://localhost:3000/api/emp",
-          { params: { id: this.form.emp_id } }
-        );
+        const response = await this.$axios.$delete(url, {
+          params: { id: this.form.emp_id }
+        });
         this.result = response;
       } catch (error) {
         this.error = error;

@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import DeleteAlert from "~/components/DeleteAlert";
 import H3withButton from "~/components/H3withButton";
@@ -114,9 +115,14 @@ export default {
     }
   },
   async mounted() {
+    const url = `${api}/pos`;
     try {
-      const response = await this.$axios.$get("http://localhost:3000/api/pos");
-      this.tableData = response.data;
+      const response = await this.$axios.$get(url);
+      if (response.err) {
+        this.response.error = response.err;
+      } else {
+        this.tableData = response.data;
+      }
     } catch (error) {
       this.error = error;
     }
@@ -136,11 +142,14 @@ export default {
       this.deleteSelected = false;
       this.result = null;
       this.error = null;
+      const url = `${api}/pos`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/pos"
-        );
-        this.tableData = response.data;
+        const response = await this.$axios.$get(url);
+        if (response.err) {
+          this.response.error = response.err;
+        } else {
+          this.tableData = response.data;
+        }
       } catch (error) {
         this.error = error;
       }
@@ -149,11 +158,11 @@ export default {
     async onSubmit(event) {
       this.showDeleteMenu = false;
       event.preventDefault();
+      const url = `${api}/pos`;
       try {
-        const response = await this.$axios.$delete(
-          "http://localhost:3000/api/pos",
-          { params: { id: this.form.pos_id } }
-        );
+        const response = await this.$axios.$delete(url, {
+          params: { id: this.form.pos_id }
+        });
         this.result = response;
       } catch (error) {
         this.error = error;

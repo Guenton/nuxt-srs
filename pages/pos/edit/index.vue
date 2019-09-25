@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import H3withRefresh from "~/components/H3withRefresh";
 import H3header from "~/components/H3header";
@@ -125,9 +126,14 @@ export default {
     }
   },
   async mounted() {
+    const url = `${api}/pos`;
     try {
-      const response = await this.$axios.$get("http://localhost:3000/api/pos");
-      this.tableData = response.data;
+      const response = await this.$axios.$get(url);
+      if (response.err) {
+        this.error = response.err;
+      } else {
+        this.tableData = response.data;
+      }
     } catch (error) {
       this.error = error;
     }
@@ -146,24 +152,24 @@ export default {
       this.update = [];
       this.error = null;
       this.showtable = false;
+      const url = `${api}/pos`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/pos"
-        );
-        this.tableData = response.data;
+        const response = await this.$axios.$get(url);
+        if (response.err) {
+          this.error = response.err;
+        } else {
+          this.tableData = response.data;
+        }
       } catch (error) {
         this.error = error;
       }
     },
     async onSubmit(event) {
       event.preventDefault();
+      const url = `${api}/pos`;
       try {
-        const response = await this.$axios.$put(
-          "http://localhost:3000/api/pos",
-          this.form
-        );
+        const response = await this.$axios.$put(url, this.form);
         this.update = response;
-        console.log(this.update);
       } catch (error) {
         this.error = error;
       }

@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
 import AlertBox from "~/components/AlertBox";
@@ -171,16 +172,13 @@ export default {
     async searchInput(fieldString) {
       const query =
         fieldString === "firstname" ? this.form.firstname : this.form.lastname;
+      const url = `${api}/search/emp`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/search/emp",
-          { params: { query } }
-        );
+        const response = await this.$axios.$get(url, { params: { query } });
         if (response.err) {
           this.response.error = response.err;
         } else {
           this.queryResult = response.data;
-          console.log(response.data);
         }
       } catch (error) {
         this.response.error = error;
@@ -188,11 +186,9 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
+      const url = `${api}/emp`;
       try {
-        const response = await this.$axios.$post(
-          "http://localhost:3000/api/emp",
-          this.form
-        );
+        const response = await this.$axios.$post(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {

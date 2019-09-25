@@ -106,6 +106,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import H3withButton from "~/components/H3withButton";
 import AlertBox from "~/components/AlertBox";
@@ -227,16 +228,13 @@ export default {
       } else {
         query = this.form.title;
       }
+      const url = `${api}/search/sub`;
       try {
-        const response = await this.$axios.$get(
-          "http://localhost:3000/api/search/sub",
-          { params: { query } }
-        );
+        const response = await this.$axios.$get(url, { params: { query } });
         if (response.err) {
           this.response.error = response.err;
         } else {
           this.queryResult = response.data;
-          console.log(response.data);
         }
       } catch (error) {
         this.response.error = error;
@@ -244,11 +242,9 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
+      const url = `${api}/sub`;
       try {
-        const response = await this.$axios.$post(
-          "http://localhost:3000/api/sub",
-          this.form
-        );
+        const response = await this.$axios.$post(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {

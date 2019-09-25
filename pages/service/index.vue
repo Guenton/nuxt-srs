@@ -158,6 +158,7 @@
 </template>
 
 <script>
+import api from "~/assets/apiMap";
 import NavbarHome from "~/components/NavbarHome";
 import H3header from "~/components/H3header";
 import AlertBox from "~/components/AlertBox";
@@ -185,10 +186,14 @@ export default {
   },
   methods: {
     async serviceByArch(arch) {
-      const url = `http://localhost:3000/api/service/${arch}`;
+      const url = `${api}/service/${arch}`;
       try {
         const response = await this.$axios.$get(url);
-        this.serviceData = response.data;
+        if (response.err) {
+          this.error = response.err;
+        } else {
+          this.serviceData = response.data;
+        }
       } catch (error) {
         this.error = error;
       }
