@@ -28,15 +28,6 @@ CREATE TABLE IF NOT EXISTS pos (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS service (
-  service_id INT AUTO_INCREMENT PRIMARY KEY,
-  shorthand VARCHAR(25) DEFAULT NULL,
-  title VARCHAR(100) NOT NULL,
-  is_deleted BOOLEAN DEFAULT false,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
 CREATE TABLE IF NOT EXISTS service_archtype (
   arch_id INT AUTO_INCREMENT PRIMARY KEY,
   shorthand VARCHAR(25) DEFAULT NULL,
@@ -103,3 +94,23 @@ CREATE TABLE IF NOT EXISTS service_scope (
   FOREIGN KEY (superscope_id) REFERENCES super_scope(superscope_id),
   FOREIGN KEY (depscope_id) REFERENCES dep_scope(depscope_id)
 );
+
+CREATE TABLE IF NOT EXISTS service (
+  service_id INT AUTO_INCREMENT PRIMARY KEY,
+  arch_id INT,
+  type_id INT,
+  depscope_id INT,
+  superscope_id INT,
+  is_deleted BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (arch_id) REFERENCES service_archtype(arch_id),
+  FOREIGN KEY (type_id) REFERENCES service_type(type_id),
+  FOREIGN KEY (depscope_id) REFERENCES dep_scope(depscope_id),
+  FOREIGN KEY (superscope_id) REFERENCES super_scope(superscope_id)
+);
+
+  footprint INT,
+  cm_year YEAR,
+  cm_seq INT,
+  explanation VARCHAR(255),

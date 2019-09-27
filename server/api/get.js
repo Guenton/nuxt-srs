@@ -314,5 +314,18 @@ get.subSearch = async query => {
     return res;
   }
 };
+// Footprint async function that searches in log table
+get.footprintSearch = async query => {
+  const res = {};
+  query = query.toString() + "%";
+  try {
+    res.data = await db.query("Pending Query", [query]);
+    return res;
+  } catch (err) {
+    console.error(err.code);
+    res.err = searchErr;
+    return res;
+  }
+};
 
 module.exports = get;

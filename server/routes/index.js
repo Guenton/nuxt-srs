@@ -90,6 +90,10 @@ router.get("/service-superscope", async (req, res) => {
   const response = await get.serviceSuperScope(req.query.superScopeId);
   res.json(response);
 });
+router.post("/service", async (req, res) => {
+  const response = await post.service(req.body);
+  res.json(response);
+});
 
 // ////////////////////////////////
 // Normal Assignation Requests ///
@@ -112,6 +116,9 @@ router.get("/search/:target", async (req, res) => {
     res.json(response);
   } else if (target === "sub") {
     const response = await get.subSearch(req.query.query);
+    res.json(response);
+  } else if (target === "footprint") {
+    const response = await get.footprintSearch(req.query.query);
     res.json(response);
   } else {
     res.status(404);

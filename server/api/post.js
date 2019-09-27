@@ -1,18 +1,22 @@
 const db = require("../db/mysql");
-
+// Prepare object for export
 const post = {};
+
+// push standard error response to variable
+const dbErr = "Your Request could not be completed: DATABASE ERROR";
+// push standard success response to variable
+const dbSuc = "has successfully been added to the Database";
 
 // Employee async function takes empployee "emp" object and returns a response "res" object with "err" and "suc" containers
 post.emp = async emp => {
   const res = {};
   try {
     await db.query("INSERT INTO employee SET ?", [emp]);
-    res.suc = `${emp.firstname} ${emp.lastname} 
-      has successfully been added to the Database`;
+    res.suc = `${emp.firstname} ${emp.lastname} ${dbSuc}`;
     return res;
   } catch (err) {
     console.error(err.code);
-    res.err = "Your Request could not be completed: DB ERROR";
+    res.err = dbErr;
     return res;
   }
 };
@@ -25,11 +29,11 @@ post.pos = async pos => {
       pos.shorthand,
       pos.title
     ]);
-    res.suc = `"${pos.title}" has successfully been added to the Database`;
+    res.suc = `${pos.title} ${dbSuc}`;
     return res;
   } catch (err) {
     console.log(err.code);
-    res.err = "Your Request could not be completed: DB ERROR";
+    res.err = dbErr;
     return res;
   }
 };
@@ -42,11 +46,34 @@ post.sub = async sub => {
       "INSERT INTO sub (shorthand, location, title) VALUES (?, ?, ?)",
       [sub.shorthand, sub.location, sub.title]
     );
-    res.suc = `"${sub.shorthand}" has successfully been added to the Database`;
+    res.suc = `${sub.shorthand} ${dbSuc}`;
     return res;
   } catch (err) {
     console.log(err.code);
-    res.err = "Your Request could not be completed: DB ERROR";
+    res.err = dbErr;
+    return res;
+  }
+};
+
+// Service async function takes service object and returns a response "res" object with "err" and "suc" containers
+post.service = async service => {
+  const res = {};
+  try {
+    await db.query(
+      "INSERT INTO service (arch_id, type_id, depscope_id, superscope_id) VALUES (?, ?, ?, ?)",
+      [
+        service.archType,
+        service.serviceType,
+        service.depScope,
+        service.superScope
+      ]
+    );
+    const lastIDArray = await db.query("SELECT LAST_INSERT_ID()");
+    const serviceId = lastIDArray[0]["LAST_INSERT_ID()"];
+    console.log(serviceId);
+  } catch (err) {
+    console.log(err.code);
+    res.err = dbErr;
     return res;
   }
 };

@@ -2,6 +2,7 @@
   <div>
     <NavbarHome />
     <b-container>
+      <!-- Header with Return to Log Page -->
       <H3withButton
         h3text="Add new Service Log"
         button-text="Return to Logs"
@@ -23,6 +24,7 @@
               label-cols-sm="3"
               label="Archtype:"
               label-align-sm="right"
+              class="mb-2"
             >
               <b-form-select
                 v-model="form.archType"
@@ -107,7 +109,15 @@
               label-align-sm="right"
               class="mb-2"
             >
-              <b-form-input></b-form-input>
+              <b-form-input
+                v-model="form.footprint"
+                placeholder="Enter Footprint Number"
+                :state="validation.footprint"
+                :invalid-feedback="invalidFootprint"
+                :valid-feedback="validFeedback"
+                @keyup="footprintValidator"
+              >
+              </b-form-input>
             </b-form-group>
             <!-- Case Management # -->
             <b-form-group
@@ -116,18 +126,47 @@
               label-align-sm="right"
               class="mb-2"
             >
-              <b-form-input></b-form-input>
-            </b-form-group>
-            <!-- Case Management # -->
-            <b-form-group
-              label-cols-sm="3"
-              label="Other:"
-              label-align-sm="right"
-              class="mb-2"
-            >
-              <b-form-input></b-form-input>
+              <b-input-group>
+                <template v-slot:prepend>
+                  <b-form-select
+                    v-model="form.cmYear"
+                    class="mr-3 pr-5 pl-3"
+                    :options="cmYearOptions"
+                    :state="validation.cmYear"
+                    @focus="cmValidator"
+                    @change="cmValidator"
+                  >
+                  </b-form-select>
+                </template>
+                <b-form-input
+                  v-model="form.cmSeq"
+                  placeholder="Select Year and Enter Number"
+                  :state="validation.cmSeq"
+                  @focus="cmValidator"
+                  @keyup="cmValidator"
+                >
+                </b-form-input>
+              </b-input-group>
+              <b-form-invalid-feedback :state="validation.footprint">
+                {{ invalidFootprint() }}
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback :state="validation.cmSeq">
+                {{ invalidCm() }}
+              </b-form-invalid-feedback>
             </b-form-group>
           </b-form-group>
+          <!-- Dynamic Search Result Box -->
+          <b-alert :show="queryHasResult" variant="info">
+            <p>
+              Found the Following Footprint Numbers with similar starting values
+            </p>
+            <ul>
+              <li v-for="footprint in queryResult" :key="footprint">
+                Footprint #:
+                <strong> {{ footprint.footprint }}</strong>
+              </li>
+            </ul>
+          </b-alert>
         </b-card>
         <!-- Description Box -->
         <b-card bg-variant="light" class="mt-4">
@@ -139,12 +178,39 @@
             class="mb-0"
           >
             <b-form-textarea
+              v-model="form.description"
               placeholder="Enter a short description for this service..."
               rows="3"
               max-rows="6"
+              :state="validation.description"
+              :invalid-feedback="invalidDescription"
+              :valid-feedback="validFeedback"
+              @focus="descriptionValidator"
+              @keyup="descriptionValidator"
             ></b-form-textarea>
+            <b-form-invalid-feedback :state="validation.description">
+              {{ invalidDescription() }}
+            </b-form-invalid-feedback>
           </b-form-group>
         </b-card>
+        <!-- Submit & Reset Buttons -->
+        <b-form-row class="mt-3">
+          <b-col class="text-right">
+            <b-button
+              type="submit"
+              variant="success"
+              class="px-4"
+              :disabled="!minimumValidation"
+            >
+              Pre-Register
+            </b-button>
+          </b-col>
+          <b-col class="text-left">
+            <b-button type="reset" variant="secondary" class="px-4">
+              Reset Form
+            </b-button>
+          </b-col>
+        </b-form-row>
       </b-form>
       <!-- Success & Error Alert Containers -->
       <b-row>
@@ -177,58 +243,102 @@ export default {
         archType: null,
         serviceType: null,
         depScope: null,
-        superScope: null
+        superScope: null,
+        footprint: null,
+        cmYear: null,
+        cmSeq: null,
+        description: ""
       },
       validation: {
         archType: null,
         serviceType: null,
         depScope: null,
-        superScope: null
+        superScope: null,
+        footprint: null,
+        cmYear: null,
+        cmSeq: null,
+        description: null
       },
       response: {
         success: "",
         error: ""
-      }
+      },
+      queryResult: []
     };
   },
   computed: {
     archNotSelected() {
       return !this.validation.archType;
     },
+    cmYearOptions() {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const options = [
+        { value: null, text: "" },
+        { value: currentYear, text: currentYear },
+        { value: currentYear - 1, text: currentYear - 1 },
+        { value: currentYear - 2, text: currentYear - 2 },
+        { value: currentYear - 3, text: currentYear - 3 },
+        { value: currentYear - 4, text: currentYear - 4 }
+      ];
+      return options;
+    },
+    validFeedback() {
+      return "Great!";
+    },
+    minimumValidation() {
+      if (
+        this.validation.archType &&
+        this.validation.serviceType &&
+        this.validation.depScope &&
+        this.validation.superScope &&
+        this.validation.description
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     hasSuc() {
       return this.response.success.length > 0;
     },
     hasErr() {
       return this.response.error.length > 0;
+    },
+    queryHasResult() {
+      return this.queryResult.length > 0;
     }
   },
-  async mounted() {
-    const archtypeUrl = `${api}/service-archtype`;
-    const archtypes = await this.dropdownRequest(archtypeUrl);
-    archtypes.forEach(element => {
-      this.archTypeOptions.push({
-        value: element.arch_id,
-        text: element.archtype
-      });
-    });
-    const depScopeUrl = `${api}/service-depscope`;
-    const depScopes = await this.dropdownRequest(depScopeUrl);
-    depScopes.forEach(element => {
-      this.depScopeOptions.push({
-        value: element.depscope_id,
-        text: element.depscope
-      });
-    });
-    const superScopeUrl = `${api}/service-superscope`;
-    const superScopes = await this.dropdownRequest(superScopeUrl);
-    superScopes.forEach(element => {
-      this.superScopeOptions.push({
-        value: element.superscope_id,
-        text: element.superscope
-      });
-    });
+  mounted() {
+    this.onLoad();
   },
   methods: {
+    async onLoad() {
+      const archtypeUrl = `${api}/service-archtype`;
+      const archtypes = await this.dropdownRequest(archtypeUrl);
+      archtypes.forEach(element => {
+        this.archTypeOptions.push({
+          value: element.arch_id,
+          text: element.archtype
+        });
+      });
+      const depScopeUrl = `${api}/service-depscope`;
+      const depScopes = await this.dropdownRequest(depScopeUrl);
+      depScopes.forEach(element => {
+        this.depScopeOptions.push({
+          value: element.depscope_id,
+          text: element.depscope
+        });
+      });
+      const superScopeUrl = `${api}/service-superscope`;
+      const superScopes = await this.dropdownRequest(superScopeUrl);
+      superScopes.forEach(element => {
+        this.superScopeOptions.push({
+          value: element.superscope_id,
+          text: element.superscope
+        });
+      });
+    },
     async dropdownRequest(url) {
       try {
         const response = await this.$axios.$get(url);
@@ -246,11 +356,21 @@ export default {
     archTypeValidator() {
       if (this.form.archType === null) {
         this.validation.archType = false;
+        this.validation.serviceType = null;
+        this.form.serviceType = null;
+        this.serviceTypeOptions = [
+          { value: null, text: "Select Service Type" }
+        ];
         return false;
       } else {
-        this.validation.archType = true;
+        this.validation.serviceType = null;
+        this.form.serviceType = null;
+        this.serviceTypeOptions = [
+          { value: null, text: "Select Service Type" }
+        ];
         this.response.success = "";
         this.response.error = "";
+        this.validation.archType = true;
         return true;
       }
     },
@@ -281,6 +401,87 @@ export default {
         this.response.error = "";
       }
     },
+    footprintValidator() {
+      if (isNaN(this.form.footprint)) {
+        this.validation.footprint = false;
+      } else {
+        this.validation.footprint = true;
+        this.response.success = "";
+        this.response.error = "";
+        this.queryResult = [];
+        this.searchFootprint();
+      }
+      if (!this.form.footprint) {
+        this.validation.footprint = null;
+      }
+    },
+    descriptionValidator() {
+      if (this.form.description.length < 5) {
+        this.validation.description = false;
+      } else if (this.form.description.length > 200) {
+        this.validation.description = false;
+      } else {
+        this.validation.description = true;
+      }
+    },
+    cmValidator() {
+      if (!this.form.cmYear) {
+        this.validation.cmYear = false;
+      } else {
+        this.validation.cmYear = true;
+      }
+      if (isNaN(this.form.cmSeq) || !this.form.cmSeq) {
+        this.validation.cmSeq = false;
+      } else {
+        this.validation.cmSeq = true;
+      }
+      if (!this.form.cmYear && !this.form.cmSeq) {
+        this.validation.cmYear = null;
+        this.validation.cmSeq = null;
+      }
+    },
+    invalidFootprint() {
+      return "Footprints can only be Numbers";
+    },
+    invalidDescription() {
+      if (this.form.description.length >= 200) {
+        const tooManyChars = this.form.description.length - 200;
+        return `Please remove at least ${tooManyChars} more characters`;
+      } else if (this.form.description.length > 0) {
+        const remainingChars = 5 - this.form.description.length;
+        return `Enter at least ${remainingChars} more characters`;
+      } else {
+        return "Please enter something";
+      }
+    },
+    invalidCm() {
+      if (!this.form.cmYear && !this.form.cmSeq) {
+        return "Please select the Case-Year value and enter the Case-Sequence number";
+      } else if (!this.form.cmYear) {
+        return "Please select the Case-Year value";
+      } else if (!this.form.cmSeq) {
+        return "Please enter the Case-Sequence number";
+      } else if (isNaN(this.form.cmSeq)) {
+        return "Case-Sequence can only be a number";
+      }
+    },
+    async searchFootprint() {
+      const query = this.form.footprint;
+      if (query.length < 4) {
+        return;
+      }
+      const url = `${api}/search/footprint`;
+      try {
+        const response = await this.$axios.$get(url, { params: { query } });
+        if (response.err) {
+          this.response.error = response.err;
+        } else {
+          this.queryResult = response.data;
+        }
+      } catch (error) {
+        this.response.error = error;
+      }
+    },
     async serviceByArch() {
       if (!this.archTypeValidator()) {
         return;
@@ -298,66 +499,6 @@ export default {
               text: item.title
             });
           });
-          console.log(this.serviceTypeOptions);
-        }
-      } catch (error) {
-        this.response.error = error;
-      }
-    },
-    firstnameValidator() {
-      if (this.form.firstname.length >= 2) {
-        this.response.success = "";
-        this.response.error = "";
-        this.validation.firstname = true;
-        this.queryResult = [];
-        this.searchInput("firstname");
-      } else {
-        this.validation.firstname = false;
-      }
-    },
-    lastnameValidator() {
-      if (this.form.lastname.length >= 2) {
-        this.response.success = "";
-        this.response.error = "";
-        this.validation.lastname = true;
-        this.queryResult = [];
-        this.searchInput("lastname");
-      } else {
-        this.validation.lastname = false;
-      }
-    },
-    invalidFirstname() {
-      if (this.form.firstname.length > 0) {
-        const remainingChars = 2 - this.form.firstname.length;
-        return `Enter at least ${remainingChars} more characters`;
-      } else {
-        return "Please enter something";
-      }
-    },
-    invalidLastname() {
-      if (this.form.lastname.length > 0) {
-        const remainingChars = 2 - this.form.lastname.length;
-        return `Enter at least ${remainingChars} more characters`;
-      } else {
-        return "Please enter something";
-      }
-    },
-    validFeedback() {
-      return "Great!";
-    },
-    async searchInput(fieldString) {
-      const query =
-        fieldString === "firstname" ? this.form.firstname : this.form.lastname;
-      try {
-        const response = await this.$axios.$get(
-          `http://localhost:3000/api/search/emp`,
-          { params: { query } }
-        );
-        if (response.err) {
-          this.response.error = response.err;
-        } else {
-          this.queryResult = response.data;
-          console.log(response.data);
         }
       } catch (error) {
         this.response.error = error;
@@ -365,19 +506,13 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
+      const url = `${api}/service`;
       try {
-        const response = await this.$axios.$post(
-          "http://localhost:3000/api/emp",
-          this.form
-        );
+        const response = await this.$axios.$post(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {
-          this.form.firstname = "";
-          this.form.lastname = "";
-          this.validation.firstname = null;
-          this.validation.lastname = null;
-          this.response.success = response.suc;
+          console.log(response);
         }
       } catch (error) {
         this.response.error = error;
@@ -385,13 +520,32 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      this.form.firstname = "";
-      this.form.lastname = "";
-      this.validation.firstname = null;
-      this.validation.lastname = null;
+      this.archTypeOptions = [{ value: null, text: "Select Service Archtype" }];
+      this.serviceTypeOptions = [{ value: null, text: "Select Service Type" }];
+      this.depScopeOptions = [{ value: null, text: "Select Request Origin" }];
+      this.superScopeOptions = [
+        { value: null, text: "Select Origin Location" }
+      ];
+      this.form.archType = null;
+      this.form.serviceType = null;
+      this.form.depScope = null;
+      this.form.superScope = null;
+      this.form.footprint = null;
+      this.form.cmYear = null;
+      this.form.cmSeq = null;
+      this.form.description = "";
+      this.validation.archType = null;
+      this.validation.serviceType = null;
+      this.validation.depScope = null;
+      this.validation.superScope = null;
+      this.validation.footprint = null;
+      this.validation.cmYear = null;
+      this.validation.cmSeq = null;
+      this.validation.description = null;
       this.response.success = "";
       this.response.error = "";
       this.queryResult = [];
+      this.onLoad();
     }
   }
 };
