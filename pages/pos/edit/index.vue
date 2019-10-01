@@ -38,10 +38,7 @@
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="resetPage">
             <H3header h3text="Edit Positions" />
-            <b-form-row
-              v-for="(position, index) in form"
-              :key="position.pos_id"
-            >
+            <b-form-row v-for="(position, index) in form" :key="position.pos_id">
               <b-col sm="2" align-v="center" class="text-center">
                 <b-row>
                   <b-col sm="12">

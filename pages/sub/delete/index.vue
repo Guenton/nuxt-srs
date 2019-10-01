@@ -41,9 +41,7 @@
             <!-- Dynamic Delete Button -->
             <b-form-row>
               <b-col class="text-center">
-                <b-button variant="danger" type="submit">
-                  Delete {{ form.title }}
-                </b-button>
+                <b-button variant="danger" type="submit">Delete {{ form.title }}</b-button>
               </b-col>
             </b-form-row>
           </b-form>

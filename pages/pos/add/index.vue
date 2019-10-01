@@ -2,6 +2,7 @@
   <div>
     <NavbarHome />
     <b-container>
+      <!-- H3 with Link to pos/edit -->
       <H3withButton
         h3text="Add new Position"
         button-text="Return to Edit Menu"
@@ -169,8 +170,7 @@ export default {
       return "Great!";
     },
     async searchInput(fieldString) {
-      const query =
-        fieldString === "shorthand" ? this.form.shorthand : this.form.title;
+      const query = fieldString === "shorthand" ? this.form.shorthand : this.form.title;
       const url = `${api}/search/pos`;
       try {
         const response = await this.$axios.$get(url, { params: { query } });

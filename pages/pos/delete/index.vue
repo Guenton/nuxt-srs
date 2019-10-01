@@ -4,11 +4,7 @@
     <!-- Dismissible Delete Warning -->
     <DeleteAlert />
     <b-container v-if="showDeleteMenu">
-      <H3withButton
-        h3text="Delete Position"
-        button-text="Cancel and Return"
-        link-to="/pos/edit"
-      />
+      <H3withButton h3text="Delete Position" button-text="Cancel and Return" link-to="/pos/edit" />
       <!-- Async Positions Table -->
       <b-row>
         <b-col>
@@ -41,9 +37,7 @@
             <!-- Dynamic Delete Button -->
             <b-form-row>
               <b-col class="text-center">
-                <b-button variant="danger" type="submit">
-                  Delete {{ form.title }}
-                </b-button>
+                <b-button variant="danger" type="submit"> Delete {{ form.title }} </b-button>
               </b-col>
             </b-form-row>
           </b-form>

@@ -133,10 +133,40 @@ get.serviceArchtype = async archId => {
     }
   } else {
     try {
-      res.data = await db.query(
-        "SELECT * FROM service_archtype WHERE arch_id = ?",
-        [archId]
-      );
+      res.data = await db.query("SELECT * FROM service_archtype WHERE arch_id = ?", [archId]);
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  }
+};
+get.servicePreData = async sid => {
+  const res = {};
+  const servQuery = "SELECT serv_id, described, created_at FROM serv WHERE is_deleted = false";
+  const ts = {};
+  ts.SELECT = "SELECT ts.serv_id, arc.archtype, typ.title AS typ, dep.depscope, ss.superscope";
+  ts.FROM = " FROM ((((serv_typescope ts";
+  ts.JOIN1 = " INNER JOIN service_archtype arc ON ts.arch_id = arc.arch_id)";
+  ts.JOIN2 = " INNER JOIN service_type typ ON ts.type_id = typ.type_id)";
+  ts.JOIN3 = " INNER JOIN dep_scope dep ON ts.depscope_id = dep.depscope_id)";
+  ts.JOIN4 = " INNER JOIN super_scope ss ON ts.superscope_id = ss.superscope_id)";
+  const tsQuery = ts.SELECT.concat(ts.FROM, ts.JOIN1, ts.JOIN2, ts.JOIN3, ts.JOIN4);
+  if (!sid) {
+    try {
+      res.serv = await db.query(servQuery);
+      res.typeScope = await db.query(tsQuery);
+      return res;
+    } catch (err) {
+      console.error(err.code);
+      res.err = dbErr;
+      return res;
+    }
+  } else {
+    try {
+      res.serv = await db.query(servQuery + "WHERE serv_id = ?", [sid]);
+      res.typeScope = await db.query(tsQuery + "WHERE serv_id = ?", [sid]);
       return res;
     } catch (err) {
       console.error(err.code);
@@ -160,10 +190,7 @@ get.serviceDepScope = async depScopeId => {
     }
   } else {
     try {
-      res.data = await db.query(
-        "SELECT * FROM dep_scope WHERE depscope_id = ?",
-        [depScopeId]
-      );
+      res.data = await db.query("SELECT * FROM dep_scope WHERE depscope_id = ?", [depScopeId]);
       return res;
     } catch (err) {
       console.error(err.code);
@@ -187,10 +214,9 @@ get.serviceSuperScope = async superScopeId => {
     }
   } else {
     try {
-      res.data = await db.query(
-        "SELECT * FROM super_scope WHERE superscope_id = ?",
-        [superScopeId]
-      );
+      res.data = await db.query("SELECT * FROM super_scope WHERE superscope_id = ?", [
+        superScopeId
+      ]);
       return res;
     } catch (err) {
       console.error(err.code);
@@ -241,10 +267,7 @@ get.sub = async subId => {
 get.normAsByPos = async posId => {
   const res = {};
   try {
-    const typeIdArr = await db.query(
-      "SELECT type_id FROM normalas WHERE pos_id = ?",
-      [posId]
-    );
+    const typeIdArr = await db.query("SELECT type_id FROM normalas WHERE pos_id = ?", [posId]);
     const mapping = typeIdArr.map(async row => {
       const results = await get.service(row.type_id);
       return results;

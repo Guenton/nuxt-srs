@@ -3,11 +3,7 @@
     <NavbarHome />
     <b-container>
       <!-- Header with Return to Log Page -->
-      <H3withButton
-        h3text="Add new Service Log"
-        button-text="Return to Logs"
-        link-to="/log"
-      />
+      <H3withButton h3text="Add new Service Log" button-text="Return to Logs" link-to="/log" />
       <!-- Add Log Form -->
       <b-form class="mt-3" novalidate @submit="onSubmit" @reset="onReset">
         <!-- Specification Box -->
@@ -20,12 +16,7 @@
             class="mb-0"
           >
             <!-- Archtype Selector -->
-            <b-form-group
-              label-cols-sm="3"
-              label="Archtype:"
-              label-align-sm="right"
-              class="mb-2"
-            >
+            <b-form-group label-cols-sm="3" label="Archtype:" label-align-sm="right" class="mb-2">
               <b-form-select
                 v-model="form.archType"
                 :options="archTypeOptions"
@@ -35,12 +26,7 @@
               </b-form-select>
             </b-form-group>
             <!-- Type Selector -->
-            <b-form-group
-              label-cols-sm="3"
-              label="Type:"
-              label-align-sm="right"
-              class="mb-2"
-            >
+            <b-form-group label-cols-sm="3" label="Type:" label-align-sm="right" class="mb-2">
               <b-form-select
                 v-model="form.serviceType"
                 :disabled="archNotSelected"
@@ -62,12 +48,7 @@
             class="mb-0"
           >
             <!-- Origin -->
-            <b-form-group
-              label-cols-sm="3"
-              label="Origin:"
-              label-align-sm="right"
-              class="mb-2"
-            >
+            <b-form-group label-cols-sm="3" label="Origin:" label-align-sm="right" class="mb-2">
               <b-form-select
                 v-model="form.depScope"
                 :options="depScopeOptions"
@@ -77,12 +58,7 @@
               </b-form-select>
             </b-form-group>
             <!-- Location -->
-            <b-form-group
-              label-cols-sm="3"
-              label="Location:"
-              label-align-sm="right"
-              class="mb-2"
-            >
+            <b-form-group label-cols-sm="3" label="Location:" label-align-sm="right" class="mb-2">
               <b-form-select
                 v-model="form.superScope"
                 :options="superScopeOptions"
@@ -103,12 +79,7 @@
             class="mb-0"
           >
             <!-- Footprint # -->
-            <b-form-group
-              label-cols-sm="3"
-              label="Footprint:"
-              label-align-sm="right"
-              class="mb-2"
-            >
+            <b-form-group label-cols-sm="3" label="Footprint:" label-align-sm="right" class="mb-2">
               <b-form-input
                 v-model="form.footprint"
                 placeholder="Enter Footprint Number"
@@ -196,12 +167,7 @@
         <!-- Submit & Reset Buttons -->
         <b-form-row class="mt-3">
           <b-col class="text-right">
-            <b-button
-              type="submit"
-              variant="success"
-              class="px-4"
-              :disabled="!minimumValidation"
-            >
+            <b-button type="submit" variant="success" class="px-4" :disabled="!minimumValidation">
               Pre-Register
             </b-button>
           </b-col>
@@ -218,6 +184,27 @@
         <AlertBox :show="hasErr" variant="danger" :text="response.error" />
       </b-row>
     </b-container>
+    <b-modal id="submitModal" title="Service Pre-Registration">
+      <p class="my-4 text-center">
+        {{ response.success }}
+      </p>
+      <template v-slot:modal-footer>
+        <b-container>
+          <b-row align-h="between">
+            <b-col cols="6">
+              <b-button block variant="info" @click="onReset">
+                Add another Service
+              </b-button>
+            </b-col>
+            <b-col cols="6">
+              <b-button block variant="success" @click="expandSID">
+                Expand SID# {{ response.sid }}
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -261,7 +248,8 @@ export default {
       },
       response: {
         success: "",
-        error: ""
+        error: "",
+        sid: null
       },
       queryResult: []
     };
@@ -358,16 +346,12 @@ export default {
         this.validation.archType = false;
         this.validation.serviceType = null;
         this.form.serviceType = null;
-        this.serviceTypeOptions = [
-          { value: null, text: "Select Service Type" }
-        ];
+        this.serviceTypeOptions = [{ value: null, text: "Select Service Type" }];
         return false;
       } else {
         this.validation.serviceType = null;
         this.form.serviceType = null;
-        this.serviceTypeOptions = [
-          { value: null, text: "Select Service Type" }
-        ];
+        this.serviceTypeOptions = [{ value: null, text: "Select Service Type" }];
         this.response.success = "";
         this.response.error = "";
         this.validation.archType = true;
@@ -513,19 +497,25 @@ export default {
           this.response.error = response.err;
         } else {
           console.log(response);
+          this.response.success = response.suc;
+          this.response.sid = response.sid;
+          this.$bvModal.show("submitModal");
         }
       } catch (error) {
         this.response.error = error;
       }
     },
+    expandSID() {
+      const url = `/log/edit/${this.response.sid}`;
+      this.$router.push(url);
+    },
     onReset(event) {
       event.preventDefault();
+      this.$bvModal.hide("submitModal");
       this.archTypeOptions = [{ value: null, text: "Select Service Archtype" }];
       this.serviceTypeOptions = [{ value: null, text: "Select Service Type" }];
       this.depScopeOptions = [{ value: null, text: "Select Request Origin" }];
-      this.superScopeOptions = [
-        { value: null, text: "Select Origin Location" }
-      ];
+      this.superScopeOptions = [{ value: null, text: "Select Origin Location" }];
       this.form.archType = null;
       this.form.serviceType = null;
       this.form.depScope = null;
@@ -544,6 +534,7 @@ export default {
       this.validation.description = null;
       this.response.success = "";
       this.response.error = "";
+      this.response.sid = null;
       this.queryResult = [];
       this.onLoad();
     }

@@ -4,11 +4,7 @@
     <!-- Dismissible Delete Warning -->
     <DeleteAlert />
     <b-container v-if="showDeleteMenu">
-      <H3withButton
-        h3text="Delete Employees"
-        button-text="Cancel and Return"
-        link-to="/emp/edit"
-      />
+      <H3withButton h3text="Delete Employees" button-text="Cancel and Return" link-to="/emp/edit" />
       <!-- Async Employees Table -->
       <b-row>
         <b-col>

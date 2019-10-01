@@ -21,16 +21,13 @@
             :items="tableData"
             :fields="tableFields"
             @row-selected="onRowSelected"
-          >
-          </b-table>
+          ></b-table>
         </b-col>
       </b-row>
       <!-- Delete Button below table -->
       <b-row>
         <b-col class="text-right">
-          <b-button variant="danger" to="/emp/delete">
-            Delete Employee
-          </b-button>
+          <b-button variant="danger" to="/emp/delete">Delete Employee</b-button>
         </b-col>
       </b-row>
       <!-- Edit table hidden until selection was made -->
@@ -38,10 +35,7 @@
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="resetPage">
             <H3header h3text="Edit Employees" />
-            <b-form-row
-              v-for="(employee, index) in form"
-              :key="employee.emp_id"
-            >
+            <b-form-row v-for="(employee, index) in form" :key="employee.emp_id">
               <b-col sm="2" align-v="center" class="text-center">
                 <b-row>
                   <b-col sm="12">
@@ -50,9 +44,7 @@
                     </b-row>
                   </b-col>
                   <b-col sm="12">
-                    <b-row>
-                      {{ employee.firstname }} {{ employee.lastname }}
-                    </b-row>
+                    <b-row>{{ employee.firstname }} {{ employee.lastname }}</b-row>
                   </b-col>
                 </b-row>
               </b-col>

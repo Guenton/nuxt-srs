@@ -20,6 +20,7 @@ const _545e3e3f = () => interopDefault(import('..\\pages\\pos\\edit\\index.vue' 
 const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
 const _428610d2 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
 const _60dbf05a = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
+const _79c2a5a2 = () => interopDefault(import('..\\pages\\log\\edit\\_sid.vue' /* webpackChunkName: "pages_log_edit__sid" */))
 const _696cd157 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
@@ -99,6 +100,10 @@ export const routerOptions = {
       path: "/sub/edit",
       component: _60dbf05a,
       name: "sub-edit"
+    }, {
+      path: "/log/edit/:sid?",
+      component: _79c2a5a2,
+      name: "log-edit-sid"
     }, {
       path: "/",
       component: _696cd157,

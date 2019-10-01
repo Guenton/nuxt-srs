@@ -90,6 +90,15 @@ router.get("/service-superscope", async (req, res) => {
   const response = await get.serviceSuperScope(req.query.superScopeId);
   res.json(response);
 });
+router.get("/serv/:target", async (req, res) => {
+  const target = req.params.target;
+  if (target === "pre") {
+    const response = await get.servicePreData(req.query.sid);
+    return response;
+  } else {
+    res.status(404);
+  }
+});
 router.post("/service", async (req, res) => {
   const response = await post.service(req.body);
   res.json(response);

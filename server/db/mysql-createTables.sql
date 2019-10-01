@@ -95,22 +95,35 @@ CREATE TABLE IF NOT EXISTS service_scope (
   FOREIGN KEY (depscope_id) REFERENCES dep_scope(depscope_id)
 );
 
-CREATE TABLE IF NOT EXISTS service (
-  service_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS serv (
+  serv_id INT AUTO_INCREMENT PRIMARY KEY,
+  described VARCHAR(255) NOT NULL,
+  is_deleted BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS serv_typescope (
+  serv_id INT,
   arch_id INT,
   type_id INT,
   depscope_id INT,
   superscope_id INT,
   is_deleted BOOLEAN DEFAULT false,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (serv_id) REFERENCES serv(serv_id),
   FOREIGN KEY (arch_id) REFERENCES service_archtype(arch_id),
   FOREIGN KEY (type_id) REFERENCES service_type(type_id),
   FOREIGN KEY (depscope_id) REFERENCES dep_scope(depscope_id),
   FOREIGN KEY (superscope_id) REFERENCES super_scope(superscope_id)
 );
 
+CREATE TABLE IF NOT EXISTS serv_reg (
+  serv_id INT,
   footprint INT,
   cm_year YEAR,
   cm_seq INT,
-  explanation VARCHAR(255),
+  is_deleted BOOLEAN DEFAULT false,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (serv_id) REFERENCES serv(serv_id)
+);

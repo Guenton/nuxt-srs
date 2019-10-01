@@ -170,8 +170,7 @@ export default {
       return "Great!";
     },
     async searchInput(fieldString) {
-      const query =
-        fieldString === "firstname" ? this.form.firstname : this.form.lastname;
+      const query = fieldString === "firstname" ? this.form.firstname : this.form.lastname;
       const url = `${api}/search/emp`;
       try {
         const response = await this.$axios.$get(url, { params: { query } });

@@ -8,14 +8,9 @@
       <div role="tablist">
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button
-              v-b-toggle.arch-1
-              variant="success"
-              block
-              @click="serviceByArch(1)"
+            <b-button v-b-toggle.arch-1 variant="success" block @click="serviceByArch(1)"
+              >Security Leadership</b-button
             >
-              Security Leadership
-            </b-button>
           </b-card-header>
           <b-collapse id="arch-1" accordion="services" role="tabpanel">
             <b-card-body>
@@ -28,8 +23,7 @@
                   :items="serviceData"
                   :fields="serviceFields"
                   @row-selected="onRowSelected"
-                >
-                </b-table>
+                ></b-table>
               </b-card-text>
             </b-card-body>
           </b-collapse>
@@ -37,14 +31,9 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button
-              v-b-toggle.arch-2
-              variant="success"
-              block
-              @click="serviceByArch(2)"
+            <b-button v-b-toggle.arch-2 variant="success" block @click="serviceByArch(2)"
+              >Investigations</b-button
             >
-              Investigations
-            </b-button>
           </b-card-header>
           <b-collapse id="arch-2" accordion="services" role="tabpanel">
             <b-card-body>
@@ -57,8 +46,7 @@
                   :items="serviceData"
                   :fields="serviceFields"
                   @row-selected="onRowSelected"
-                >
-                </b-table>
+                ></b-table>
               </b-card-text>
             </b-card-body>
           </b-collapse>
@@ -66,14 +54,9 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button
-              v-b-toggle.arch-3
-              variant="success"
-              block
-              @click="serviceByArch(3)"
+            <b-button v-b-toggle.arch-3 variant="success" block @click="serviceByArch(3)"
+              >Security Equipment</b-button
             >
-              Security Equipment
-            </b-button>
           </b-card-header>
           <b-collapse id="arch-3" accordion="services" role="tabpanel">
             <b-card-body>
@@ -86,8 +69,7 @@
                   :items="serviceData"
                   :fields="serviceFields"
                   @row-selected="onRowSelected"
-                >
-                </b-table>
+                ></b-table>
               </b-card-text>
             </b-card-body>
           </b-collapse>
@@ -95,14 +77,9 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button
-              v-b-toggle.arch-4
-              variant="success"
-              block
-              @click="serviceByArch(4)"
+            <b-button v-b-toggle.arch-4 variant="success" block @click="serviceByArch(4)"
+              >Asset Protection</b-button
             >
-              Asset Protection
-            </b-button>
           </b-card-header>
           <b-collapse id="arch-4" accordion="services" role="tabpanel">
             <b-card-body>
@@ -115,8 +92,7 @@
                   :items="serviceData"
                   :fields="serviceFields"
                   @row-selected="onRowSelected"
-                >
-                </b-table>
+                ></b-table>
               </b-card-text>
             </b-card-body>
           </b-collapse>
@@ -124,14 +100,9 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button
-              v-b-toggle.arch-5
-              variant="success"
-              block
-              @click="serviceByArch(5)"
+            <b-button v-b-toggle.arch-5 variant="success" block @click="serviceByArch(5)"
+              >Exectutive Protection</b-button
             >
-              Exectutive Protection
-            </b-button>
           </b-card-header>
           <b-collapse id="arch-5" accordion="services" role="tabpanel">
             <b-card-body>
@@ -144,8 +115,7 @@
                   :items="serviceData"
                   :fields="serviceFields"
                   @row-selected="onRowSelected"
-                >
-                </b-table>
+                ></b-table>
               </b-card-text>
             </b-card-body>
           </b-collapse>
