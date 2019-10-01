@@ -143,8 +143,14 @@ get.serviceArchtype = async archId => {
   }
 };
 get.servicePreData = async sid => {
+  // Initialize Response Object
   const res = {};
-  const servQuery = "SELECT serv_id, described, created_at FROM serv WHERE is_deleted = false";
+  // Initialize Queries
+  const se = {};
+  se.SELECT = "SELECT serv_id, described,";
+  se.DATE = " DATE_FORMAT(created_at,'%W, %M %D, %Y') AS date_in,";
+  se.TIME = " TIME_FORMAT(created_at, '%r') AS time_in";
+  se.FROM = " FROM serv WHERE is_deleted = false";
   const ts = {};
   ts.SELECT = "SELECT ts.serv_id, arc.archtype, typ.title AS typ, dep.depscope, ss.superscope";
   ts.FROM = " FROM ((((serv_typescope ts";
@@ -152,11 +158,17 @@ get.servicePreData = async sid => {
   ts.JOIN2 = " INNER JOIN service_type typ ON ts.type_id = typ.type_id)";
   ts.JOIN3 = " INNER JOIN dep_scope dep ON ts.depscope_id = dep.depscope_id)";
   ts.JOIN4 = " INNER JOIN super_scope ss ON ts.superscope_id = ss.superscope_id)";
-  const tsQuery = ts.SELECT.concat(ts.FROM, ts.JOIN1, ts.JOIN2, ts.JOIN3, ts.JOIN4);
+  ts.WHERE = " WHERE ts.is_deleted = false";
+  const servQuery = se.SELECT.concat(se.DATE, se.TIME, se.FROM);
+  const tsQuery = ts.SELECT.concat(ts.FROM, ts.JOIN1, ts.JOIN2, ts.JOIN3, ts.JOIN4, ts.WHERE);
+  const regQuery =
+    "SELECT serv_id, footprint, cm_year, cm_seq FROM serv_reg WHERE is_deleted = false";
+  // Database Calls
   if (!sid) {
     try {
       res.serv = await db.query(servQuery);
       res.typeScope = await db.query(tsQuery);
+      res.reg = await db.query(regQuery);
       return res;
     } catch (err) {
       console.error(err.code);
@@ -165,8 +177,9 @@ get.servicePreData = async sid => {
     }
   } else {
     try {
-      res.serv = await db.query(servQuery + "WHERE serv_id = ?", [sid]);
-      res.typeScope = await db.query(tsQuery + "WHERE serv_id = ?", [sid]);
+      res.serv = await db.query(servQuery + " AND serv_id = ?", [sid]);
+      res.typeScope = await db.query(tsQuery + " AND serv_id = ?", [sid]);
+      res.reg = await db.query(regQuery + " AND serv_id = ?", [sid]);
       return res;
     } catch (err) {
       console.error(err.code);

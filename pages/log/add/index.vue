@@ -496,7 +496,6 @@ export default {
         if (response.err) {
           this.response.error = response.err;
         } else {
-          console.log(response);
           this.response.success = response.suc;
           this.response.sid = response.sid;
           this.$bvModal.show("submitModal");

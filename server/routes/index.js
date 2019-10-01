@@ -94,7 +94,7 @@ router.get("/serv/:target", async (req, res) => {
   const target = req.params.target;
   if (target === "pre") {
     const response = await get.servicePreData(req.query.sid);
-    return response;
+    res.json(response);
   } else {
     res.status(404);
   }
