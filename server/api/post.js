@@ -78,4 +78,6 @@ post.service = async service => {
   }
 };
 
+// Service async function takes service object and returns a response "res" object with "err" and "suc" containers
+
 module.exports = post;

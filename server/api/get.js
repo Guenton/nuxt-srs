@@ -6,6 +6,12 @@ const get = {};
 const dbErr = "Your Request could not be completed: DATABASE ERROR";
 const searchErr = "Active Search could not be completed: DATABASE ERROR";
 
+// standard error handler
+const errHandler = err => {
+  console.error(err.code);
+  return dbErr;
+};
+
 // ///////////////////////
 // Employee Requests ////
 // /////////////////////
@@ -70,6 +76,67 @@ get.pos = async id => {
       return res;
     }
   }
+};
+// //////////////////////
+// Finance Requests ////
+// ////////////////////
+// Get cost Types from Database
+get.costType = async id => {
+  const res = {};
+  const ctQuery = "SELECT costtype_id, title FROM cost_type WHERE is_deleted = false";
+  if (!id) {
+    try {
+      res.data = await db.query(ctQuery);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(ctQuery + " AND costtype_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+// Get Currency Types from Database
+get.costCurrency = async id => {
+  const res = {};
+  const ccQuery = "SELECT currency_id, iso, title FROM cost_currency WHERE is_deleted = false";
+  if (!id) {
+    try {
+      res.data = await db.query(ccQuery);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(ccQuery + " AND currency_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+// Get List of Signature Right Holders with their respective limits
+get.costSignature = async id => {
+  const res = {};
+  const csQuery =
+    "SELECT costsig_id, title, sig_limit FROM cost_signature WHERE is_deleted = false";
+  if (!id) {
+    try {
+      res.data = await db.query(csQuery);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(csQuery + " AND costsig_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
 };
 
 // //////////////////////
@@ -142,15 +209,10 @@ get.serviceArchtype = async archId => {
     }
   }
 };
+// Get All SID Pre-registration data
 get.servicePreData = async sid => {
-  // Initialize Response Object
   const res = {};
-  // Initialize Queries
-  const se = {};
-  se.SELECT = "SELECT serv_id, described,";
-  se.DATE = " DATE_FORMAT(created_at,'%W, %M %D, %Y') AS date_in,";
-  se.TIME = " TIME_FORMAT(created_at, '%r') AS time_in";
-  se.FROM = " FROM serv WHERE is_deleted = false";
+  // Set Queries
   const ts = {};
   ts.SELECT = "SELECT ts.serv_id, arc.archtype, typ.title AS typ, dep.depscope, ss.superscope";
   ts.FROM = " FROM ((((serv_typescope ts";
@@ -159,34 +221,59 @@ get.servicePreData = async sid => {
   ts.JOIN3 = " INNER JOIN dep_scope dep ON ts.depscope_id = dep.depscope_id)";
   ts.JOIN4 = " INNER JOIN super_scope ss ON ts.superscope_id = ss.superscope_id)";
   ts.WHERE = " WHERE ts.is_deleted = false";
-  const servQuery = se.SELECT.concat(se.DATE, se.TIME, se.FROM);
   const tsQuery = ts.SELECT.concat(ts.FROM, ts.JOIN1, ts.JOIN2, ts.JOIN3, ts.JOIN4, ts.WHERE);
   const regQuery =
     "SELECT serv_id, footprint, cm_year, cm_seq FROM serv_reg WHERE is_deleted = false";
   // Database Calls
   if (!sid) {
     try {
-      res.serv = await db.query(servQuery);
+      const servLog = await get.serviceLogData();
+      res.serv = servLog.data;
       res.typeScope = await db.query(tsQuery);
       res.reg = await db.query(regQuery);
-      return res;
     } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
+      res.err = errHandler(err);
     }
   } else {
     try {
-      res.serv = await db.query(servQuery + " AND serv_id = ?", [sid]);
+      const servLog = await get.serviceLogData(sid);
+      res.serv = servLog.data;
       res.typeScope = await db.query(tsQuery + " AND serv_id = ?", [sid]);
       res.reg = await db.query(regQuery + " AND serv_id = ?", [sid]);
-      return res;
     } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
+      res.err = errHandler(err);
     }
   }
+  return res;
+};
+// Get SID Log Summary Data
+get.serviceLogData = async id => {
+  const res = {};
+  const se = {};
+  se.SELECT = "SELECT serv_id, described,";
+  se.DATE = " DATE_FORMAT(created_at,'%W, %M %D, %Y') AS date_in,";
+  se.TIME = " TIME_FORMAT(created_at, '%r') AS time_in";
+  se.FROM = " FROM serv WHERE is_deleted = false";
+  const sldQuery = se.SELECT.concat(se.DATE, se.TIME, se.FROM);
+  if (!id) {
+    try {
+      res.data = await db.query(sldQuery);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(sldQuery + " AND serv_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+// Get SID Log All Data
+get.serviceAllData = id => {
+  const res = {};
+  return res;
 };
 
 // Returns Department Scope if depscope_id is given else returns all Department Scopes

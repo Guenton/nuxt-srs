@@ -127,3 +127,55 @@ CREATE TABLE IF NOT EXISTS serv_reg (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (serv_id) REFERENCES serv(serv_id)
 );
+
+CREATE TABLE cost_type (
+  costtype_id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  is_deleted BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO cost_type (title) VALUES
+	("Telephone Expenses"),
+  ("Office Expenses"),
+  ("Operating Expenses"),
+  ("Transportation Expenses"),
+  ("Personnel Travel Expenses"),
+  ("Personnel Training Expenses"),
+  ("Personnel Other Expenses"),
+  ("Equipment Expenses"),
+  ("Repair & Maintenance Expenses")
+;
+
+CREATE TABLE cost_currency (
+  currency_id INT AUTO_INCREMENT PRIMARY KEY,
+  iso CHAR(3), 
+  title VARCHAR(255),
+  is_deleted BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO cost_currency (iso, title) VALUES
+  ("USD", "United States dollar"),
+  ("ANG", "Netherlands Antillean guilder"),
+  ("AWG", "Aruban florin"),
+  ("EUR", "Euro")
+;
+
+CREATE TABLE cost_signature (
+  costsig_id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  sig_limit DECIMAL(13, 2),
+  is_deleted BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO cost_signature (title, sig_limit) VALUES
+  ("Management", 999999999.99),
+  ("CSO", 30000.00),
+  ("GOM", 2500.00),
+  ("GIM", 2500.00)
+;

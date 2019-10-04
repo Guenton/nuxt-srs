@@ -505,7 +505,7 @@ export default {
       }
     },
     expandSID() {
-      const url = `/log/edit/${this.response.sid}`;
+      const url = `/log/add/${this.response.sid}`;
       this.$router.push(url);
     },
     onReset(event) {

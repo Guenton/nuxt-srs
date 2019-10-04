@@ -68,6 +68,22 @@ router.delete("/sub", async (req, res) => {
 });
 
 // /////////////////////////////////
+// Finance related server calls ///
+// ///////////////////////////////
+router.get("/cost-type", async (req, res) => {
+  const response = await get.costType(req.query.id);
+  res.json(response);
+});
+router.get("/cost-currency", async (req, res) => {
+  const response = await get.costCurrency(req.query.id);
+  res.json(response);
+});
+router.get("/cost-signature", async (req, res) => {
+  const response = await get.costSignature(req.query.id);
+  res.json(response);
+});
+
+// /////////////////////////////////
 // Service related server calls ///
 // ///////////////////////////////
 router.get("/service", async (req, res) => {
@@ -93,7 +109,13 @@ router.get("/service-superscope", async (req, res) => {
 router.get("/serv/:target", async (req, res) => {
   const target = req.params.target;
   if (target === "pre") {
-    const response = await get.servicePreData(req.query.sid);
+    const response = await get.servicePreData(req.query.id);
+    res.json(response);
+  } else if (target === "log") {
+    const response = await get.serviceLogData(req.query.id);
+    res.json(response);
+  } else if (target === "all") {
+    const response = await get.serviceAllData(req.query.id);
     res.json(response);
   } else {
     res.status(404);
