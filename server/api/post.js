@@ -2,9 +2,8 @@ const db = require("../db/mysql");
 // Prepare object for export
 const post = {};
 
-// push standard error response to variable
+// Standard error and success responses
 const dbErr = "Your Request could not be completed: DATABASE ERROR";
-// push standard success response to variable
 const dbSuc = "has successfully been added to the Database";
 
 // Employee async function takes empployee "emp" object and returns a response "res" object with "err" and "suc" containers

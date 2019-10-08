@@ -86,9 +86,12 @@ export default {
   data() {
     return {
       tableFields: [
-        { key: "emp_id", label: "Employee #", sortable: true },
+        { key: "empmain_id", label: "Employee #", sortable: true },
         { key: "firstname", label: "First Name", sortable: true },
-        { key: "lastname", label: "Last Name", sortable: true }
+        { key: "middlename", label: "Middle Name", sortable: true },
+        { key: "lastname", label: "Last Name", sortable: true },
+        { key: "position", label: "Position", sortable: true },
+        { key: "subsidiary", label: "Subsidiary", sortable: true }
       ],
       tableData: [],
       form: {
@@ -111,7 +114,7 @@ export default {
     }
   },
   async mounted() {
-    const url = `${api}/emp`;
+    const url = `${api}/emp/md`;
     try {
       const response = await this.$axios.$get(url);
       if (response.err) {
@@ -138,7 +141,7 @@ export default {
       this.deleteSelected = false;
       this.result = null;
       this.error = null;
-      const url = `${api}/emp`;
+      const url = `${api}/emp/md`;
       try {
         const response = await this.$axios.$get(url);
         if (response.err) {

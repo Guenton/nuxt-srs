@@ -6,10 +6,11 @@ const put = {};
 // emp async function takes one empployee object and updates the DB
 put.emp = async emp => {
   try {
-    await db.query(
-      "UPDATE employee SET firstname = ?, lastname = ? WHERE emp_id = ?",
-      [emp.firstname, emp.lastname, emp.emp_id]
-    );
+    await db.query("UPDATE employee SET firstname = ?, lastname = ? WHERE emp_id = ?", [
+      emp.firstname,
+      emp.lastname,
+      emp.emp_id
+    ]);
   } catch (err) {
     return `${emp.firstname} ${emp.lastname} could not be updated: DB Error`;
   }
@@ -53,10 +54,12 @@ put.severalPos = async posArr => {
 // pos async function takes one position object and updates the DB
 put.sub = async sub => {
   try {
-    await db.query(
-      "UPDATE sub SET shorthand = ?, location = ?, title = ? WHERE sub_id = ?",
-      [sub.shorthand, sub.location, sub.title, sub.sub_id]
-    );
+    await db.query("UPDATE sub SET shorthand = ?, location = ?, title = ? WHERE sub_id = ?", [
+      sub.shorthand,
+      sub.location,
+      sub.title,
+      sub.sub_id
+    ]);
   } catch (err) {
     return `${sub.shorthand} - ${sub.title} could not be updated: DB Error`;
   }

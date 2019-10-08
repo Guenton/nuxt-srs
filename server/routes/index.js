@@ -10,10 +10,20 @@ const del = require("../api/delete");
 // //////////////////////////////////
 // Employee related server calls ///
 // ////////////////////////////////
-router.get("/emp", async (req, res) => {
-  const response = await get.emp(req.query.id);
-  res.json(response);
+router.get("/emp/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.empSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.empMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.empLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
 });
+
 router.post("/emp", async (req, res) => {
   const response = await post.emp(req.body);
   res.json(response);
@@ -30,10 +40,20 @@ router.delete("/emp", async (req, res) => {
 // //////////////////////////////////
 // Position related server calls ///
 // ////////////////////////////////
-router.get("/pos", async (req, res) => {
-  const response = await get.pos(req.query.id);
-  res.json(response);
+router.get("/pos/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.posSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.posMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.posLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
 });
+
 router.post("/pos", async (req, res) => {
   const response = await post.pos(req.body);
   res.json(response);
@@ -48,12 +68,22 @@ router.delete("/pos", async (req, res) => {
 });
 
 // ////////////////////////////////////
-// Subsidiary related server calls ///
+// Scope related server calls ///
 // //////////////////////////////////
-router.get("/sub", async (req, res) => {
-  const response = await get.sub(req.query.id);
-  res.json(response);
+router.get("/scope-sub/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.scopeSubSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.scopeSubMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.scopeSubLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
 });
+
 router.post("/sub", async (req, res) => {
   const response = await post.sub(req.body);
   res.json(response);

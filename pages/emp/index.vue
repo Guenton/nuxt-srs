@@ -3,32 +3,34 @@
     <NavbarHome />
     <b-container>
       <!-- Header with Buttons -->
-      <b-row class="mt-4">
-        <b-col class="text-left">
-          <h3>Employees</h3>
-        </b-col>
-        <b-col class="text-right mb-2">
-          <b-button variant="secondary" @click="resetPage">
-            Refresh
-          </b-button>
-          <b-button variant="info" to="/emp/edit">
-            Edit Employees
-          </b-button>
-        </b-col>
-      </b-row>
+      <H3withRefresh
+        h3text="Employees"
+        button-text="Add Employee"
+        link-to="/emp/add"
+        variant="success"
+        @refresh="resetPage"
+      />
       <!-- Async table with get request -->
-      <b-row>
-        <b-col>
-          <b-table
-            striped
-            selectable
-            hover
-            sticky-header
-            :items="tableData"
-            :fields="tableFields"
-            @row-selected="onRowSelected"
-          >
-          </b-table>
+      <b-collapse id="empTable" v-model="hasTable">
+        <b-row>
+          <b-col>
+            <b-table
+              striped
+              selectable
+              hover
+              sticky-header
+              :items="tableData"
+              :fields="tableFields"
+              @row-selected="onRowSelected"
+            >
+            </b-table>
+          </b-col>
+        </b-row>
+      </b-collapse>
+      <!-- Loading Spinner -->
+      <b-row v-show="!hasTable" class="my-5">
+        <b-col class="text-center">
+          <b-spinner variant="success" label="Spinning"></b-spinner>
         </b-col>
       </b-row>
       <b-row>
@@ -105,20 +107,25 @@
 
 <script>
 import api from "~/assets/apiMap";
+import H3withRefresh from "~/components/H3withRefresh";
 import NavbarHome from "~/components/NavbarHome";
 import H3header from "~/components/H3header";
 
 export default {
   components: {
     NavbarHome,
+    H3withRefresh,
     H3header
   },
   data() {
     return {
       tableFields: [
-        { key: "emp_id", label: "Employee #", sortable: true },
+        { key: "empmain_id", label: "Employee #", sortable: true },
         { key: "firstname", label: "First Name", sortable: true },
-        { key: "lastname", label: "Last Name", sortable: true }
+        { key: "middlename", label: "Middle Name", sortable: true },
+        { key: "lastname", label: "Last Name", sortable: true },
+        { key: "position", label: "Position", sortable: true },
+        { key: "subsidiary", label: "Subsidiary", sortable: true }
       ],
       tableData: [],
       form: [],
@@ -128,6 +135,9 @@ export default {
     };
   },
   computed: {
+    hasTable() {
+      return this.tableData.length > 0;
+    },
     hasUpdate() {
       return this.update.length > 0;
     },
@@ -136,7 +146,7 @@ export default {
     }
   },
   async mounted() {
-    const url = `${api}/emp`;
+    const url = `${api}/emp/md`;
     try {
       const response = await this.$axios.$get(url);
       if (response.err) {

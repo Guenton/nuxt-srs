@@ -1,82 +1,186 @@
+// import db
 const db = require("../db/mysql");
+// import query string objects
+const emp = require("../sql/emp");
+const pos = require("../sql/pos");
+const scope = require("../sql/scope");
 // prepare object for export
 const get = {};
 
-// push standard error response to variable
+// standard error response variables
 const dbErr = "Your Request could not be completed: DATABASE ERROR";
 const searchErr = "Active Search could not be completed: DATABASE ERROR";
-
-// standard error handler
+// standard error handler function
 const errHandler = err => {
-  console.error(err.code);
+  console.error(err);
   return dbErr;
 };
 
 // ///////////////////////
 // Employee Requests ////
 // /////////////////////
-
-// Employee async function that returns id specific if given or all employees if no id was given
-get.emp = async id => {
+get.empSmData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(
-        "SELECT emp_id, firstname, lastname FROM employee WHERE is_deleted IS FALSE "
-      );
-      return res;
+      res.data = await db.query(emp.getMain);
     } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
+      res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(
-        "SELECT emp_id, firstname, lastname FROM employee WHERE emp_id = ? AND is_deleted IS FALSE",
-        [id]
-      );
-      return res;
+      res.data = await db.query(emp.getMain + " AND empmain_id = ?", [id]);
     } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
+      res.err = errHandler(err);
     }
   }
+  return res;
+};
+get.empMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(emp.getMainJoin);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(emp.getMainJoin + " AND empmain_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.empLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(emp.getMainJoinX);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(emp.getMainJoinX + " WHERE empmain_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
 };
 
 // ///////////////////////
 // Position Requests ////
 // /////////////////////
-
-// Position async function that returns id specific if given or all positions if no id was given
-get.pos = async id => {
+get.posSmData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(
-        "SELECT pos_id, shorthand, title FROM pos WHERE is_deleted IS FALSE "
-      );
-      return res;
+      res.data = await db.query(pos.getMainS);
     } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
+      res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(
-        "SELECT pos_id, shorthand, title FROM pos WHERE pos_id = ? AND is_deleted IS FALSE",
-        [id]
-      );
-      return res;
+      res.data = await db.query(pos.getMainS + " AND posmain_id = ?", [id]);
     } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
+      res.err = errHandler(err);
     }
   }
+  return res;
 };
+get.posMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(pos.getMainM);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(pos.getMainM + " AND posmain_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.posLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(pos.getMainX);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(pos.getMainX + " AND posmain_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+
+// /////////////////////////
+// Subsidiary Requests ////
+// ///////////////////////
+get.scopeSubSmData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(scope.subS);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(scope.subS + " AND scopesub_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.scopeSubMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(scope.subM);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(scope.subM + " AND scopesub_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.scopeSubLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(scope.subX);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(scope.subX + " AND scopesub_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+
 // //////////////////////
 // Finance Requests ////
 // ////////////////////
@@ -326,39 +430,6 @@ get.serviceSuperScope = async superScopeId => {
   }
 };
 
-// /////////////////////////
-// Subsidiary Requests ////
-// ///////////////////////
-
-// Subsidiary async function that returns id specific if given or all subsidiaries if no id was given
-get.sub = async subId => {
-  const res = {};
-  if (!subId) {
-    try {
-      res.data = await db.query(
-        "SELECT sub_id, shorthand, location, title FROM sub WHERE is_deleted IS FALSE"
-      );
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
-    }
-  } else {
-    try {
-      res.data = await db.query(
-        "SELECT sub_id, shorthand, location, title FROM sub WHERE sub_id = ? AND is_deleted IS FALSE",
-        [subId]
-      );
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
-    }
-  }
-};
-
 // /////////////////////////////////
 // Normal Assignation Requests ////
 // ///////////////////////////////
@@ -394,16 +465,11 @@ get.empSearch = async query => {
   const res = {};
   query = "%" + query.toString() + "%";
   try {
-    res.data = await db.query(
-      "SELECT emp_id, firstname, lastname FROM employee WHERE firstname LIKE ? AND is_deleted IS FALSE OR lastname LIKE ? AND is_deleted IS FALSE",
-      [query, query]
-    );
-    return res;
+    res.data = await db.query(emp.getMainJoinSearchName, [query, query]);
   } catch (err) {
-    console.error(err.code);
-    res.err = searchErr;
-    return res;
+    errHandler(err);
   }
+  return res;
 };
 // Position async function that searches in pos table
 get.posSearch = async query => {
