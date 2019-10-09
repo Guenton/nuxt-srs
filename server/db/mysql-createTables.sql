@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS serv_reg (
   cm_seq INT,
   is_deleted BOOLEAN DEFAULT false,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (servmain_id) REFERENCES serv(servmain_id)
+  FOREIGN KEY (servmain_id) REFERENCES serv_main(servmain_id)
 );
 CREATE TABLE IF NOT EXISTS serv_arch (
   servarch_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -107,7 +107,7 @@ INSERT INTO serv_arch (shorthand, title) VALUES
   ("Exec", "Executive Protection")
 ;
 CREATE TABLE IF NOT EXISTS serv_type (
-  type_id INT AUTO_INCREMENT PRIMARY KEY,
+  servtype_id INT AUTO_INCREMENT PRIMARY KEY,
   servarch_id INT,
   title VARCHAR(255) NOT NULL,
   FOREIGN KEY (servarch_id) REFERENCES serv_arch(servarch_id)
@@ -186,17 +186,3 @@ CREATE TABLE IF NOT EXISTS emp_email (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (empmain_id) REFERENCES emp_main(empmain_id)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
