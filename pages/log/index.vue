@@ -7,7 +7,7 @@
         h3text="Recent Logs"
         button-text="Add Log"
         link-to="/log/add"
-        @refresh="resetPage"
+        @refresh="onReset"
       />
       <!-- Async table with get request -->
       <b-row>
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       tableFields: [
-        { key: "serv_id", label: "SID#", sortable: true },
+        { key: "servmain_id", label: "SID#", sortable: true },
         { key: "date_in", label: "Log Date", sortable: true },
         { key: "time_in", label: "Time", sortable: true },
         { key: "described", label: "Description", sortable: false }
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     async onLoad() {
-      const sidUrl = `${api}/serv/log`;
+      const sidUrl = `${api}/serv/md`;
       try {
         const response = await this.$axios.$get(sidUrl);
         if (response.err) {
@@ -77,9 +77,15 @@ export default {
       }
     },
     onRowSelected(items) {
-      const sid = items[0].serv_id;
+      const sid = items[0].servmain_id;
       const url = `/log/${sid}`;
       this.$router.push(url);
+    },
+    onReset() {
+      if (event) event.preventDefault();
+      this.tableData = [];
+      this.error = "";
+      this.onLoad();
     }
   }
 };

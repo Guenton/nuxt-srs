@@ -2,7 +2,12 @@
   <b-row class="mt-4">
     <b-col>
       <b-alert :show="show" :variant="variant">
-        {{ text }}
+        <p>Results:</p>
+        <ul>
+          <li v-for="item in list" :key="item.id">
+            {{ item }}
+          </li>
+        </ul>
       </b-alert>
     </b-col>
   </b-row>
@@ -11,10 +16,12 @@
 <script>
 export default {
   props: {
-    text: {
-      type: String,
-      default: "",
-      required: false
+    list: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      }
     },
     variant: {
       type: String,

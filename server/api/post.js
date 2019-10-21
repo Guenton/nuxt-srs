@@ -1,23 +1,40 @@
 const db = require("../db/mysql");
-// Prepare object for export
+// import query string objects
+const emp = require("../sql/emp");
+const pos = require("../sql/pos");
+const scope = require("../sql/scope");
+const serv = require("../sql/serv");
+// prepare object for export
 const post = {};
 
-// Standard error and success responses
+// standard error and success response variables
 const dbErr = "Your Request could not be completed: DATABASE ERROR";
 const dbSuc = "has successfully been added to the Database";
+// standard error handler function
+const errHandler = err => {
+  console.error(err);
+  return dbErr;
+};
 
-// Employee async function takes empployee "emp" object and returns a response "res" object with "err" and "suc" containers
-post.emp = async emp => {
+// ////////////////////////
+// New Employee Entry ////
+// //////////////////////
+post.emp = async obj => {
   const res = {};
+  const dob = new Date(obj.dob);
   try {
-    await db.query("INSERT INTO employee SET ?", [emp]);
-    res.suc = `${emp.firstname} ${emp.lastname} ${dbSuc}`;
-    return res;
+    const result = await db.query(emp.postMain, [obj.pos, obj.sub]);
+    const id = result.insertId;
+    await db.query(emp.postName, [id, obj.firstname, obj.middlename, obj.lastname]);
+    await db.query(emp.postAddr, [id, obj.address, obj.hood]);
+    await db.query(emp.postEmail, [id, obj.email]);
+    await db.query(emp.postDob, [id, dob]);
+    await db.query(emp.postIdent, [id, obj.identification, obj.passport]);
+    res.suc = obj.firstname + " " + obj.lastname + " " + dbSuc;
   } catch (err) {
-    console.error(err.code);
-    res.err = dbErr;
-    return res;
+    res.err = errHandler(err);
   }
+  return res;
 };
 
 // Position async function takes position "pos" object and returns a response "res" object with "err" and "suc" containers

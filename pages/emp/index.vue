@@ -11,7 +11,7 @@
         @refresh="resetPage"
       />
       <!-- Async table with get request -->
-      <b-collapse id="empTable" v-model="hasTable">
+      <b-collapse id="empTable" :visible="hasTable">
         <b-row>
           <b-col>
             <b-table
@@ -28,94 +28,30 @@
         </b-row>
       </b-collapse>
       <!-- Loading Spinner -->
-      <b-row v-show="!hasTable" class="my-5">
+      <b-row v-show="isLoading" class="my-5">
         <b-col class="text-center">
           <b-spinner variant="success" label="Spinning"></b-spinner>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col class="text-right">
-          <b-button variant="danger" to="/emp/delete">
-            Delete Employee
-          </b-button>
-        </b-col>
-      </b-row>
-      <!-- Edit table hidden until selection was made -->
-      <b-row v-show="showtable">
-        <b-col>
-          <b-form novalidate @submit="onSubmit" @reset="resetPage">
-            <H3header h3text="Edit Employees" />
-            <b-form-row v-for="(employee, index) in form" :key="employee.emp_id">
-              <b-col sm="2" align-v="center" class="text-center">
-                <b-row>
-                  <b-col sm="12">
-                    <b-row>
-                      <strong>Employee #{{ employee.emp_id }}:</strong>
-                    </b-row>
-                  </b-col>
-                  <b-col sm="12">
-                    <b-row> {{ employee.firstname }} {{ employee.lastname }} </b-row>
-                  </b-col>
-                </b-row>
-              </b-col>
-              <b-col>
-                <b-form-group label="First Name">
-                  <b-form-input v-model="form[index].firstname" trim />
-                </b-form-group>
-              </b-col>
-              <b-col>
-                <b-form-group label="Last Name">
-                  <b-form-input v-model="form[index].lastname" trim />
-                </b-form-group>
-              </b-col>
-            </b-form-row>
-            <!-- Submit & Reset Buttons -->
-            <b-form-row>
-              <b-col class="text-right">
-                <b-button type="submit" variant="success">Update</b-button>
-              </b-col>
-              <b-col class="text-left">
-                <b-button type="reset" variant="secondary">Cancel</b-button>
-              </b-col>
-            </b-form-row>
-          </b-form>
-        </b-col>
-      </b-row>
-      <!-- Success & Error Alert Containers -->
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasUpdate" variant="info">
-            <p>Update Results:</p>
-            <ul>
-              <li v-for="item in update" :key="item.id">
-                {{ item }}
-              </li>
-            </ul>
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mt-4">
-        <b-col>
-          <b-alert :show="hasError" variant="danger">
-            {{ error }}
-          </b-alert>
-        </b-col>
-      </b-row>
+      <!-- No Employees Msg -->
+      <AlertBox :show="emptyDb" text="There are currently no Employees in the Database" />
+      <!-- Error Alert Container -->
+      <AlertBox :show="hasError" variant="danger" :text="error" />
     </b-container>
   </div>
 </template>
 
 <script>
 import api from "~/assets/apiMap";
-import H3withRefresh from "~/components/H3withRefresh";
 import NavbarHome from "~/components/NavbarHome";
-import H3header from "~/components/H3header";
+import H3withRefresh from "~/components/H3withRefresh";
+import AlertBox from "~/components/AlertBox";
 
 export default {
   components: {
     NavbarHome,
     H3withRefresh,
-    H3header
+    AlertBox
   },
   data() {
     return {
@@ -128,69 +64,50 @@ export default {
         { key: "subsidiary", label: "Subsidiary", sortable: true }
       ],
       tableData: [],
-      form: [],
-      update: [],
-      showtable: false,
-      error: null
+      error: "",
+      isLoading: true
     };
   },
   computed: {
     hasTable() {
       return this.tableData.length > 0;
     },
-    hasUpdate() {
-      return this.update.length > 0;
+    emptyDb() {
+      return !this.hasTable && !this.isLoading;
     },
     hasError() {
-      return this.error !== null;
+      return this.error !== "";
     }
   },
-  async mounted() {
-    const url = `${api}/emp/md`;
-    try {
-      const response = await this.$axios.$get(url);
-      if (response.err) {
-        this.error = response.err;
-      } else {
-        this.tableData = response.data;
-      }
-    } catch (error) {
-      this.error = error;
-    }
+  mounted() {
+    this.onLoad();
   },
   methods: {
-    onRowSelected(items) {
-      this.form = items;
-      this.showtable = items.length > 0;
-    },
-    async resetPage(event) {
-      event.preventDefault();
-      this.tableData = [];
-      this.form = [];
-      this.update = [];
-      this.error = null;
-      this.showtable = false;
-      const url = `${api}/emp`;
+    async onLoad() {
+      const url = `${api}/emp/md`;
       try {
         const response = await this.$axios.$get(url);
         if (response.err) {
           this.error = response.err;
         } else {
           this.tableData = response.data;
+          this.isLoading = false;
         }
       } catch (error) {
         this.error = error;
       }
     },
-    async onSubmit(event) {
-      event.preventDefault();
-      const url = `${api}/emp`;
-      try {
-        const response = await this.$axios.$put(url, this.form);
-        this.update = response;
-      } catch (error) {
-        this.error = error;
-      }
+    onRowSelected(items) {
+      const empId = items[0].empmain_id;
+      const url = `/emp/${empId}`;
+      this.$router.push(url);
+    },
+    resetPage(event) {
+      if (event) event.preventDefault();
+      this.isLoading = true;
+      this.tableData = [];
+      this.error = "";
+      this.onLoad();
     }
   }
 };

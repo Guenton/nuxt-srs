@@ -78,7 +78,7 @@
             class="mb-0"
           >
             <!-- Address Input - Validates with 2 characters -->
-            <b-form-group label="Adress:" label-cols-sm="3" label-align-sm="right" class="mb-2">
+            <b-form-group label="Address:" label-cols-sm="3" label-align-sm="right" class="mb-2">
               <b-form-input v-model="form.address"> </b-form-input>
             </b-form-group>
             <!-- Neigborhood Name Input - Not Required -->

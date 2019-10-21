@@ -4,6 +4,7 @@ const db = require("../db/mysql");
 const emp = require("../sql/emp");
 const pos = require("../sql/pos");
 const scope = require("../sql/scope");
+const serv = require("../sql/serv");
 // prepare object for export
 const get = {};
 
@@ -174,6 +175,61 @@ get.scopeSubLgData = async id => {
   } else {
     try {
       res.data = await db.query(scope.subX + " AND scopesub_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+
+// //////////////////////
+// Service Requests ////
+// ////////////////////
+get.servSmData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getMain);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getMain + " AND servmain_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getMainDateTime);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getMainDateTime + " AND servmain_id = ?", [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getMainX);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getMainX + " WHERE servmain_id = ?", [id]);
     } catch (err) {
       res.err = errHandler(err);
     }

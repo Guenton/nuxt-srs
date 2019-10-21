@@ -23,17 +23,8 @@ router.get("/emp/:size", async (req, res) => {
     res.json(response);
   } else res.status(404);
 });
-
 router.post("/emp", async (req, res) => {
   const response = await post.emp(req.body);
-  res.json(response);
-});
-router.put("/emp", async (req, res) => {
-  const response = await put.severalEmp(req.body);
-  res.json(response);
-});
-router.delete("/emp", async (req, res) => {
-  const response = await del.emp(req.query.id);
   res.json(response);
 });
 
@@ -54,22 +45,9 @@ router.get("/pos/:size", async (req, res) => {
   } else res.status(404);
 });
 
-router.post("/pos", async (req, res) => {
-  const response = await post.pos(req.body);
-  res.json(response);
-});
-router.put("/pos", async (req, res) => {
-  const response = await put.severalPos(req.body);
-  res.json(response);
-});
-router.delete("/pos", async (req, res) => {
-  const response = await del.pos(req.query.id);
-  res.json(response);
-});
-
-// ////////////////////////////////////
+// ///////////////////////////////
 // Scope related server calls ///
-// //////////////////////////////////
+// /////////////////////////////
 router.get("/scope-sub/:size", async (req, res) => {
   const size = req.params.size;
   if (size === "sm") {
@@ -84,6 +62,46 @@ router.get("/scope-sub/:size", async (req, res) => {
   } else res.status(404);
 });
 
+// /////////////////////////////////
+// Service related server calls ///
+// ///////////////////////////////
+router.get("/serv/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.servSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.servMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.servLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
+});
+
+// Old Emp Calls
+router.put("/emp", async (req, res) => {
+  const response = await put.severalEmp(req.body);
+  res.json(response);
+});
+router.delete("/emp", async (req, res) => {
+  const response = await del.emp(req.query.id);
+  res.json(response);
+});
+// Old Pos Calls
+router.post("/pos", async (req, res) => {
+  const response = await post.pos(req.body);
+  res.json(response);
+});
+router.put("/pos", async (req, res) => {
+  const response = await put.severalPos(req.body);
+  res.json(response);
+});
+router.delete("/pos", async (req, res) => {
+  const response = await del.pos(req.query.id);
+  res.json(response);
+});
+// Old Sub Calls
 router.post("/sub", async (req, res) => {
   const response = await post.sub(req.body);
   res.json(response);
@@ -97,9 +115,7 @@ router.delete("/sub", async (req, res) => {
   res.json(response);
 });
 
-// /////////////////////////////////
-// Finance related server calls ///
-// ///////////////////////////////
+// Old Finance Calls
 router.get("/cost-type", async (req, res) => {
   const response = await get.costType(req.query.id);
   res.json(response);
@@ -113,9 +129,7 @@ router.get("/cost-signature", async (req, res) => {
   res.json(response);
 });
 
-// /////////////////////////////////
-// Service related server calls ///
-// ///////////////////////////////
+// Old Service Calls
 router.get("/service", async (req, res) => {
   const response = await get.service(req.query.id);
   res.json(response);
@@ -135,21 +149,6 @@ router.get("/service-depscope", async (req, res) => {
 router.get("/service-superscope", async (req, res) => {
   const response = await get.serviceSuperScope(req.query.superScopeId);
   res.json(response);
-});
-router.get("/serv/:target", async (req, res) => {
-  const target = req.params.target;
-  if (target === "pre") {
-    const response = await get.servicePreData(req.query.id);
-    res.json(response);
-  } else if (target === "log") {
-    const response = await get.serviceLogData(req.query.id);
-    res.json(response);
-  } else if (target === "all") {
-    const response = await get.serviceAllData(req.query.id);
-    res.json(response);
-  } else {
-    res.status(404);
-  }
 });
 router.post("/service", async (req, res) => {
   const response = await post.service(req.body);

@@ -1,5 +1,17 @@
 const emp = {};
 
+// ///////////////////
+// Post Requests ////
+// /////////////////
+emp.lastIdArray = "SELECT LAST_INSERT_ID()";
+emp.postMain = "INSERT INTO emp_main (posmain_id, scopesub_id) VALUES (?, ?)";
+emp.postName =
+  "INSERT INTO emp_name (empmain_id, firstname, middlename, lastname) VALUES (?, ?, ?, ?)";
+emp.postAddr = "INSERT INTO emp_addr (empmain_id, addr, hood) VALUES (?, ?, ?)";
+emp.postEmail = "INSERT INTO emp_email (empmain_id, email) VALUES (?, ?)";
+emp.postDob = "INSERT INTO emp_dob (empmain_id, dob) VALUES (?, ?)";
+emp.postIdent = "INSERT INTO emp_ident (empmain_id, passport, ident) VALUES (?, ?, ?)";
+
 // //////////////////
 // Get Requests ////
 // ////////////////
