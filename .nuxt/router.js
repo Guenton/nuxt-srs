@@ -21,6 +21,7 @@ const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /
 const _428610d2 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
 const _60dbf05a = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
 const _bc9e6b12 = () => interopDefault(import('..\\pages\\log\\add\\_sid.vue' /* webpackChunkName: "pages_log_add__sid" */))
+const _b8543c06 = () => interopDefault(import('..\\pages\\emp\\_id.vue' /* webpackChunkName: "pages_emp__id" */))
 const _4c335958 = () => interopDefault(import('..\\pages\\log\\_sid.vue' /* webpackChunkName: "pages_log__sid" */))
 const _696cd157 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
@@ -105,6 +106,10 @@ export const routerOptions = {
       path: "/log/add/:sid",
       component: _bc9e6b12,
       name: "log-add-sid"
+    }, {
+      path: "/emp/:id",
+      component: _b8543c06,
+      name: "emp-id"
     }, {
       path: "/log/:sid",
       component: _4c335958,

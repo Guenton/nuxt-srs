@@ -27,6 +27,14 @@ router.post("/emp", async (req, res) => {
   const response = await post.emp(req.body);
   res.json(response);
 });
+router.put("/emp/:id", async (req, res) => {
+  const response = await put.emp(req.params.id, req.body);
+  res.json(response);
+});
+router.delete("/emp/:id", async (req, res) => {
+  const response = await del.emp(req.params.id);
+  res.json(response);
+});
 
 // //////////////////////////////////
 // Position related server calls ///
@@ -80,14 +88,7 @@ router.get("/serv/:size", async (req, res) => {
 });
 
 // Old Emp Calls
-router.put("/emp", async (req, res) => {
-  const response = await put.severalEmp(req.body);
-  res.json(response);
-});
-router.delete("/emp", async (req, res) => {
-  const response = await del.emp(req.query.id);
-  res.json(response);
-});
+
 // Old Pos Calls
 router.post("/pos", async (req, res) => {
   const response = await post.pos(req.body);

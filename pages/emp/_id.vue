@@ -3,7 +3,7 @@
     <NavbarHome />
     <b-container>
       <!-- Header with Return to Employee Page -->
-      <H3withButton h3text="Add new Employee" button-text="Return to Employees" link-to="/emp" />
+      <H3withButton h3text="Edit Employee" button-text="Return to Employees" link-to="/emp" />
       <!-- Add Employee Form -->
       <b-form novalidate @submit="onSubmit" @reset="onReset">
         <!-- Name Box -->
@@ -185,11 +185,14 @@
             </b-form-group>
           </b-form-group>
         </b-card>
+        <!-- Success & Error Alert Containers -->
+        <AlertBox :show="hasSuc" variant="success" :text="response.success" />
+        <AlertBox :show="hasErr" variant="danger" :text="response.error" />
         <!-- Submit & Reset Buttons -->
-        <b-form-row class="mt-3">
+        <b-form-row class="my-3">
           <b-col class="text-right">
             <b-button type="submit" variant="success" class="px-4" :disabled="incompleteValidation">
-              Submit Employee
+              Update Employee
             </b-button>
           </b-col>
           <b-col class="text-left">
@@ -199,9 +202,6 @@
           </b-col>
         </b-form-row>
       </b-form>
-      <!-- Success & Error Alert Containers -->
-      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
-      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
     </b-container>
   </div>
 </template>
@@ -220,6 +220,7 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       form: {
         firstname: "",
         middlename: "",
@@ -234,13 +235,13 @@ export default {
         scopesub_id: null
       },
       validation: {
-        firstname: null,
-        lastname: null,
+        firstname: true,
+        lastname: true,
         email: null,
         dob: null,
         passport: null,
-        pos: null,
-        sub: null
+        pos: true,
+        sub: true
       },
       response: {
         success: "",
@@ -288,6 +289,7 @@ export default {
   mounted() {
     this.getPosDropdown();
     this.getSubDropdown();
+    this.getEmpData();
   },
   methods: {
     size2Validator(box) {
@@ -399,13 +401,25 @@ export default {
         });
       });
     },
+    async getEmpData() {
+      const empUrl = `${api}/emp/md?id=${this.id}`;
+      try {
+        const res = await this.$axios.$get(empUrl);
+        if (res.err) this.response.error = res.err;
+        else this.form = res.data[0];
+        const dob = new Date(this.form.dob).toISOString().substr(0, 10);
+        this.form.dob = dob;
+      } catch (err) {
+        this.response.error = err;
+      }
+    },
     async searchName(fieldString) {
       const query = fieldString === "firstname" ? this.form.firstname : this.form.lastname;
-      const searchUrl = `${api}/search/emp?query=${query}`;
+      const url = `${api}/search/emp`;
       try {
-        const response = await this.$axios.$get(searchUrl);
+        const response = await this.$axios.$get(url, { params: { query } });
         if (response.err) {
-          this.response.error = response.error;
+          this.response.error = response.err;
         } else {
           this.search.name = response.data;
         }
@@ -415,9 +429,9 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
-      const url = `${api}/emp`;
+      const url = `${api}/emp/${this.id}`;
       try {
-        const response = await this.$axios.$post(url, this.form);
+        const response = await this.$axios.$put(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {
@@ -430,33 +444,21 @@ export default {
     },
     onReset(event) {
       if (event) event.preventDefault();
-      this.form = {
-        firstname: "",
-        middlename: "",
-        lastname: "",
-        addr: "",
-        hood: "",
-        email: "",
-        dob: null,
-        passport: "",
-        ident: "",
-        posmain_id: null,
-        scopesub_id: null
-      };
       this.validation = {
-        firstname: null,
-        lastname: null,
+        firstname: true,
+        lastname: true,
         email: null,
         dob: null,
         passport: null,
-        pos: null,
-        sub: null
+        pos: true,
+        sub: true
       };
       this.response = {
         success: "",
         error: ""
       };
       this.search.name = [];
+      this.getEmpData();
     }
   }
 };

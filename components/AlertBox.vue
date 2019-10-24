@@ -1,7 +1,7 @@
 <template>
-  <b-row class="mt-4">
+  <b-row v-show="show" class="mt-4">
     <b-col>
-      <b-alert :show="show" :variant="variant">
+      <b-alert :show="show" :variant="variant" dismissible fade>
         {{ text }}
       </b-alert>
     </b-col>

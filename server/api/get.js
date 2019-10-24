@@ -41,13 +41,13 @@ get.empMdData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(emp.getMainJoin);
+      res.data = await db.query(emp.getAll);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(emp.getMainJoin + " AND empmain_id = ?", [id]);
+      res.data = await db.query(emp.getAllById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -58,13 +58,13 @@ get.empLgData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(emp.getMainJoinX);
+      res.data = await db.query(emp.getAllX);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(emp.getMainJoinX + " WHERE empmain_id = ?", [id]);
+      res.data = await db.query(emp.getAllXById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -521,7 +521,7 @@ get.empSearch = async query => {
   const res = {};
   query = "%" + query.toString() + "%";
   try {
-    res.data = await db.query(emp.getMainJoinSearchName, [query, query]);
+    res.data = await db.query(emp.getAllSearchName, [query, query]);
   } catch (err) {
     errHandler(err);
   }

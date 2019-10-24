@@ -4,7 +4,7 @@
     <!-- Dismissible Delete Warning -->
     <DeleteAlert />
     <b-container v-if="showDeleteMenu">
-      <H3withButton h3text="Delete Employees" button-text="Cancel and Return" link-to="/emp/edit" />
+      <H3withButton h3text="Delete Employees" button-text="Cancel and Return" link-to="/emp" />
       <!-- Async Employees Table -->
       <b-row>
         <b-col>
@@ -95,7 +95,7 @@ export default {
       ],
       tableData: [],
       form: {
-        emp_id: "",
+        empmain_id: "",
         firstname: "",
         lastname: ""
       },
@@ -113,34 +113,11 @@ export default {
       return this.error !== null;
     }
   },
-  async mounted() {
-    const url = `${api}/emp/md`;
-    try {
-      const response = await this.$axios.$get(url);
-      if (response.err) {
-        this.error = response.err;
-      } else {
-        this.tableData = response.data;
-      }
-    } catch (error) {
-      this.error = error;
-    }
+  mounted() {
+    this.onLoad();
   },
   methods: {
-    onRowSelected(items) {
-      if (items.length > 0) {
-        this.form = items[0];
-      }
-      this.deleteSelected = items.length > 0;
-    },
-    async resetPage() {
-      this.tableData = [];
-      this.form.emp_id = "";
-      this.form.firstname = "";
-      this.form.lastname = "";
-      this.deleteSelected = false;
-      this.result = null;
-      this.error = null;
+    async onLoad() {
       const url = `${api}/emp/md`;
       try {
         const response = await this.$axios.$get(url);
@@ -152,16 +129,30 @@ export default {
       } catch (error) {
         this.error = error;
       }
+    },
+    onRowSelected(items) {
+      if (items.length > 0) {
+        this.form = items[0];
+      }
+      this.deleteSelected = items.length > 0;
+    },
+    resetPage() {
+      this.tableData = [];
+      this.form.emp_id = "";
+      this.form.firstname = "";
+      this.form.lastname = "";
+      this.deleteSelected = false;
+      this.result = null;
+      this.error = null;
+      this.onLoad();
       this.showDeleteMenu = true;
     },
     async onSubmit(event) {
       this.showDeleteMenu = false;
-      event.preventDefault();
-      const url = `${api}/emp`;
+      if (event) event.preventDefault();
+      const deleteUrl = `${api}/emp/${this.form.empmain_id}`;
       try {
-        const response = await this.$axios.$delete(url, {
-          params: { id: this.form.emp_id }
-        });
+        const response = await this.$axios.$delete(deleteUrl);
         this.result = response;
       } catch (error) {
         this.error = error;

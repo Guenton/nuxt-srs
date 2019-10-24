@@ -1,9 +1,7 @@
 const db = require("../db/mysql");
 // import query string objects
 const emp = require("../sql/emp");
-const pos = require("../sql/pos");
-const scope = require("../sql/scope");
-const serv = require("../sql/serv");
+
 // prepare object for export
 const post = {};
 
@@ -19,18 +17,18 @@ const errHandler = err => {
 // ////////////////////////
 // New Employee Entry ////
 // //////////////////////
-post.emp = async obj => {
+post.emp = async body => {
   const res = {};
-  const dob = new Date(obj.dob);
+  const dob = new Date(body.dob);
   try {
-    const result = await db.query(emp.postMain, [obj.pos, obj.sub]);
+    const result = await db.query(emp.postMain, [body.posmain_id, body.scopesub_id]);
     const id = result.insertId;
-    await db.query(emp.postName, [id, obj.firstname, obj.middlename, obj.lastname]);
-    await db.query(emp.postAddr, [id, obj.address, obj.hood]);
-    await db.query(emp.postEmail, [id, obj.email]);
+    await db.query(emp.postName, [id, body.firstname, body.middlename, body.lastname]);
+    await db.query(emp.postAddr, [id, body.addr, body.hood]);
+    await db.query(emp.postEmail, [id, body.email]);
     await db.query(emp.postDob, [id, dob]);
-    await db.query(emp.postIdent, [id, obj.identification, obj.passport]);
-    res.suc = obj.firstname + " " + obj.lastname + " " + dbSuc;
+    await db.query(emp.postIdent, [id, body.ident, body.passport]);
+    res.suc = body.firstname + " " + body.lastname + " " + dbSuc;
   } catch (err) {
     res.err = errHandler(err);
   }

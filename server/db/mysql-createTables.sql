@@ -152,6 +152,28 @@ CREATE TABLE IF NOT EXISTS pos_main (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+INSERT INTO pos_main (shorthand, Title)
+VALUES
+  ("CSO", "Chief Security Officer"),
+  ("Adm.Cord", "Administrative Coordinator"),
+  ("Proj.Man", "Project Manager"),
+  ("GOM	Group", "Operations Manager"),
+  ("GIM	Group", "Investigations Manager"),
+  ("IM", "Investigations Manager"),
+  ("SM", "Security Manager"),
+  ("CRCM", "Control & Response Center Manager"),
+  ("TC", "Technical Coordinator"),
+  ("TCI", "Technical Coordinator & Investigator"),
+  ("IA", "Investigator A"),
+  ("IB", "Investigator B (Senior)"),
+  ("IE", "Investigator Electronic"),
+  ("Profilist",	"Profile Analyst"),
+  ("SS", "Security Supervisor"),
+  ("PO", "Patrol Officer"),
+  ("CRCOps", "Control & Response Center Operator"),
+  ("SO", "Security Officer")
+;
+
 CREATE TABLE IF NOT EXISTS pos_assig (
   posmain_id INT,
   servtype_id INT,

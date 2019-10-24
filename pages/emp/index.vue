@@ -26,6 +26,13 @@
             </b-table>
           </b-col>
         </b-row>
+        <b-row>
+          <b-col class="text-right">
+            <b-button variant="danger" class="px-4" to="/emp/delete">
+              Delete Employee
+            </b-button>
+          </b-col>
+        </b-row>
       </b-collapse>
       <!-- Loading Spinner -->
       <b-row v-show="isLoading" class="my-5">

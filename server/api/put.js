@@ -1,20 +1,37 @@
 const db = require("../db/mysql");
+// import query string objects
+const emp = require("../sql/emp");
 
 // prepare put module for export
 const put = {};
 
-// emp async function takes one empployee object and updates the DB
-put.emp = async emp => {
+// standard error and success response variables
+const dbErr = "Your Request could not be completed: DATABASE ERROR";
+const dbSuc = "has successfully been updated in the Database";
+// standard error handler function
+const errHandler = err => {
+  console.error(err);
+  return dbErr;
+};
+
+// /////////////////////////
+// Edit Employee Entry ////
+// ///////////////////////
+put.emp = async (id, body) => {
+  const res = {};
+  const dob = new Date(body.dob);
   try {
-    await db.query("UPDATE employee SET firstname = ?, lastname = ? WHERE emp_id = ?", [
-      emp.firstname,
-      emp.lastname,
-      emp.emp_id
-    ]);
+    await db.query(emp.putMain, [body.posmain_id, body.scopesub_id, id]);
+    await db.query(emp.putName, [body.firstname, body.middlename, body.lastname, id]);
+    await db.query(emp.putAddr, [body.addr, body.hood, id]);
+    await db.query(emp.putEmail, [body.email, id]);
+    await db.query(emp.putDob, [dob, id]);
+    await db.query(emp.putIdent, [body.passport, body.ident, id]);
+    res.suc = body.firstname + " " + body.lastname + " " + dbSuc;
   } catch (err) {
-    return `${emp.firstname} ${emp.lastname} could not be updated: DB Error`;
+    res.err = errHandler(err);
   }
-  return `${emp.firstname} ${emp.lastname} was updated successfully`;
+  return res;
 };
 
 // severalEmp async function takes an employee object, maps it out and waits for emp() results

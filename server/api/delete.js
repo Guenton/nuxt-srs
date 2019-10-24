@@ -1,29 +1,41 @@
 const db = require("../db/mysql");
+// import query string objects
+const emp = require("../sql/emp");
 
 // prepare put module for export
 const del = {};
 
-// Employee async function takes one empployee object and updates the DB
+// standard error and success response variables
+const dbErr = "Request could not be completed: DATABASE ERROR";
+const dbExist = " does not exist in the Database";
+const dbSuc = " has successfully been deleted from the Database";
+// standard error handler function
+const errHandler = err => {
+  console.error(err);
+  return dbErr;
+};
+
+// /////////////////////
+// Delete Employee ////
+// ///////////////////
 del.emp = async id => {
+  const res = {};
   try {
-    const resultArr = await db.query("SELECT COUNT(*) AS count FROM employee WHERE emp_id = ?", [
-      id
-    ]);
-    if (resultArr[0].count === 0) {
-      return `Employee #${id} doesn't exist in database`;
-    } else {
+    const resultArr = await db.query(emp.countById, [id]);
+    if (resultArr[0].count === 0) res.err = "Employee #" + id + dbExist;
+    else {
       try {
-        await db.query("UPDATE employee SET is_deleted = true WHERE emp_id = ?", [id]);
+        await db.query(emp.deleteById, [id]);
+        res.suc = "Employee #" + id + dbSuc;
         return `Employee #${id} was deleted successfully`;
       } catch (err) {
-        console.error(err.code);
-        return `Employee #${id} could not be Deleted: DB Error`;
+        res.err = errHandler(err);
       }
     }
   } catch (err) {
-    console.error(err.code);
-    return `Employee #${id} could not be Deleted: DB Error`;
+    res.err = errHandler(err);
   }
+  return res;
 };
 
 // Position async function takes one empployee object and updates the DB
