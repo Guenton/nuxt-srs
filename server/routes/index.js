@@ -7,6 +7,28 @@ const post = require("../api/post");
 const put = require("../api/put");
 const del = require("../api/delete");
 
+// //////////////////////////
+// Search Query Handlers ///
+// ////////////////////////
+router.get("/search/:target", async (req, res) => {
+  const target = req.params.target;
+  if (target === "emp") {
+    const response = await get.empSearch(req.query.query);
+    res.json(response);
+  } else if (target === "pos") {
+    const response = await get.posSearch(req.query.query);
+    res.json(response);
+  } else if (target === "sub") {
+    const response = await get.subSearch(req.query.query);
+    res.json(response);
+  } else if (target === "footprint") {
+    const response = await get.footprintSearch(req.query.query);
+    res.json(response);
+  } else {
+    res.status(404);
+  }
+});
+
 // //////////////////////////////////
 // Employee related server calls ///
 // ////////////////////////////////
@@ -49,6 +71,19 @@ router.get("/pos/:size", async (req, res) => {
     res.json(response);
   } else if (size === "lg") {
     const response = await get.posLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
+});
+router.get("/pos-assig/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.posAssigSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.posAssigMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.posAssigLgData(req.query.id);
     res.json(response);
   } else res.status(404);
 });
@@ -154,36 +189,6 @@ router.get("/service-superscope", async (req, res) => {
 router.post("/service", async (req, res) => {
   const response = await post.service(req.body);
   res.json(response);
-});
-
-// ////////////////////////////////
-// Normal Assignation Requests ///
-// //////////////////////////////
-router.get("/normas", async (req, res) => {
-  const response = await get.normAsByPos(req.query.posId);
-  res.json(response);
-});
-
-// //////////////////////////
-// Search Query Handlers ///
-// ////////////////////////
-router.get("/search/:target", async (req, res) => {
-  const target = req.params.target;
-  if (target === "emp") {
-    const response = await get.empSearch(req.query.query);
-    res.json(response);
-  } else if (target === "pos") {
-    const response = await get.posSearch(req.query.query);
-    res.json(response);
-  } else if (target === "sub") {
-    const response = await get.subSearch(req.query.query);
-    res.json(response);
-  } else if (target === "footprint") {
-    const response = await get.footprintSearch(req.query.query);
-    res.json(response);
-  } else {
-    res.status(404);
-  }
 });
 
 module.exports = router;

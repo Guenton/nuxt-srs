@@ -3,7 +3,7 @@
     <NavbarHome />
     <b-container>
       <!-- Header with Return to Employee Page -->
-      <H3withButton h3text="Edit Employee" button-text="Return to Employees" link-to="/emp" />
+      <H3withButton h3text="Edit Employee" button-text="Cancel and Return" link-to="/emp" />
       <!-- Add Employee Form -->
       <b-form novalidate @submit="onSubmit" @reset="onReset">
         <!-- Name Box -->

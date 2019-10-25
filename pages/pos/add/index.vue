@@ -3,72 +3,78 @@
     <NavbarHome />
     <b-container>
       <!-- H3 with Link to pos/edit -->
-      <H3withButton
-        h3text="Add new Position"
-        button-text="Return to Edit Menu"
-        link-to="/pos/edit"
-      />
+      <H3withButton h3text="Add new Position" button-text="Cancel and Return" link-to="/pos" />
       <!-- Add new Position Form -->
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
-            <b-form-row>
-              <b-col>
-                <!-- Shorthand (Abbreviation) Input - Validates with 2 characters -->
-                <b-form-row>
-                  <b-col>
-                    <b-form-group
-                      label="Abbreviation:"
-                      :state="validation.shorthand"
-                      :invalid-feedback="invalidShorthand()"
-                      :valid-feedback="validFeedback()"
-                    >
-                      <b-form-input
-                        v-model="form.shorthand"
-                        :state="validation.shorthand"
-                        trim
-                        @focus="shorthandValidator()"
-                        @keydown="shorthandValidator()"
-                      />
-                    </b-form-group>
-                  </b-col>
-                </b-form-row>
-                <!-- Title (Position Name) Input - Validates with 5 characters -->
-                <b-form-row>
-                  <b-col>
-                    <b-form-group
-                      label="Position Name:"
-                      :state="validation.title"
-                      :invalid-feedback="invalidTitle()"
-                      :valid-feedback="validFeedback()"
-                    >
-                      <b-form-input
-                        v-model="form.title"
-                        :state="validation.title"
-                        trim
-                        @focus="titleValidator()"
-                        @keydown="titleValidator()"
-                      />
-                    </b-form-group>
-                  </b-col>
-                </b-form-row>
-                <!-- Submit & Reset Buttons -->
-                <b-form-row>
-                  <b-col class="text-right">
-                    <b-button type="submit" variant="success">Submit</b-button>
-                  </b-col>
-                  <b-col class="text-left">
-                    <b-button type="reset" variant="secondary">Reset</b-button>
-                  </b-col>
-                </b-form-row>
+            <!-- Position Box -->
+            <b-card bg-variant="light">
+              <b-form-group
+                label-cols-lg="3"
+                label="Position"
+                label-size="lg"
+                label-class="font-weight-bold pt-0"
+                class="mb-0"
+              >
+                <!-- Title Input - Validates with 2 characters -->
+                <b-form-group
+                  label="Title:"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  class="mb-2"
+                  :state="validation.title"
+                  :invalid-feedback="invalidTitle()"
+                >
+                  <b-form-input
+                    v-model="form.title"
+                    :state="validation.title"
+                    @focus="titleValidator()"
+                    @keydown="titleValidator()"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <!-- Shorthand Input - Not Required -->
+                <b-form-group
+                  label="Abbreviation:"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  class="mb-2"
+                >
+                  <b-form-input
+                    v-model="form.shorthand"
+                    :state="validation.shorthand"
+                    @focus="shorthandValidator()"
+                    @keydown="shorthandValidator()"
+                  >
+                  </b-form-input>
+                </b-form-group>
+              </b-form-group>
+            </b-card>
+            <!-- Success & Error Alert Containers -->
+            <AlertBox :show="hasSuc" variant="success" :text="response.success" />
+            <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+            <!-- Submit & Reset Buttons -->
+            <b-form-row class="my-3">
+              <b-col class="text-right">
+                <b-button
+                  type="submit"
+                  variant="success"
+                  class="px-4"
+                  :disabled="incompleteValidation"
+                >
+                  Submit Position
+                </b-button>
+              </b-col>
+              <b-col class="text-left">
+                <b-button type="reset" variant="secondary" class="px-4">
+                  Reset Form
+                </b-button>
               </b-col>
             </b-form-row>
           </b-form>
         </b-col>
       </b-row>
-      <!-- Success & Error Alert Containers -->
-      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
-      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
       <!-- Dynamic Search Result Container -->
       <b-row class="mt-4">
         <b-col>
@@ -76,7 +82,7 @@
             <p>Found the Following Positions with similar names</p>
             <ul>
               <li v-for="position in queryResult" :key="position.pos_id">
-                <strong>Position #{{ position.pos_id }}:</strong>
+                <strong>Position #{{ position.posmain_id }}:</strong>
                 {{ position.shorthand }} - {{ position.title }}
               </li>
             </ul>
@@ -102,8 +108,8 @@ export default {
   data() {
     return {
       form: {
-        shorthand: "",
-        title: ""
+        title: "",
+        shorthand: ""
       },
       validation: {
         shorthand: null,
@@ -125,9 +131,30 @@ export default {
     },
     queryHasResult() {
       return this.queryResult.length > 0;
+    },
+    incompleteValidation() {
+      if (
+        this.validation.title === null ||
+        this.validation.title === false ||
+        this.validation.shorthand === null ||
+        this.validation.shorthand === false
+      )
+        return true;
+      else return false;
     }
   },
   methods: {
+    titleValidator() {
+      if (this.form.title.length >= 5) {
+        this.response.success = "";
+        this.response.error = "";
+        this.validation.title = true;
+        this.queryResult = [];
+        this.searchInput("title");
+      } else {
+        this.validation.title = false;
+      }
+    },
     shorthandValidator() {
       if (this.form.shorthand.length >= 2) {
         this.response.success = "";
@@ -139,28 +166,17 @@ export default {
         this.validation.shorthand = false;
       }
     },
-    titleValidator() {
-      if (this.form.title.length >= 2) {
-        this.response.success = "";
-        this.response.error = "";
-        this.validation.title = true;
-        this.queryResult = [];
-        this.searchInput("title");
-      } else {
-        this.validation.title = false;
-      }
-    },
-    invalidShorthand() {
-      if (this.form.shorthand.length > 0) {
-        const remainingChars = 2 - this.form.shorthand.length;
+    invalidTitle() {
+      if (this.form.title.length > 0) {
+        const remainingChars = 5 - this.form.title.length;
         return `Enter at least ${remainingChars} more characters`;
       } else {
         return "Please enter something";
       }
     },
-    invalidTitle() {
-      if (this.form.title.length > 0) {
-        const remainingChars = 2 - this.form.title.length;
+    invalidShorthand() {
+      if (this.form.shorthand.length > 0) {
+        const remainingChars = 2 - this.form.shorthand.length;
         return `Enter at least ${remainingChars} more characters`;
       } else {
         return "Please enter something";
@@ -202,7 +218,7 @@ export default {
       }
     },
     onReset(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       this.form.shorthand = "";
       this.form.title = "";
       this.validation.shorthand = null;

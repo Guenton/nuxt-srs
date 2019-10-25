@@ -79,13 +79,13 @@ get.posSmData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(pos.getMainS);
+      res.data = await db.query(pos.getMainSm);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(pos.getMainS + " AND posmain_id = ?", [id]);
+      res.data = await db.query(pos.getMainSmById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -96,13 +96,13 @@ get.posMdData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(pos.getMainM);
+      res.data = await db.query(pos.getMainMd);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(pos.getMainM + " AND posmain_id = ?", [id]);
+      res.data = await db.query(pos.getMainMdById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -113,13 +113,65 @@ get.posLgData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(pos.getMainX);
+      res.data = await db.query(pos.getMainLg);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(pos.getMainX + " AND posmain_id = ?", [id]);
+      res.data = await db.query(pos.getMainLgById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+// Position Assignment Requests ////
+get.posAssigSmData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(pos.getAssigSm);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(pos.getAssigSmById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.posAssigMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(pos.getAssigMd);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(pos.getAssigMdById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.posAssigLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(pos.getAssigLg);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(pos.getAssigLgById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -233,6 +285,30 @@ get.servLgData = async id => {
     } catch (err) {
       res.err = errHandler(err);
     }
+  }
+  return res;
+};
+
+// ///////////////////////////
+// Search Query Handlers ////
+// /////////////////////////
+get.empSearch = async query => {
+  const res = {};
+  query = "%" + query.toString() + "%";
+  try {
+    res.data = await db.query(emp.getAllSearchName, [query, query]);
+  } catch (err) {
+    res.err = errHandler(err);
+  }
+  return res;
+};
+get.posSearch = async query => {
+  const res = {};
+  query = "%" + query.toString() + "%";
+  try {
+    res.data = await db.query(pos.getAllSearchMain, [query, query]);
+  } catch (err) {
+    res.err = errHandler(err);
   }
   return res;
 };
@@ -512,37 +588,6 @@ get.normAsByPos = async posId => {
   }
 };
 
-// //////////////////////////
-// Search Query Handlers ///
-// ////////////////////////
-
-// Employee async function that searches in employee table
-get.empSearch = async query => {
-  const res = {};
-  query = "%" + query.toString() + "%";
-  try {
-    res.data = await db.query(emp.getAllSearchName, [query, query]);
-  } catch (err) {
-    errHandler(err);
-  }
-  return res;
-};
-// Position async function that searches in pos table
-get.posSearch = async query => {
-  const res = {};
-  query = "%" + query.toString() + "%";
-  try {
-    res.data = await db.query(
-      "SELECT pos_id, shorthand, title FROM pos WHERE shorthand LIKE ? AND is_deleted IS FALSE OR title LIKE ? AND is_deleted IS FALSE",
-      [query, query]
-    );
-    return res;
-  } catch (err) {
-    console.error(err.code);
-    res.err = searchErr;
-    return res;
-  }
-};
 // Subsidiary async function that searches in sub table
 get.subSearch = async query => {
   const res = {};

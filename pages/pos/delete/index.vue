@@ -4,7 +4,7 @@
     <!-- Dismissible Delete Warning -->
     <DeleteAlert />
     <b-container v-if="showDeleteMenu">
-      <H3withButton h3text="Delete Position" button-text="Cancel and Return" link-to="/pos/edit" />
+      <H3withButton h3text="Delete Position" button-text="Cancel and Return" link-to="/pos" />
       <!-- Async Positions Table -->
       <b-row>
         <b-col>
@@ -12,7 +12,7 @@
             striped
             selectable
             hover
-            sticky-header="65vh"
+            sticky-header="50vh"
             select-mode="single"
             selected-variant="danger"
             :items="tableData"
@@ -35,7 +35,7 @@
               </b-col>
             </b-form-row>
             <!-- Dynamic Delete Button -->
-            <b-form-row>
+            <b-form-row class="mb-4">
               <b-col class="text-center">
                 <b-button variant="danger" type="submit"> Delete {{ form.title }} </b-button>
               </b-col>
@@ -84,13 +84,13 @@ export default {
   data() {
     return {
       tableFields: [
-        { key: "pos_id", label: "Position #", sortable: true },
+        { key: "posmain_id", label: "Position #", sortable: true },
         { key: "shorthand", label: "Abbreviation", sortable: true },
         { key: "title", label: "Position Name", sortable: true }
       ],
       tableData: [],
       form: {
-        pos_id: "",
+        posmain_id: "",
         shorthand: "",
         title: ""
       },
@@ -108,35 +108,12 @@ export default {
       return this.error !== null;
     }
   },
-  async mounted() {
-    const url = `${api}/pos`;
-    try {
-      const response = await this.$axios.$get(url);
-      if (response.err) {
-        this.response.error = response.err;
-      } else {
-        this.tableData = response.data;
-      }
-    } catch (error) {
-      this.error = error;
-    }
+  mounted() {
+    this.onLoad();
   },
   methods: {
-    onRowSelected(items) {
-      if (items.length > 0) {
-        this.form = items[0];
-      }
-      this.deleteSelected = items.length > 0;
-    },
-    async resetPage() {
-      this.tableData = [];
-      this.form.pos_id = "";
-      this.form.shorthand = "";
-      this.form.title = "";
-      this.deleteSelected = false;
-      this.result = null;
-      this.error = null;
-      const url = `${api}/pos`;
+    async onLoad() {
+      const url = `${api}/pos/md`;
       try {
         const response = await this.$axios.$get(url);
         if (response.err) {
@@ -147,6 +124,22 @@ export default {
       } catch (error) {
         this.error = error;
       }
+    },
+    onRowSelected(items) {
+      if (items.length > 0) {
+        this.form = items[0];
+      }
+      this.deleteSelected = items.length > 0;
+    },
+    resetPage() {
+      this.tableData = [];
+      this.form.pos_id = "";
+      this.form.shorthand = "";
+      this.form.title = "";
+      this.deleteSelected = false;
+      this.result = null;
+      this.error = null;
+      this.onLoad();
       this.showDeleteMenu = true;
     },
     async onSubmit(event) {
