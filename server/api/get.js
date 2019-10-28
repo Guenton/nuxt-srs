@@ -241,13 +241,13 @@ get.servSmData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(serv.getMain);
+      res.data = await db.query(serv.getMainSm);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(serv.getMain + " AND servmain_id = ?", [id]);
+      res.data = await db.query(serv.getMainSmById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -258,13 +258,13 @@ get.servMdData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(serv.getMainDateTime);
+      res.data = await db.query(serv.getMainMd);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(serv.getMainDateTime + " AND servmain_id = ?", [id]);
+      res.data = await db.query(serv.getMainMdById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -275,13 +275,65 @@ get.servLgData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(serv.getMainX);
+      res.data = await db.query(serv.getMainLg);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(serv.getMainX + " WHERE servmain_id = ?", [id]);
+      res.data = await db.query(serv.getMainLgById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+// Service Type Requests ////
+get.servTypeSmData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getTypeSm);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getTypeSmById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servTypeMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getTypeMd);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getTypeMdById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servTypeLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getTypeLg);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getTypeLgById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }

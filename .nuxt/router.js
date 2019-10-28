@@ -12,16 +12,15 @@ const _3e3b8e70 = () => interopDefault(import('..\\pages\\service\\index.vue' /*
 const _cf5f0446 = () => interopDefault(import('..\\pages\\sub\\index.vue' /* webpackChunkName: "pages_sub_index" */))
 const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
 const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
-const _775f9e4b = () => interopDefault(import('..\\pages\\emp\\edit\\index.vue' /* webpackChunkName: "pages_emp_edit_index" */))
 const _54d6c11a = () => interopDefault(import('..\\pages\\log\\add\\index.vue' /* webpackChunkName: "pages_log_add_index" */))
 const _5376b02a = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
 const _75c34784 = () => interopDefault(import('..\\pages\\pos\\delete\\index.vue' /* webpackChunkName: "pages_pos_delete_index" */))
-const _545e3e3f = () => interopDefault(import('..\\pages\\pos\\edit\\index.vue' /* webpackChunkName: "pages_pos_edit_index" */))
 const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
 const _428610d2 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
 const _60dbf05a = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
+const _8372911a = () => interopDefault(import('..\\pages\\emp\\edit\\_id.vue' /* webpackChunkName: "pages_emp_edit__id" */))
 const _bc9e6b12 = () => interopDefault(import('..\\pages\\log\\add\\_sid.vue' /* webpackChunkName: "pages_log_add__sid" */))
-const _b8543c06 = () => interopDefault(import('..\\pages\\emp\\_id.vue' /* webpackChunkName: "pages_emp__id" */))
+const _7694c467 = () => interopDefault(import('..\\pages\\pos\\edit\\_id.vue' /* webpackChunkName: "pages_pos_edit__id" */))
 const _4c335958 = () => interopDefault(import('..\\pages\\log\\_sid.vue' /* webpackChunkName: "pages_log__sid" */))
 const _696cd157 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
@@ -71,10 +70,6 @@ export const routerOptions = {
     component: _2d47e94a,
     name: "emp-delete"
   }, {
-    path: "/emp/edit",
-    component: _775f9e4b,
-    name: "emp-edit"
-  }, {
     path: "/log/add",
     component: _54d6c11a,
     name: "log-add"
@@ -86,10 +81,6 @@ export const routerOptions = {
     path: "/pos/delete",
     component: _75c34784,
     name: "pos-delete"
-  }, {
-    path: "/pos/edit",
-    component: _545e3e3f,
-    name: "pos-edit"
   }, {
     path: "/sub/add",
     component: _06cd37d4,
@@ -103,13 +94,17 @@ export const routerOptions = {
     component: _60dbf05a,
     name: "sub-edit"
   }, {
+    path: "/emp/edit/:id?",
+    component: _8372911a,
+    name: "emp-edit-id"
+  }, {
     path: "/log/add/:sid",
     component: _bc9e6b12,
     name: "log-add-sid"
   }, {
-    path: "/emp/:id",
-    component: _b8543c06,
-    name: "emp-id"
+    path: "/pos/edit/:id?",
+    component: _7694c467,
+    name: "pos-edit-id"
   }, {
     path: "/log/:sid",
     component: _4c335958,

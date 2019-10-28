@@ -121,6 +121,19 @@ router.get("/serv/:size", async (req, res) => {
     res.json(response);
   } else res.status(404);
 });
+router.get("/serv-type/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.servTypeSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.servTypeMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.servTypeLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
+});
 
 // Old Emp Calls
 

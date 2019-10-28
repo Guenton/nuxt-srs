@@ -106,7 +106,7 @@ export default {
     },
     onRowSelected(items) {
       const empId = items[0].empmain_id;
-      const url = `/emp/${empId}`;
+      const url = `/emp/edit/${empId}`;
       this.$router.push(url);
     },
     resetPage(event) {

@@ -5,9 +5,9 @@ pos.getMainSm = "SELECT posmain_id, shorthand FROM pos_main WHERE is_deleted = f
 pos.getMainSmById = pos.getMainSm + " AND posmain_id = ?";
 // Get Main Medium
 pos.getMainMd = "SELECT posmain_id, shorthand, title FROM pos_main WHERE is_deleted = false";
-pos.getMainMdById = pos.getMainMdById + " AND posmain_id = ?";
+pos.getMainMdById = pos.getMainMd + " AND posmain_id = ?";
 // Get Main Large
-pos.getMainLg = "SELECT * FROM posmain";
+pos.getMainLg = "SELECT * FROM pos_main";
 pos.getMainLgById = this.getMainLg + " WHERE posmain_id = ?";
 
 // Get Assignments Small

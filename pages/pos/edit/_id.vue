@@ -3,7 +3,7 @@
     <NavbarHome />
     <b-container>
       <!-- H3 with Link to pos/edit -->
-      <H3withButton h3text="Add new Position" button-text="Cancel and Return" link-to="/pos" />
+      <H3withButton h3text="Edit Position" button-text="Cancel and Return" link-to="/pos" />
       <!-- Add new Position Form -->
       <b-row>
         <b-col>
@@ -166,7 +166,7 @@
                   class="px-4"
                   :disabled="incompleteValidation"
                 >
-                  Submit Position
+                  Update Position
                 </b-button>
               </b-col>
               <b-col class="text-left">
@@ -210,14 +210,16 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       form: {
+        posmain_id: null,
         title: "",
         shorthand: "",
         assig: []
       },
       validation: {
-        shorthand: null,
-        title: null,
+        shorthand: true,
+        title: true,
         assig: []
       },
       response: {
@@ -257,6 +259,8 @@ export default {
   },
   mounted() {
     this.getAssigDropdown();
+    this.getPosData();
+    this.getPosAssigData();
   },
   methods: {
     titleValidator() {
@@ -332,6 +336,34 @@ export default {
         });
       });
     },
+    async getPosData() {
+      const posUrl = `${api}/pos/md?id=${this.id}`;
+      try {
+        const res = await this.$axios.$get(posUrl);
+        if (res.err) this.response.error = res.err;
+        else {
+          this.form.posmain_id = this.id;
+          this.form.title = res.data[0].title;
+          this.form.shorthand = res.data[0].shorthand;
+        }
+      } catch (err) {
+        this.response.error = err;
+      }
+    },
+    async getPosAssigData() {
+      const posAssigUrl = `${api}/pos-assig/sm?id=${this.id}`;
+      try {
+        const res = await this.$axios.$get(posAssigUrl);
+        if (res.err) this.response.error = res.err;
+        else {
+          res.data.forEach(itm => {
+            this.form.assig.push(itm.servtype_id);
+          });
+        }
+      } catch (err) {
+        this.response.error = err;
+      }
+    },
     async searchInput(fieldString) {
       const query = fieldString === "shorthand" ? this.form.shorthand : this.form.title;
       const url = `${api}/search/pos`;
@@ -348,13 +380,12 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
-      const url = `${api}/pos`;
+      const url = `${api}/pos/${this.id}`;
       try {
-        const response = await this.$axios.$post(url, this.form);
+        const response = await this.$axios.$put(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {
-          this.onReset();
           this.response.success = response.suc;
         }
       } catch (error) {
@@ -364,13 +395,14 @@ export default {
     onReset(event) {
       if (event) event.preventDefault();
       this.form = {
+        posmain_id: null,
         title: "",
         shorthand: "",
         assig: []
       };
       this.validation = {
-        shorthand: null,
-        title: null,
+        shorthand: true,
+        title: true,
         assig: []
       };
       this.response = {
@@ -378,6 +410,8 @@ export default {
         error: ""
       };
       this.queryResult = [];
+      this.getPosData();
+      this.getPosAssigData();
     }
   }
 };

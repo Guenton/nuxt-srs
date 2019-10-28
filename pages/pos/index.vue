@@ -119,7 +119,7 @@ export default {
         row._showDetails = false;
       });
       this.form.posmain_id = row.posmain_id;
-      this.idLink = `/pos/${this.form.posmain_id}`;
+      this.idLink = `/pos/edit/${this.form.posmain_id}`;
       row._showDetails = !row._showDetails;
       const url = `${api}/pos-assig/sm?id=${this.form.posmain_id}`;
       try {
