@@ -186,13 +186,13 @@ get.scopeSubSmData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(scope.subS);
+      res.data = await db.query(scope.getSubSm);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(scope.subS + " AND scopesub_id = ?", [id]);
+      res.data = await db.query(scope.getSubSmById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -203,13 +203,13 @@ get.scopeSubMdData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(scope.subM);
+      res.data = await db.query(scope.getSubMd);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(scope.subM + " AND scopesub_id = ?", [id]);
+      res.data = await db.query(scope.getSubMdById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }
@@ -220,13 +220,13 @@ get.scopeSubLgData = async id => {
   const res = {};
   if (!id) {
     try {
-      res.data = await db.query(scope.subX);
+      res.data = await db.query(scope.getSubLg);
     } catch (err) {
       res.err = errHandler(err);
     }
   } else {
     try {
-      res.data = await db.query(scope.subX + " AND scopesub_id = ?", [id]);
+      res.data = await db.query(scope.getSubLgById, [id]);
     } catch (err) {
       res.err = errHandler(err);
     }

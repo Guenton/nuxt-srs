@@ -17,12 +17,6 @@
           <b-dropdown-item to="/sub/">Subsidiaries</b-dropdown-item>
           <b-dropdown-item to="/service/">Services</b-dropdown-item>
         </b-nav-item-dropdown>
-        <b-nav-item-dropdown text="Edit" right>
-          <b-dropdown-item to="/emp/edit">Employees</b-dropdown-item>
-          <b-dropdown-item to="/pos/edit">Positions</b-dropdown-item>
-          <b-dropdown-item to="/sub/edit">Subsidiaries</b-dropdown-item>
-          <b-dropdown-item to="/service/edit">Services</b-dropdown-item>
-        </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>
   </div>

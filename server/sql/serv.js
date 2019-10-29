@@ -10,7 +10,7 @@ serv.getMainSmById = serv.getMainSm + " AND servmain_id = ?";
 const getMainDateTimeArr = [
   "SELECT servmain_id, described,",
   "DATE_FORMAT(created_at,'%W, %M %D, %Y') AS date_in,",
-  "TIME_FORMAT(created_at, '%r') AS time_in,",
+  "TIME_FORMAT(created_at, '%r') AS time_in",
   "FROM serv_main WHERE is_deleted = false"
 ];
 serv.getMainMd = getMainDateTimeArr.join(" ");

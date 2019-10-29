@@ -2,99 +2,109 @@
   <div>
     <NavbarHome />
     <b-container>
-      <H3withButton
-        h3text="Add new Subsidiary"
-        button-text="Return to Edit Menu"
-        link-to="/sub/edit"
-      />
-      <!-- Add new Subsidiary Form -->
+      <!-- H3 with Link to pos/edit -->
+      <H3withButton h3text="Add new Subsidiary" button-text="Cancel and Return" link-to="/sub" />
+      <!-- Add new Position Form -->
       <b-row>
         <b-col>
           <b-form novalidate @submit="onSubmit" @reset="onReset">
-            <b-form-row>
-              <b-col>
-                <!-- Shorthand (Abbreviation) Input - Validates with 2 characters -->
-                <b-form-row>
-                  <b-col>
-                    <b-form-group
-                      label="Abbreviation:"
-                      :state="validation.shorthand"
-                      :invalid-feedback="invalidShorthand()"
-                      :valid-feedback="validFeedback()"
-                    >
-                      <b-form-input
-                        v-model="form.shorthand"
-                        :state="validation.shorthand"
-                        trim
-                        @focus="shorthandValidator()"
-                        @keydown="shorthandValidator()"
-                      />
-                    </b-form-group>
-                  </b-col>
-                </b-form-row>
-                <!-- Location (Subsidiary Location) Input - Validates with 5 characters -->
-                <b-form-row>
-                  <b-col>
-                    <b-form-group
-                      label="Subsidiary Location:"
-                      :state="validation.location"
-                      :invalid-feedback="invalidLocation()"
-                      :valid-feedback="validFeedback()"
-                    >
-                      <b-form-input
-                        v-model="form.location"
-                        :state="validation.location"
-                        trim
-                        @focus="locationValidator()"
-                        @keydown="locationValidator()"
-                      />
-                    </b-form-group>
-                  </b-col>
-                </b-form-row>
-                <!-- Title (Subsidiary Name) Input - Validates with 5 characters -->
-                <b-form-row>
-                  <b-col>
-                    <b-form-group
-                      label="Subsidiary Name:"
-                      :state="validation.title"
-                      :invalid-feedback="invalidTitle()"
-                      :valid-feedback="validFeedback()"
-                    >
-                      <b-form-input
-                        v-model="form.title"
-                        :state="validation.title"
-                        trim
-                        @focus="titleValidator()"
-                        @keydown="titleValidator()"
-                      />
-                    </b-form-group>
-                  </b-col>
-                </b-form-row>
-                <!-- Submit & Reset Buttons -->
-                <b-form-row>
-                  <b-col class="text-right">
-                    <b-button type="submit" variant="success">Submit</b-button>
-                  </b-col>
-                  <b-col class="text-left">
-                    <b-button type="reset" variant="secondary">Reset</b-button>
-                  </b-col>
-                </b-form-row>
+            <!-- Position Box -->
+            <b-card bg-variant="light">
+              <b-form-group
+                label-cols-lg="3"
+                label="Subsidiary"
+                label-size="lg"
+                label-class="font-weight-bold pt-0"
+                class="mb-0"
+              >
+                <!-- Title Input - Validates with 2 characters -->
+                <b-form-group
+                  label="Title:"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  class="mb-2"
+                  :state="validation.title"
+                  :invalid-feedback="invalidTitle()"
+                  :valid-feedback="validFeedback()"
+                >
+                  <b-form-input
+                    v-model="form.title"
+                    :state="validation.title"
+                    @focus="titleValidator()"
+                    @input="titleValidator()"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <!-- Shorthand Input - Not Required -->
+                <b-form-group
+                  label="Abbreviation:"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  class="mb-2"
+                  :state="validation.shorthand"
+                  :invalid-feedback="invalidShorthand()"
+                  :valid-feedback="validFeedback()"
+                >
+                  <b-form-input
+                    v-model="form.shorthand"
+                    :state="validation.shorthand"
+                    @focus="shorthandValidator()"
+                    @input="shorthandValidator()"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <!-- Country Input -->
+                <b-form-group
+                  label="Country:"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  class="mb-2"
+                  :state="validation.country"
+                  :invalid-feedback="invalidCountry()"
+                  :valid-feedback="validFeedback()"
+                >
+                  <b-form-input
+                    v-model="form.country"
+                    :state="validation.country"
+                    @focus="countryValidator()"
+                    @input="countryValidator()"
+                  >
+                  </b-form-input>
+                </b-form-group>
+              </b-form-group>
+            </b-card>
+            <!-- Success & Error Alert Containers -->
+            <AlertBox :show="hasSuc" variant="success" :text="response.success" />
+            <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+            <!-- Submit & Reset Buttons -->
+            <b-form-row class="my-3">
+              <b-col class="text-right">
+                <b-button
+                  type="submit"
+                  variant="success"
+                  class="px-4"
+                  :disabled="incompleteValidation"
+                >
+                  Submit Position
+                </b-button>
+              </b-col>
+              <b-col class="text-left">
+                <b-button type="reset" variant="secondary" class="px-4">
+                  Reset Form
+                </b-button>
               </b-col>
             </b-form-row>
           </b-form>
         </b-col>
       </b-row>
-      <!-- Success & Error Alert Containers -->
-      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
-      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
       <!-- Dynamic Search Result Container -->
       <b-row class="mt-4">
         <b-col>
           <b-alert :show="queryHasResult" variant="info">
             <p>Found the Following Subsidiaries with similar names</p>
             <ul>
-              <li v-for="sub in queryResult" :key="sub.sub_id">
-                <strong>Subsidiary #{{ sub.sub_id }}:</strong>
+              <li v-for="sub in queryResult" :key="sub.scopesub_id">
+                <strong>Subsidiary #{{ sub.scopesub_id }}:</strong>
                 {{ sub.shorthand }} - {{ sub.title }}
               </li>
             </ul>
@@ -120,14 +130,14 @@ export default {
   data() {
     return {
       form: {
+        title: "",
         shorthand: "",
-        location: "",
-        title: ""
+        country: ""
       },
       validation: {
         shorthand: null,
-        location: null,
-        title: null
+        title: null,
+        country: null
       },
       response: {
         success: "",
@@ -145,26 +155,36 @@ export default {
     },
     queryHasResult() {
       return this.queryResult.length > 0;
+    },
+    incompleteValidation() {
+      if (
+        this.validation.title === null ||
+        this.validation.title === false ||
+        this.validation.shorthand === null ||
+        this.validation.shorthand === false ||
+        this.validation.country === null ||
+        this.validation.country === false
+      )
+        return true;
+      else return false;
     }
   },
   methods: {
-    resetForm() {
-      this.form.shorthand = "";
-      this.form.location = "";
-      this.form.title = "";
-    },
-    resetValidation() {
-      this.validation.shorthand = null;
-      this.validation.location = null;
-      this.validation.title = null;
-    },
-    resetResponse() {
-      this.response.success = "";
-      this.response.error = "";
+    titleValidator() {
+      if (this.form.title.length >= 5) {
+        this.response.success = "";
+        this.response.error = "";
+        this.validation.title = true;
+        this.queryResult = [];
+        this.searchInput("title");
+      } else {
+        this.validation.title = false;
+      }
     },
     shorthandValidator() {
       if (this.form.shorthand.length >= 2) {
-        this.resetResponse();
+        this.response.success = "";
+        this.response.error = "";
         this.validation.shorthand = true;
         this.queryResult = [];
         this.searchInput("shorthand");
@@ -172,24 +192,19 @@ export default {
         this.validation.shorthand = false;
       }
     },
-    locationValidator() {
-      if (this.form.location.length >= 2) {
-        this.resetResponse();
-        this.validation.location = true;
-        this.queryResult = [];
-        this.searchInput("location");
+    countryValidator() {
+      if (this.form.country.length >= 5) {
+        this.validation.country = true;
       } else {
-        this.validation.location = false;
+        this.validation.country = false;
       }
     },
-    titleValidator() {
-      if (this.form.title.length >= 2) {
-        this.resetResponse();
-        this.validation.title = true;
-        this.queryResult = [];
-        this.searchInput("title");
+    invalidTitle() {
+      if (this.form.title.length > 0) {
+        const remainingChars = 5 - this.form.title.length;
+        return `Enter at least ${remainingChars} more characters`;
       } else {
-        this.validation.title = false;
+        return "Please enter something";
       }
     },
     invalidShorthand() {
@@ -200,17 +215,9 @@ export default {
         return "Please enter something";
       }
     },
-    invalidLocation() {
-      if (this.form.location.length > 0) {
-        const remainingChars = 2 - this.form.location.length;
-        return `Enter at least ${remainingChars} more characters`;
-      } else {
-        return "Please enter something";
-      }
-    },
-    invalidTitle() {
-      if (this.form.title.length > 0) {
-        const remainingChars = 2 - this.form.title.length;
+    invalidCountry() {
+      if (this.form.country.length > 0) {
+        const remainingChars = 5 - this.form.country.length;
         return `Enter at least ${remainingChars} more characters`;
       } else {
         return "Please enter something";
@@ -220,15 +227,8 @@ export default {
       return "Great!";
     },
     async searchInput(fieldString) {
-      let query;
-      if (fieldString === "shorthand") {
-        query = this.form.shorthand;
-      } else if (fieldString === "location") {
-        query = this.form.location;
-      } else {
-        query = this.form.title;
-      }
-      const url = `${api}/search/sub`;
+      const query = fieldString === "shorthand" ? this.form.shorthand : this.form.title;
+      const url = `${api}/search/scope-sub`;
       try {
         const response = await this.$axios.$get(url, { params: { query } });
         if (response.err) {
@@ -242,14 +242,13 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
-      const url = `${api}/sub`;
+      const url = `${api}/scope-sub`;
       try {
         const response = await this.$axios.$post(url, this.form);
         if (response.err) {
           this.response.error = response.err;
         } else {
-          this.resetForm();
-          this.resetValidation();
+          this.onReset();
           this.response.success = response.suc;
         }
       } catch (error) {
@@ -257,12 +256,21 @@ export default {
       }
     },
     onReset(event) {
-      if (event) {
-        event.preventDefault();
-      }
-      this.resetForm();
-      this.resetValidation();
-      this.resetResponse();
+      if (event) event.preventDefault();
+      this.form = {
+        title: "",
+        shorthand: "",
+        country: ""
+      };
+      this.validation = {
+        shorthand: null,
+        title: null,
+        country: null
+      };
+      this.response = {
+        success: "",
+        error: ""
+      };
       this.queryResult = [];
     }
   }
