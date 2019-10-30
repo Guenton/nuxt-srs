@@ -9,12 +9,15 @@ const _3f59a9d8 = () => interopDefault(import('..\\pages\\home\\index.vue' /* we
 const _0ab3e34e = () => interopDefault(import('..\\pages\\log\\index.vue' /* webpackChunkName: "pages_log_index" */))
 const _431e156e = () => interopDefault(import('..\\pages\\pos\\index.vue' /* webpackChunkName: "pages_pos_index" */))
 const _3e3b8e70 = () => interopDefault(import('..\\pages\\service\\index.vue' /* webpackChunkName: "pages_service_index" */))
+const _6b3ee57a = () => interopDefault(import('..\\pages\\stat\\index.vue' /* webpackChunkName: "pages_stat_index" */))
 const _cf5f0446 = () => interopDefault(import('..\\pages\\sub\\index.vue' /* webpackChunkName: "pages_sub_index" */))
 const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
 const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
 const _54d6c11a = () => interopDefault(import('..\\pages\\log\\add\\index.vue' /* webpackChunkName: "pages_log_add_index" */))
 const _5376b02a = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
 const _75c34784 = () => interopDefault(import('..\\pages\\pos\\delete\\index.vue' /* webpackChunkName: "pages_pos_delete_index" */))
+const _57a9564d = () => interopDefault(import('..\\pages\\stat\\org\\index.vue' /* webpackChunkName: "pages_stat_org_index" */))
+const _3dadb731 = () => interopDefault(import('..\\pages\\stat\\test\\index.vue' /* webpackChunkName: "pages_stat_test_index" */))
 const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
 const _428610d2 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
 const _60dbf05a = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
@@ -58,6 +61,10 @@ export const routerOptions = {
     component: _3e3b8e70,
     name: "service"
   }, {
+    path: "/stat",
+    component: _6b3ee57a,
+    name: "stat"
+  }, {
     path: "/sub",
     component: _cf5f0446,
     name: "sub"
@@ -81,6 +88,14 @@ export const routerOptions = {
     path: "/pos/delete",
     component: _75c34784,
     name: "pos-delete"
+  }, {
+    path: "/stat/org",
+    component: _57a9564d,
+    name: "stat-org"
+  }, {
+    path: "/stat/test",
+    component: _3dadb731,
+    name: "stat-test"
   }, {
     path: "/sub/add",
     component: _06cd37d4,
