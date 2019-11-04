@@ -91,6 +91,14 @@ router.get("/pos-assig/:size", async (req, res) => {
 // ///////////////////////////////
 // Scope related server calls ///
 // /////////////////////////////
+router.get("/scope-dept", async (req, res) => {
+  const response = await get.scopeDeptData(req.query.id);
+  res.json(response);
+});
+router.get("/scope-locat", async (req, res) => {
+  const response = await get.scopeLocatData(req.query.id);
+  res.json(response);
+});
 router.get("/scope-sub/:size", async (req, res) => {
   const size = req.params.size;
   if (size === "sm") {
@@ -121,6 +129,19 @@ router.get("/serv/:size", async (req, res) => {
     res.json(response);
   } else res.status(404);
 });
+router.get("/serv-arch/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.servArchSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.servArchMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.servArchLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
+});
 router.get("/serv-type/:size", async (req, res) => {
   const size = req.params.size;
   if (size === "sm") {
@@ -134,8 +155,66 @@ router.get("/serv-type/:size", async (req, res) => {
     res.json(response);
   } else res.status(404);
 });
+router.get("/serv-typebyarch/:size", async (req, res) => {
+  const size = req.params.size;
+  if (size === "sm") {
+    const response = await get.servTypeByArchSmData(req.query.id);
+    res.json(response);
+  } else if (size === "md") {
+    const response = await get.servTypeByArchMdData(req.query.id);
+    res.json(response);
+  } else if (size === "lg") {
+    const response = await get.servTypeByArchLgData(req.query.id);
+    res.json(response);
+  } else res.status(404);
+});
+router.post("/serv", async (req, res) => {
+  const response = await post.serv(req.body);
+  res.json(response);
+});
 
-// Old Emp Calls
+// ///////////////////////////////////
+// Statistic related server calls ///
+// /////////////////////////////////
+router.get("/count-log-type/:timeframe", async (req, res) => {
+  const tf = req.params.timeframe;
+  const id = req.query.id;
+  const type = req.query.type;
+  const date = req.query.date;
+  if (tf === "day") {
+    const dtstart = new Date(date);
+    const dtstop = new Date(date);
+    dtstop.setHours(23, 59, 59);
+    const response = await get.servLogCountByType(id, type, dtstart, dtstop);
+    res.json(response);
+  } else if (tf === "week") {
+    const dtstart = new Date(date);
+    const dtstop = new Date(date);
+    dtstop.setDate(dtstop.getDate() + 6);
+    dtstop.setHours(23, 59, 59);
+    const response = await get.servLogCountByType(id, type, dtstart, dtstop);
+    res.json(response);
+  } else if (tf === "month") {
+    const dtstart = new Date(date);
+    const dtstop = new Date(date);
+    dtstop.setMonth(dtstop.getMonth() + 1);
+    dtstop.setDate(0);
+    dtstop.setHours(23, 59, 59);
+    const response = await get.servLogCountByType(id, type, dtstart, dtstop);
+    res.json(response);
+  } else if (tf === "year") {
+    const dtstart = new Date(date);
+    const dtstop = new Date(date);
+    dtstop.setFullYear(dtstop.getFullYear() + 1);
+    dtstop.setDate(0);
+    dtstop.setHours(23, 59, 59);
+    const response = await get.servLogCountByType(id, type, dtstart, dtstop);
+    res.json(response);
+  } else if (!tf) {
+    const response = await get.servLogCountByType(id, type);
+    res.json(response);
+  } else res.status(404);
+});
 
 // Old Pos Calls
 router.post("/pos", async (req, res) => {
@@ -175,32 +254,6 @@ router.get("/cost-currency", async (req, res) => {
 });
 router.get("/cost-signature", async (req, res) => {
   const response = await get.costSignature(req.query.id);
-  res.json(response);
-});
-
-// Old Service Calls
-router.get("/service", async (req, res) => {
-  const response = await get.service(req.query.id);
-  res.json(response);
-});
-router.get("/service/:archId", async (req, res) => {
-  const response = await get.serviceByArch(req.params.archId);
-  res.json(response);
-});
-router.get("/service-archtype", async (req, res) => {
-  const response = await get.serviceArchtype(req.query.archId);
-  res.json(response);
-});
-router.get("/service-depscope", async (req, res) => {
-  const response = await get.serviceDepScope(req.query.depScopeId);
-  res.json(response);
-});
-router.get("/service-superscope", async (req, res) => {
-  const response = await get.serviceSuperScope(req.query.superScopeId);
-  res.json(response);
-});
-router.post("/service", async (req, res) => {
-  const response = await post.service(req.body);
   res.json(response);
 });
 

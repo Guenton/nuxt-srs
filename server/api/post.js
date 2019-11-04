@@ -1,6 +1,7 @@
 const db = require("../db/mysql");
 // import query string objects
 const emp = require("../sql/emp");
+const serv = require("../sql/serv");
 
 // prepare object for export
 const post = {};
@@ -31,6 +32,33 @@ post.emp = async body => {
     res.suc = body.firstname + " " + body.lastname + " " + dbSuc;
   } catch (err) {
     res.err = errHandler(err);
+  }
+  return res;
+};
+
+// ///////////////////////////
+// New Service Log Entry ////
+// /////////////////////////
+post.serv = async body => {
+  const res = {};
+  if (!body) res.err = "No Service Log Object Submitted";
+  else {
+    try {
+      const result = await db.query(serv.postMain, [body.description]);
+      const id = result.insertId;
+      await db.query(serv.postScope, [
+        id,
+        body.archType,
+        body.serviceType,
+        body.depScope,
+        body.superScope
+      ]);
+      await db.query(serv.postReg, [id, body.footprint, body.cmYear, body.cmSeq]);
+      res.suc = `Service registered successfully with SID# ${id}`;
+      res.sid = id;
+    } catch (err) {
+      res.err = errHandler(err);
+    }
   }
   return res;
 };

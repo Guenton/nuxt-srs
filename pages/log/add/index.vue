@@ -302,28 +302,28 @@ export default {
   },
   methods: {
     async onLoad() {
-      const archtypeUrl = `${api}/service-archtype`;
-      const archtypes = await this.dropdownRequest(archtypeUrl);
+      const servArchUrl = `${api}/serv-arch/md`;
+      const archtypes = await this.dropdownRequest(servArchUrl);
       archtypes.forEach(element => {
         this.archTypeOptions.push({
-          value: element.arch_id,
-          text: element.archtype
+          value: element.servarch_id,
+          text: element.title
         });
       });
-      const depScopeUrl = `${api}/service-depscope`;
-      const depScopes = await this.dropdownRequest(depScopeUrl);
+      const scopeDeptUrl = `${api}/scope-dept`;
+      const depScopes = await this.dropdownRequest(scopeDeptUrl);
       depScopes.forEach(element => {
         this.depScopeOptions.push({
-          value: element.depscope_id,
-          text: element.depscope
+          value: element.scopedept_id,
+          text: element.title
         });
       });
-      const superScopeUrl = `${api}/service-superscope`;
-      const superScopes = await this.dropdownRequest(superScopeUrl);
+      const scopeLocatUrl = `${api}/scope-locat`;
+      const superScopes = await this.dropdownRequest(scopeLocatUrl);
       superScopes.forEach(element => {
         this.superScopeOptions.push({
-          value: element.superscope_id,
-          text: element.superscope
+          value: element.scopelocat_id,
+          text: element.title
         });
       });
     },
@@ -470,8 +470,8 @@ export default {
       if (!this.archTypeValidator()) {
         return;
       }
-      const arch = this.form.archType;
-      const url = `${api}/service/${arch}`;
+      const archId = this.form.archType;
+      const url = `${api}/serv-typebyarch/sm?id=${archId}`;
       try {
         const response = await this.$axios.$get(url);
         if (response.err) {
@@ -479,7 +479,7 @@ export default {
         } else {
           response.data.forEach(item => {
             this.serviceTypeOptions.push({
-              value: item.type_id,
+              value: item.servtype_id,
               text: item.title
             });
           });
@@ -490,7 +490,7 @@ export default {
     },
     async onSubmit(event) {
       event.preventDefault();
-      const url = `${api}/service`;
+      const url = `${api}/serv`;
       try {
         const response = await this.$axios.$post(url, this.form);
         if (response.err) {

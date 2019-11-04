@@ -182,6 +182,40 @@ get.posAssigLgData = async id => {
 // /////////////////////////
 // Subsidiary Requests ////
 // ///////////////////////
+get.scopeDeptData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(scope.getDept);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(scope.getDeptById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.scopeLocatData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(scope.getLocat);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(scope.getLocatById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
 get.scopeSubSmData = async id => {
   const res = {};
   if (!id) {
@@ -288,6 +322,58 @@ get.servLgData = async id => {
   }
   return res;
 };
+// Service Arch Requests ////
+get.servArchSmData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getArchSm);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getArchSmById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servArchMdData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getArchMd);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getArchMdById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servArchLgData = async id => {
+  const res = {};
+  if (!id) {
+    try {
+      res.data = await db.query(serv.getArchLg);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    try {
+      res.data = await db.query(serv.getArchLgById, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
 // Service Type Requests ////
 get.servTypeSmData = async id => {
   const res = {};
@@ -340,7 +426,107 @@ get.servTypeLgData = async id => {
   }
   return res;
 };
+// Service Type By Arch Requests ////
+// Service Type Requests ////
+get.servTypeByArchSmData = async id => {
+  const res = {};
+  if (!id) res.err = "Arch ID is required";
+  else {
+    try {
+      res.data = await db.query(serv.getTypeSmByArchId, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servTypeByArchMdData = async id => {
+  const res = {};
+  if (!id) res.err = "Arch ID is required";
+  else {
+    try {
+      res.data = await db.query(serv.getTypeMdByArchId, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
+get.servTypeByArchLgData = async id => {
+  const res = {};
+  if (!id) res.err = "Arch ID is required";
+  else {
+    try {
+      res.data = await db.query(serv.getTypeLgByArchId, [id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  }
+  return res;
+};
 
+// ////////////////////////
+// Statistic Requests ////
+// //////////////////////
+get.servLogCountByType = async (id, type, dtstart, dtstop) => {
+  const res = {};
+  if (!id) {
+    if (type === "arch") {
+      try {
+        res.data = await db.query(serv.getLogCountFrameArch, [dtstart, dtstop]);
+      } catch (err) {
+        res.err = errHandler(err);
+      }
+    } else if (type === "type") {
+      try {
+        res.data = await db.query(serv.getLogCountFrameType, [dtstart, dtstop]);
+      } catch (err) {
+        res.err = errHandler(err);
+      }
+    } else if (type === "dept") {
+      try {
+        res.data = await db.query(serv.getLogCountFrameDept, [dtstart, dtstop]);
+      } catch (err) {
+        res.err = errHandler(err);
+      }
+    } else if (type === "locat") {
+      try {
+        res.data = await db.query(serv.getLogCountFrameLocat, [dtstart, dtstop]);
+      } catch (err) {
+        res.err = errHandler(err);
+      }
+    } else {
+      res.err = "Unrecognized category type, or no category type was given";
+    }
+  } else if (type === "arch") {
+    try {
+      res.data = await db.query(serv.getLogCountFrameByArch, [dtstart, dtstop, id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else if (type === "type") {
+    try {
+      res.data = await db.query(serv.getLogCountFrameByType, [dtstart, dtstop, id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else if (type === "dept") {
+    try {
+      res.data = await db.query(serv.getLogCountFrameByDept, [dtstart, dtstop, id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else if (type === "locat") {
+    try {
+      res.data = await db.query(serv.getLogCountFrameByLocat, [dtstart, dtstop, id]);
+    } catch (err) {
+      res.err = errHandler(err);
+    }
+  } else {
+    res.err = "Unrecognized id-type, or no id-type was given";
+  }
+  return res;
+};
 // ///////////////////////////
 // Search Query Handlers ////
 // /////////////////////////
@@ -427,76 +613,6 @@ get.costSignature = async id => {
   return res;
 };
 
-// //////////////////////
-// Service Requests ////
-// ////////////////////
-
-// Service async function that returns id specific if given or all services types with their archtype if no id was given
-get.service = async id => {
-  const res = {};
-  if (!id) {
-    try {
-      res.data = await db.query(
-        "SELECT service_type.type_id, service_type.title, service_archtype.archtype FROM service_type INNER JOIN service_archtype ON service_type.arch_id = service_archtype.arch_id;"
-      );
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
-    }
-  } else {
-    try {
-      res.data = await db.query(
-        "SELECT service_type.type_id, service_type.title, service_archtype.archtype FROM service_type INNER JOIN service_archtype ON service_type.arch_id = service_archtype.arch_id WHERE service_type.type_id = ?",
-        [id]
-      );
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
-    }
-  }
-};
-// Returns service type_id, title and matching archtype from given arch_id
-get.serviceByArch = async archId => {
-  const res = {};
-  try {
-    res.data = await db.query(
-      "SELECT service_type.type_id, service_type.title, service_archtype.archtype FROM service_type INNER JOIN service_archtype ON service_type.arch_id = service_archtype.arch_id WHERE service_type.arch_id = ?",
-      [archId]
-    );
-    return res;
-  } catch (err) {
-    console.error(err.code);
-    res.err = dbErr;
-    return res;
-  }
-};
-// Returns service Archtype if arch_id is given, else returns all service Archtypes
-get.serviceArchtype = async archId => {
-  const res = {};
-  if (!archId) {
-    try {
-      res.data = await db.query("SELECT * FROM service_archtype");
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
-    }
-  } else {
-    try {
-      res.data = await db.query("SELECT * FROM service_archtype WHERE arch_id = ?", [archId]);
-      return res;
-    } catch (err) {
-      console.error(err.code);
-      res.err = dbErr;
-      return res;
-    }
-  }
-};
 // Get All SID Pre-registration data
 get.servicePreData = async sid => {
   const res = {};

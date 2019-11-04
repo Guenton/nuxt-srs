@@ -12,7 +12,47 @@
       />
       <!-- Async table with get request -->
       <b-collapse id="summaryChart" :visible="!isLoading">
-        <Chart v-if="!isLoading" :data="data" />
+        <Chart v-if="hasLabels" :data="data" />
+        <b-row v-show="!isLoading">
+          <b-col class="text-center">
+            <b-button-group v-show="hasLabels" class="mx-1">
+              <b-button variant="info" :pressed="isArch" @click="selectHandler('arch')">
+                Archtype
+              </b-button>
+              <b-button variant="info" :pressed="isType" @click="selectHandler('type')">
+                Type
+              </b-button>
+              <b-button variant="info" :pressed="isDept" @click="selectHandler('dept')">
+                Department
+              </b-button>
+              <b-button variant="info" :pressed="isLocat" @click="selectHandler('locat')">
+                Location
+              </b-button>
+            </b-button-group>
+          </b-col>
+        </b-row>
+        <b-row v-show="!isLoading" class="my-3" align-h="center">
+          <b-col cols="4">
+            <b-button-group v-show="hasLabels">
+              <b-button :pressed="isDay" @click="timeframeHandler('day')">Day</b-button>
+              <b-button :pressed="isWeek" @click="timeframeHandler('week')">Week</b-button>
+              <b-button :pressed="isMonth" @click="timeframeHandler('month')">Month</b-button>
+              <b-button :pressed="isYear" @click="timeframeHandler('year')">Year</b-button>
+            </b-button-group>
+          </b-col>
+          <b-col cols="4">
+            <b-button-group v-show="hasLabels">
+              <b-button :pressed="graphSteps === 1" @click="stepsHandler(1)">1</b-button>
+              <b-button :pressed="graphSteps === 2" @click="stepsHandler(2)">2</b-button>
+              <b-button :pressed="graphSteps === 3" @click="stepsHandler(3)">3</b-button>
+              <b-button :pressed="graphSteps === 4" @click="stepsHandler(4)">4</b-button>
+              <b-button :pressed="graphSteps === 5" @click="stepsHandler(5)">5</b-button>
+              <b-button :pressed="graphSteps === 6" @click="stepsHandler(6)">6</b-button>
+              <b-button :pressed="graphSteps === 7" @click="stepsHandler(7)">7</b-button>
+              <b-button :pressed="graphSteps === 8" @click="stepsHandler(8)">8</b-button>
+            </b-button-group>
+          </b-col>
+        </b-row>
       </b-collapse>
       <!-- Loading Spinner -->
       <b-row v-show="isLoading" class="my-5">
@@ -27,7 +67,8 @@
 </template>
 
 <script>
-// import api from "~/assets/apiMap";
+import api from "~/assets/apiMap";
+import hue from "~/assets/colorWay";
 import NavbarHome from "~/components/NavbarHome";
 import H3withRefresh from "~/components/H3withRefresh";
 import Chart from "~/components/Chart";
@@ -44,103 +85,218 @@ export default {
     return {
       error: "",
       isLoading: true,
+      rawData: [],
+      graphSelect: "arch",
+      graphSteps: 7,
+      graphTimeframe: "week",
       data: {
-        labels: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-          "Monday"
-        ],
-        datasets: [
-          {
-            label: "Security Leadership",
-            data: [0, 0, 1, 2, 25, 32, 33, 42],
-            backgroundColor: ["rgba(54,73,93,.5)"],
-            borderColor: ["#36495d"],
-            borderWidth: 2
-          },
-          {
-            label: "Investigations",
-            data: [5, 0, 8, 7, 9, 27, 37, 57],
-            backgroundColor: ["rgba(71, 183,132,.5)"],
-            borderColor: ["#47b784"],
-            borderWidth: 2
-          },
-          {
-            label: "Security Equipment",
-            data: [10, 15, 22, 8, 32, 37, 50, 49],
-            backgroundColor: ["rgba(255,241,118,.5)"],
-            borderColor: ["#ffeb3b"],
-            borderWidth: 2
-          },
-          {
-            label: "Asset Protection",
-            data: [15, 18, 28, 25, 19, 12, 8, 2],
-            backgroundColor: ["rgba(255,138,101,.5)"],
-            borderColor: ["#ff5722"],
-            borderWidth: 2
-          },
-          {
-            label: "Executive Protection",
-            data: [20, 21, 17, 15, 16, 19, 18, 17],
-            backgroundColor: ["rgba(149,117,205,.5)"],
-            borderColor: ["#673ab7"],
-            borderWidth: 2
-          }
-        ]
+        labels: [],
+        datasets: []
       }
     };
   },
   computed: {
     hasError() {
       return this.error !== "";
+    },
+    hasLabels() {
+      return this.data.labels.length > 1;
+    },
+    isArch() {
+      return this.graphSelect === "arch";
+    },
+    isType() {
+      return this.graphSelect === "type";
+    },
+    isDept() {
+      return this.graphSelect === "dept";
+    },
+    isLocat() {
+      return this.graphSelect === "locat";
+    },
+    isDay() {
+      return this.graphTimeframe === "day";
+    },
+    isWeek() {
+      return this.graphTimeframe === "week";
+    },
+    isMonth() {
+      return this.graphTimeframe === "month";
+    },
+    isYear() {
+      return this.graphTimeframe === "year";
     }
   },
   mounted() {
-    this.setTimeframeLabels("day", 7);
-    this.onLoad();
+    this.mainHandler();
   },
   methods: {
+    resetPage(event) {
+      if (event) event.preventDefault();
+      this.graphSelect = "arch";
+      this.graphSteps = 7;
+      this.graphTimeframe = "week";
+      this.mainHandler();
+    },
+    selectHandler(sel) {
+      this.graphSelect = sel;
+      this.mainHandler();
+    },
+    stepsHandler(sel) {
+      this.graphSteps = sel;
+      this.mainHandler();
+    },
+    timeframeHandler(sel) {
+      this.graphTimeframe = sel;
+      this.mainHandler();
+    },
+    mainHandler() {
+      this.isLoading = true;
+      this.error = "";
+      this.data = { labels: [], datasets: [] };
+      const timeframe = this.graphTimeframe;
+      if (timeframe === "day") {
+        this.dayHandler();
+      } else if (timeframe === "week") {
+        this.weekHandler();
+      } else if (timeframe === "month") {
+        this.monthHandler();
+      } else {
+        this.yearHandler();
+      }
+      this.isLoading = false;
+    },
+    graphDataBuilder() {
+      const datasets = [];
+      const labels = [];
+      // Initialize Individual Graph Objects ////
+      for (const key in this.rawData[0]) {
+        const graphObj = {
+          label: key,
+          data: [],
+          backgroundColor: [],
+          borderColor: [],
+          borderWidth: 2
+        };
+        datasets.push(graphObj);
+        labels.push(key);
+      }
+      for (let i = 0; i < datasets.length; i++) {
+        const lbl = labels[i];
+        // Populate Data ////
+        this.rawData.forEach(item => {
+          datasets[i].data.push(item[lbl]);
+        });
+        // Populate background Color ////
+        datasets[i].backgroundColor.push(hue.bg[i]);
+        // Populate borderColor ////
+        datasets[i].borderColor.push(hue.ln[i]);
+      }
+      this.data.datasets = datasets;
+    },
     onLoad() {
       this.isLoading = false;
     },
-    resetPage(event) {
-      if (event) event.preventDefault();
-      this.isLoading = true;
-      this.error = "";
-      this.onLoad();
-    },
-    setTimeframeLabels(timeframe, steps) {
-      const timeframeArr = [];
-      if (timeframe === "day") {
-        for (let i = 0; i <= steps; i++) {
-          const date = new Date();
-          date.setDate(date.getDate() - i);
-          timeframeArr.push(date.toDateString());
-          console.log(date.toDateString());
+    async servLogCountGetter(date, id) {
+      const timeframe = this.graphTimeframe;
+      const type = this.graphSelect;
+      const url = `${api}/count-log-type/${timeframe}`;
+      const params = { id, type, date };
+      try {
+        const response = await this.$axios.$get(url, { params });
+        if (response.err) {
+          this.response.error = response.err;
+          return {};
+        } else {
+          return response.data[0];
         }
-      } else if (timeframe === "week") {
-        for (let i = steps * 7; i >= 0; i -= 7) {
-          const date = new Date();
-          date.setDate(date.getDate() - i);
-          timeframeArr.push(date.toDateString());
-          console.log(date.toDateString());
-        }
-      } else if (timeframe === "month") {
-        for (let i = steps; i >= 0; i--) {
-          const date = new Date();
-          date.setDate(date.getMonth() - i);
-          timeframeArr.push(date.toDateString());
-          console.log(date.toDateString());
-        }
-      } else {
-        // year logic
+      } catch (error) {
+        this.response.error = error;
+        return {};
       }
+    },
+    async dayHandler() {
+      const steps = this.graphSteps;
+      const timeframeArr = [];
+      const rawDataArr = [];
+      for (let i = steps; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        date.setHours(0, 0, 0);
+        timeframeArr.push(date.toDateString());
+        const rawData = await this.servLogCountGetter(date);
+        if (rawData) rawDataArr.push(rawData);
+      }
+      this.rawData = rawDataArr;
       this.data.labels = timeframeArr;
+      this.graphDataBuilder();
+    },
+    async weekHandler() {
+      const steps = this.graphSteps;
+      const timeframeArr = [];
+      const rawDataArr = [];
+      for (let i = steps * 7; i >= 0; i -= 7) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        date.setHours(0, 0, 0);
+        timeframeArr.push(date.toDateString());
+        const rawData = await this.servLogCountGetter(date);
+        if (rawData) rawDataArr.push(rawData);
+      }
+      this.rawData = rawDataArr;
+      this.data.labels = timeframeArr;
+      this.graphDataBuilder();
+    },
+    async monthHandler() {
+      const steps = this.graphSteps;
+      const timeframeArr = [];
+      const rawDataArr = [];
+      for (let i = steps; i >= 0; i--) {
+        const date = new Date();
+        date.setMonth(date.getMonth() - i);
+        date.setDate(1);
+        date.setHours(0, 0, 0);
+        const month = this.monthToText(date.getMonth());
+        timeframeArr.push(month);
+        const rawData = await this.servLogCountGetter(date);
+        if (rawData) rawDataArr.push(rawData);
+      }
+      this.rawData = rawDataArr;
+      this.data.labels = timeframeArr;
+      this.graphDataBuilder();
+    },
+    async yearHandler() {
+      const steps = this.graphSteps;
+      const timeframeArr = [];
+      const rawDataArr = [];
+      for (let i = steps; i >= 0; i--) {
+        const date = new Date();
+        date.setFullYear(date.getFullYear() - i);
+        date.setMonth(0);
+        date.setDate(1);
+        date.setHours(0, 0, 0);
+        timeframeArr.push(date.getFullYear());
+        const rawData = await this.servLogCountGetter(date);
+        if (rawData) rawDataArr.push(rawData);
+      }
+      this.rawData = rawDataArr;
+      this.data.labels = timeframeArr;
+      this.graphDataBuilder();
+    },
+    monthToText(int) {
+      if (int === 0) return "January";
+      else if (int === 1) return "February";
+      else if (int === 2) return "March";
+      else if (int === 3) return "April";
+      else if (int === 4) return "May";
+      else if (int === 5) return "June";
+      else if (int === 6) return "July";
+      else if (int === 7) return "August";
+      else if (int === 8) return "September";
+      else if (int === 9) return "October";
+      else if (int === 10) return "November";
+      else if (int === 11) return "December";
+      else return "monthToTextError";
     }
   }
 };
