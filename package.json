@@ -11,6 +11,9 @@
     "generate": "nuxt generate",
     "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
   },
+  "engines": {
+    "node": "12.9.1"
+  },
   "dependencies": {
     "@nuxtjs/axios": "^5.8.0",
     "bootstrap": "^4.4.1",
