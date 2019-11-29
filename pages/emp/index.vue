@@ -4,24 +4,24 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
+        @refresh="resetPage"
         h3text="Employees"
         button-text="Add Employee"
         link-to="/emp/add"
         variant="success"
-        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-collapse id="empTable" :visible="hasTable">
         <b-row>
           <b-col>
             <b-table
+              :items="tableData"
+              :fields="tableFields"
+              @row-selected="onRowSelected"
               striped
               selectable
               hover
               sticky-header
-              :items="tableData"
-              :fields="tableFields"
-              @row-selected="onRowSelected"
             >
             </b-table>
           </b-col>
@@ -43,7 +43,7 @@
       <!-- No Employees Msg -->
       <AlertBox :show="emptyDb" text="There are currently no Employees in the Database" />
       <!-- Error Alert Container -->
-      <AlertBox :show="hasError" variant="danger" :text="error" />
+      <AlertBox :show="hasError" :text="error" variant="danger" />
     </b-container>
   </div>
 </template>

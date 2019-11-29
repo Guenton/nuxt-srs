@@ -7,7 +7,7 @@
       <!-- Add new Position Form -->
       <b-row>
         <b-col>
-          <b-form novalidate @submit="onSubmit" @reset="onReset">
+          <b-form @submit="onSubmit" @reset="onReset" novalidate>
             <!-- Position Box -->
             <b-card bg-variant="light">
               <b-form-group
@@ -19,13 +19,13 @@
               >
                 <!-- Title Input - Validates with 2 characters -->
                 <b-form-group
+                  :state="validation.title"
+                  :invalid-feedback="invalidTitle()"
+                  :valid-feedback="validFeedback()"
                   label="Title:"
                   label-cols-sm="3"
                   label-align-sm="right"
                   class="mb-2"
-                  :state="validation.title"
-                  :invalid-feedback="invalidTitle()"
-                  :valid-feedback="validFeedback()"
                 >
                   <b-form-input
                     v-model="form.title"
@@ -37,13 +37,13 @@
                 </b-form-group>
                 <!-- Shorthand Input - Not Required -->
                 <b-form-group
+                  :state="validation.shorthand"
+                  :invalid-feedback="invalidShorthand()"
+                  :valid-feedback="validFeedback()"
                   label="Abbreviation:"
                   label-cols-sm="3"
                   label-align-sm="right"
                   class="mb-2"
-                  :state="validation.shorthand"
-                  :invalid-feedback="invalidShorthand()"
-                  :valid-feedback="validFeedback()"
                 >
                   <b-form-input
                     v-model="form.shorthand"
@@ -65,12 +65,12 @@
                 class="mb-0"
               >
                 <b-form-group
+                  :state="validation.assig[0]"
+                  :invalid-feedback="invalidAssig()"
                   label-cols-sm="3"
                   label="1:"
                   label-align-sm="right"
                   class="mb-2"
-                  :state="validation.assig[0]"
-                  :invalid-feedback="invalidAssig()"
                 >
                   <b-form-select
                     v-model="form.assig[0]"
@@ -82,12 +82,12 @@
                 </b-form-group>
                 <b-collapse :visible="validation.assig[0]">
                   <b-form-group
+                    :state="validation.assig[1]"
+                    :invalid-feedback="invalidAssig()"
                     label-cols-sm="3"
                     label="2:"
                     label-align-sm="right"
                     class="mb-2"
-                    :state="validation.assig[1]"
-                    :invalid-feedback="invalidAssig()"
                   >
                     <b-form-select
                       v-model="form.assig[1]"
@@ -100,12 +100,12 @@
                 </b-collapse>
                 <b-collapse :visible="validation.assig[1]">
                   <b-form-group
+                    :state="validation.assig[2]"
+                    :invalid-feedback="invalidAssig()"
                     label-cols-sm="3"
                     label="3:"
                     label-align-sm="right"
                     class="mb-2"
-                    :state="validation.assig[2]"
-                    :invalid-feedback="invalidAssig()"
                   >
                     <b-form-select
                       v-model="form.assig[2]"
@@ -118,12 +118,12 @@
                 </b-collapse>
                 <b-collapse :visible="validation.assig[2]">
                   <b-form-group
+                    :state="validation.assig[3]"
+                    :invalid-feedback="invalidAssig()"
                     label-cols-sm="3"
                     label="4:"
                     label-align-sm="right"
                     class="mb-2"
-                    :state="validation.assig[3]"
-                    :invalid-feedback="invalidAssig()"
                   >
                     <b-form-select
                       v-model="form.assig[3]"
@@ -136,12 +136,12 @@
                 </b-collapse>
                 <b-collapse :visible="validation.assig[3]">
                   <b-form-group
+                    :state="validation.assig[4]"
+                    :invalid-feedback="invalidAssig()"
                     label-cols-sm="3"
                     label="5:"
                     label-align-sm="right"
                     class="mb-2"
-                    :state="validation.assig[4]"
-                    :invalid-feedback="invalidAssig()"
                   >
                     <b-form-select
                       v-model="form.assig[4]"
@@ -155,16 +155,16 @@
               </b-form-group>
             </b-card>
             <!-- Success & Error Alert Containers -->
-            <AlertBox :show="hasSuc" variant="success" :text="response.success" />
-            <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+            <AlertBox :show="hasSuc" :text="response.success" variant="success" />
+            <AlertBox :show="hasErr" :text="response.error" variant="danger" />
             <!-- Submit & Reset Buttons -->
             <b-form-row class="my-3">
               <b-col class="text-right">
                 <b-button
+                  :disabled="incompleteValidation"
                   type="submit"
                   variant="success"
                   class="px-4"
-                  :disabled="incompleteValidation"
                 >
                   Update Position
                 </b-button>

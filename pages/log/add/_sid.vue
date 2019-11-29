@@ -7,33 +7,33 @@
       <!-- Pre Registration Details with Button -->
       <b-row align-h="between" align-v="center">
         <b-col>
-          <b-collapse v-show="regTableHasData" id="preRegInfo" v-model="show.preReg">
+          <b-collapse id="preRegInfo" v-show="regTableHasData" v-model="show.preReg">
             <b-alert show class="p-2">
               <!-- General SID Info -->
               <b-card>
                 <b-table
-                  small
-                  hover
                   :items="preRegTable.serv"
                   :fields="preRegTableFields.serv"
+                  small
+                  hover
                 ></b-table>
               </b-card>
               <!-- Type & Scope Info -->
               <b-card class="mt-1">
                 <b-table
-                  small
-                  hover
                   :items="preRegTable.typeScope"
                   :fields="preRegTableFields.typeScope"
+                  small
+                  hover
                 ></b-table>
               </b-card>
               <!-- Registry Info -->
               <b-card v-if="displayReg" class="mt-1">
                 <b-table
-                  small
-                  hover
                   :items="preRegTable.reg"
                   :fields="preRegTableFields.reg"
+                  small
+                  hover
                 ></b-table>
               </b-card>
             </b-alert>
@@ -41,37 +41,37 @@
         </b-col>
       </b-row>
       <!-- SID Expansion Form -->
-      <b-form novalidate @submit="onSubmit" @reset="onReset">
+      <b-form @submit="onSubmit" @reset="onReset" novalidate>
         <!-- Row of Form Buttons -->
         <b-row>
           <!-- Toggle SID Pre-Reg Information -->
           <b-col cols="3">
-            <b-button block variant="info" size="sm" @click="preRegToggle">
+            <b-button @click="preRegToggle" block variant="info" size="sm">
               {{ togglePreRegBtn }} SID Details
             </b-button>
           </b-col>
           <!-- Show Assignees Button -->
           <b-col cols="3">
-            <b-button :pressed="show.assignees" block size="sm" variant="info" @click="empToggle">
+            <b-button :pressed="show.assignees" @click="empToggle" block size="sm" variant="info">
               {{ toggleAssigneesBtn }} Assignees
             </b-button>
           </b-col>
           <!-- Show Timeline Button -->
           <b-col cols="3">
-            <b-button block size="sm" :variant="btnVariant.timeline" @click="tlToggle">
+            <b-button :variant="btnVariant.timeline" @click="tlToggle" block size="sm">
               {{ toggleTlBtn }}
             </b-button>
           </b-col>
           <!-- Show Expenses Button -->
           <b-col cols="3">
-            <b-button block size="sm" :variant="btnVariant.expenses" @click="finToggle">
+            <b-button :variant="btnVariant.expenses" @click="finToggle" block size="sm">
               {{ toggleFinBtn }}
             </b-button>
           </b-col>
         </b-row>
         <!-- Assignees with Dynamic Employee Input -->
         <b-collapse id="assigneesMenu" v-model="show.assignees">
-          <b-card bg-variant="light" class="mt-3" @mouseleave="empValidator">
+          <b-card @mouseleave="empValidator" bg-variant="light" class="mt-3">
             <b-form-group
               label-cols-lg="3"
               label="Assignees"
@@ -99,27 +99,27 @@
               <hr />
             </b-form-group>
             <!-- Invalid Feedback Messages -->
-            <b-form-invalid-feedback class="mb-2" :state="empSelectOne">
+            <b-form-invalid-feedback :state="empSelectOne" class="mb-2">
               Please select at least one Employee
             </b-form-invalid-feedback>
-            <b-form-invalid-feedback class="mb-2" :state="empSelectAll">
+            <b-form-invalid-feedback :state="empSelectAll" class="mb-2">
               Please select an Employee or remove obsolete Boxes
             </b-form-invalid-feedback>
-            <b-form-invalid-feedback class="mb-2" :state="empHasDuplicates">
+            <b-form-invalid-feedback :state="empHasDuplicates" class="mb-2">
               You have entered the same Employee twice
             </b-form-invalid-feedback>
             <!-- Employee Box Expansion & Reduction Buttons -->
             <b-row align-h="start">
               <b-col cols="2">
-                <b-button block size="sm" variant="info" @click="addEmployeeDropdown">Add</b-button>
+                <b-button @click="addEmployeeDropdown" block size="sm" variant="info">Add</b-button>
               </b-col>
               <b-col cols="2">
-                <b-button block size="sm" variant="secondary" @click="remEmployeeDropdown">
+                <b-button @click="remEmployeeDropdown" block size="sm" variant="secondary">
                   Remove
                 </b-button>
               </b-col>
               <b-col cols="2" offset-md="6">
-                <b-button block size="sm" variant="secondary" @click="show.assignees = false">
+                <b-button @click="show.assignees = false" block size="sm" variant="secondary">
                   Hide Assignees
                 </b-button>
               </b-col>
@@ -145,45 +145,45 @@
               >
                 <b-form-input
                   v-model="dateTime.requestDate"
-                  type="date"
                   :state="validation.request"
                   @change="tlRequest"
+                  type="date"
                 />
                 <b-form-input
                   v-model="dateTime.requestTime"
-                  type="time"
                   :state="validation.request"
                   @change="tlRequest"
+                  type="time"
                 />
               </b-form-group>
               <!-- Start Date/Time Selectors -->
               <b-form-group label-cols-sm="3" label="Started:" label-align-sm="right" class="mb-2">
                 <b-form-input
                   v-model="dateTime.startDate"
-                  type="date"
                   :state="validation.start"
                   @change="tlStart"
+                  type="date"
                 />
                 <b-form-input
                   v-model="dateTime.startTime"
-                  type="time"
                   :state="validation.start"
                   @change="tlStart"
+                  type="time"
                 />
               </b-form-group>
               <!-- Finish Date/Time Selectors -->
               <b-form-group label-cols-sm="3" label="Finished:" label-align-sm="right" class="mb-2">
                 <b-form-input
                   v-model="dateTime.finishDate"
-                  type="date"
                   :state="validation.finish"
                   @change="tlFinish"
+                  type="date"
                 />
                 <b-form-input
                   v-model="dateTime.finishTime"
-                  type="time"
                   :state="validation.finish"
                   @change="tlFinish"
+                  type="time"
                 />
               </b-form-group>
               <hr />
@@ -193,7 +193,7 @@
             </b-form-invalid-feedback>
             <b-row align-h="end">
               <b-col cols="2" offset-md="6">
-                <b-button block size="sm" variant="danger" @click="closeTimeline">
+                <b-button @click="closeTimeline" block size="sm" variant="danger">
                   Discard
                 </b-button>
               </b-col>
@@ -202,7 +202,7 @@
         </b-collapse>
         <!-- Expenses with Dynamic Financial Input -->
         <b-collapse id="expensesMenu" v-model="show.expenses">
-          <b-card bg-variant="light" class="mt-3" @mouseleave="finValidator">
+          <b-card @mouseleave="finValidator" bg-variant="light" class="mt-3">
             <b-form-group
               label-cols-lg="3"
               label="Expenses"
@@ -254,9 +254,9 @@
                     <b-col cols="7">
                       <b-form-input
                         v-model="form.fin[i].amount"
+                        :state="!(form.fin[i].amount === null)"
                         type="number"
                         step="0.01"
-                        :state="!(form.fin[i].amount === null)"
                       >
                       </b-form-input>
                     </b-col>
@@ -306,22 +306,22 @@
               </template>
             </b-form-group>
             <!-- Invalid Feedback Messages -->
-            <b-form-invalid-feedback class="mb-2" :state="validation.fin">
+            <b-form-invalid-feedback :state="validation.fin" class="mb-2">
               Please Complete the Expense report or discard all expenses
             </b-form-invalid-feedback>
-            <b-form-invalid-feedback class="mb-2" :state="validation.fin">
+            <b-form-invalid-feedback :state="validation.fin" class="mb-2">
               Please make {{ finValidationCount }} more boxes green
             </b-form-invalid-feedback>
             <!-- Expence Box Expansion, Reduction and Discard Buttons -->
             <b-row align-h="start">
               <b-col cols="2">
-                <b-button block size="sm" variant="info" @click="addExpense">Add</b-button>
+                <b-button @click="addExpense" block size="sm" variant="info">Add</b-button>
               </b-col>
               <b-col cols="2">
-                <b-button block size="sm" variant="secondary" @click="remExpense">Remove</b-button>
+                <b-button @click="remExpense" block size="sm" variant="secondary">Remove</b-button>
               </b-col>
               <b-col cols="2" offset-md="6">
-                <b-button block size="sm" variant="danger" @click="closeFin">
+                <b-button @click="closeFin" block size="sm" variant="danger">
                   Discard
                 </b-button>
               </b-col>
@@ -332,7 +332,7 @@
         <b-collapse id="FormButtons" v-model="validation.emp">
           <b-row class="my-3">
             <b-col class="text-right">
-              <b-button block type="submit" :disabled="incompleteValidation" variant="success"
+              <b-button :disabled="incompleteValidation" block type="submit" variant="success"
                 >Submit</b-button
               >
             </b-col>

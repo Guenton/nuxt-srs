@@ -10,11 +10,7 @@ mysql.newEmp = emp => {
   return new Promise(async (resolve, reject) => {
     try {
       await dbmy.query("INSERT INTO employee SET ?", [emp]);
-      resolve(
-        `${emp.firstname} ${
-          emp.lastname
-        } has successfully been added to the Database`
-      );
+      resolve(`${emp.firstname} ${emp.lastname} has successfully been added to the Database`);
     } catch (err) {
       console.error(err.code);
       reject(err);
@@ -31,11 +27,7 @@ mssql.newEmp = emp => {
         `INSERT INTO employee (firstname, lastname) VALUES 
           ${emp.firstname}, ${emp.lastname}`
       );
-      resolve(
-        `${emp.firstname} ${
-          emp.lastname
-        } has successfully been added to the Database`
-      );
+      resolve(`${emp.firstname} ${emp.lastname} has successfully been added to the Database`);
     } catch (err) {
       console.error(err.code);
       reject(err);

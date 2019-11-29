@@ -4,11 +4,11 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
+        @refresh="resetPage"
         h3text="Statistic Summary"
         button-text="Add Logs"
         link-to="/log/add"
         variant="success"
-        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-collapse id="summaryChart" :visible="!isLoading">
@@ -16,16 +16,16 @@
         <b-row v-show="!isLoading">
           <b-col class="text-center">
             <b-button-group v-show="hasLabels" class="mx-1">
-              <b-button variant="info" :pressed="isArch" @click="selectHandler('arch')">
+              <b-button :pressed="isArch" @click="selectHandler('arch')" variant="info">
                 Archtype
               </b-button>
-              <b-button variant="info" :pressed="isType" @click="selectHandler('type')">
+              <b-button :pressed="isType" @click="selectHandler('type')" variant="info">
                 Type
               </b-button>
-              <b-button variant="info" :pressed="isDept" @click="selectHandler('dept')">
+              <b-button :pressed="isDept" @click="selectHandler('dept')" variant="info">
                 Department
               </b-button>
-              <b-button variant="info" :pressed="isLocat" @click="selectHandler('locat')">
+              <b-button :pressed="isLocat" @click="selectHandler('locat')" variant="info">
                 Location
               </b-button>
             </b-button-group>
@@ -61,7 +61,7 @@
         </b-col>
       </b-row>
       <!-- Error Alert Container -->
-      <AlertBox :show="hasError" variant="danger" :text="error" />
+      <AlertBox :show="hasError" :text="error" variant="danger" />
     </b-container>
   </div>
 </template>

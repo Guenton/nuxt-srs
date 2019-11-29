@@ -4,26 +4,26 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
+        @refresh="resetPage"
         h3text="Positions"
         button-text="Add Positions"
         link-to="/pos/add"
         variant="success"
-        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-row>
         <b-col>
           <b-table
+            :items="tableData"
+            :fields="tableFields"
+            @row-clicked="onRowClicked"
             striped
             selectable
             hover
             sticky-header="65vh"
             select-mode="single"
-            :items="tableData"
-            :fields="tableFields"
-            @row-clicked="onRowClicked"
           >
-            <template v-slot:row-details="row">
+            <template v-slot:row-details="">
               <b-card>
                 <b-row align-v="center">
                   <b-col cols="10">
@@ -38,7 +38,7 @@
                     </b-alert>
                   </b-col>
                   <b-col cols="2" class="pl-0">
-                    <b-button block :to="idLink" variant="info">
+                    <b-button :to="idLink" block variant="info">
                       Edit
                     </b-button>
                   </b-col>
@@ -55,7 +55,7 @@
           </b-button>
         </b-col>
       </b-row>
-      <AlertBox :show="hasError" variant="danger" :text="error" />
+      <AlertBox :show="hasError" :text="error" variant="danger" />
     </b-container>
   </div>
 </template>

@@ -4,7 +4,7 @@
       <h3>{{ h3text }}</h3>
     </b-col>
     <b-col class="text-right mb-2">
-      <b-button variant="secondary" @click="refresh()">
+      <b-button @click="refresh()" variant="secondary">
         Refresh
       </b-button>
       <b-button :variant="variant" :to="linkTo">

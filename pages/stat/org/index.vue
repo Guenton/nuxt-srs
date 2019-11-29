@@ -25,41 +25,8 @@ export default {
         name: "Willem Teuben",
         title: "CSO",
         children: [
-          {
-            name: "Marlon Richardson",
-            title: "GOM",
-            children: [
-              {
-                name: "Gregory Frederica",
-                title: "SM",
-                children: [{ name: "Rudolf Coffie", title: "TC" }]
-              },
-              {
-                name: "Kilian Prinsen",
-                title: "SM",
-                children: [{ name: "Gregory Brigitha", title: "TCI" }]
-              },
-              {
-                name: "Elton Wilson",
-                title: "SM",
-                children: [
-                  { name: "Francis Statie", title: "TC" },
-                  { name: "Shaun Winklaar", title: "IA" }
-                ]
-              },
-              {
-                name: "Jos Van Ingen",
-                title: "SM",
-                children: [
-                  { name: "Miguel Arrindell", title: "TC" },
-                  { name: "Franklin Arrindell", title: "IA" }
-                ]
-              },
-              { name: "Giovanni Hennep", title: "CRCM" }
-            ]
-          },
           { name: "Winoca Casilio", title: "Adm.Cord" },
-          { name: "Guenton Brooks", title: "Proj.Man" },
+          { name: "Marlon Richardson", title: "Proj.Man" },
           {
             name: "Carlos Martha",
             title: "GIM",

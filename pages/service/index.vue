@@ -8,7 +8,7 @@
       <div role="tablist">
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-1 variant="success" block @click="serviceByArch(1)"
+            <b-button v-b-toggle.arch-1 @click="serviceByArch(1)" variant="success" block
               >Security Leadership</b-button
             >
           </b-card-header>
@@ -16,13 +16,13 @@
             <b-card-body>
               <b-card-text>
                 <b-table
+                  :items="serviceData"
+                  :fields="serviceFields"
+                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
-                  :items="serviceData"
-                  :fields="serviceFields"
-                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -31,7 +31,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-2 variant="success" block @click="serviceByArch(2)"
+            <b-button v-b-toggle.arch-2 @click="serviceByArch(2)" variant="success" block
               >Investigations</b-button
             >
           </b-card-header>
@@ -39,13 +39,13 @@
             <b-card-body>
               <b-card-text>
                 <b-table
+                  :items="serviceData"
+                  :fields="serviceFields"
+                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
-                  :items="serviceData"
-                  :fields="serviceFields"
-                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -54,7 +54,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-3 variant="success" block @click="serviceByArch(3)"
+            <b-button v-b-toggle.arch-3 @click="serviceByArch(3)" variant="success" block
               >Security Equipment</b-button
             >
           </b-card-header>
@@ -62,13 +62,13 @@
             <b-card-body>
               <b-card-text>
                 <b-table
+                  :items="serviceData"
+                  :fields="serviceFields"
+                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
-                  :items="serviceData"
-                  :fields="serviceFields"
-                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -77,7 +77,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-4 variant="success" block @click="serviceByArch(4)"
+            <b-button v-b-toggle.arch-4 @click="serviceByArch(4)" variant="success" block
               >Asset Protection</b-button
             >
           </b-card-header>
@@ -85,13 +85,13 @@
             <b-card-body>
               <b-card-text>
                 <b-table
+                  :items="serviceData"
+                  :fields="serviceFields"
+                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
-                  :items="serviceData"
-                  :fields="serviceFields"
-                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -100,7 +100,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-5 variant="success" block @click="serviceByArch(5)"
+            <b-button v-b-toggle.arch-5 @click="serviceByArch(5)" variant="success" block
               >Exectutive Protection</b-button
             >
           </b-card-header>
@@ -108,13 +108,13 @@
             <b-card-body>
               <b-card-text>
                 <b-table
+                  :items="serviceData"
+                  :fields="serviceFields"
+                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
-                  :items="serviceData"
-                  :fields="serviceFields"
-                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -122,7 +122,7 @@
         </b-card>
       </div>
       <!-- Error Alert Container -->
-      <AlertBox :show="hasError" variant="danger" :text="error" />
+      <AlertBox :show="hasError" :text="error" variant="danger" />
     </b-container>
   </div>
 </template>

@@ -5,7 +5,7 @@
       <!-- Header with Return to Log Page -->
       <H3withButton h3text="Add new Service Log" button-text="Return to Logs" link-to="/log" />
       <!-- Add Log Form -->
-      <b-form class="mt-3" novalidate @submit="onSubmit" @reset="onReset">
+      <b-form @submit="onSubmit" @reset="onReset" class="mt-3" novalidate>
         <!-- Specification Box -->
         <b-card bg-variant="light">
           <b-form-group
@@ -82,11 +82,11 @@
             <b-form-group label-cols-sm="3" label="Footprint:" label-align-sm="right" class="mb-2">
               <b-form-input
                 v-model="form.footprint"
-                placeholder="Enter Footprint Number"
                 :state="validation.footprint"
                 :invalid-feedback="invalidFootprint"
                 :valid-feedback="validFeedback"
                 @keyup="footprintValidator"
+                placeholder="Enter Footprint Number"
               >
               </b-form-input>
             </b-form-group>
@@ -101,20 +101,20 @@
                 <template v-slot:prepend>
                   <b-form-select
                     v-model="form.cmYear"
-                    class="mr-3 pr-5 pl-3"
                     :options="cmYearOptions"
                     :state="validation.cmYear"
                     @focus="cmValidator"
                     @change="cmValidator"
+                    class="mr-3 pr-5 pl-3"
                   >
                   </b-form-select>
                 </template>
                 <b-form-input
                   v-model="form.cmSeq"
-                  placeholder="Select Year and Enter Number"
                   :state="validation.cmSeq"
                   @focus="cmValidator"
                   @keyup="cmValidator"
+                  placeholder="Select Year and Enter Number"
                 >
                 </b-form-input>
               </b-input-group>
@@ -150,14 +150,14 @@
           >
             <b-form-textarea
               v-model="form.description"
-              placeholder="Enter a short description for this service..."
-              rows="3"
-              max-rows="6"
               :state="validation.description"
               :invalid-feedback="invalidDescription"
               :valid-feedback="validFeedback"
               @focus="descriptionValidator"
               @keyup="descriptionValidator"
+              placeholder="Enter a short description for this service..."
+              rows="3"
+              max-rows="6"
             ></b-form-textarea>
             <b-form-invalid-feedback :state="validation.description">
               {{ invalidDescription() }}
@@ -167,7 +167,7 @@
         <!-- Submit & Reset Buttons -->
         <b-form-row class="mt-3">
           <b-col class="text-right">
-            <b-button type="submit" variant="success" class="px-4" :disabled="!minimumValidation">
+            <b-button :disabled="!minimumValidation" type="submit" variant="success" class="px-4">
               Pre-Register
             </b-button>
           </b-col>
@@ -180,8 +180,8 @@
       </b-form>
       <!-- Success & Error Alert Containers -->
       <b-row>
-        <AlertBox :show="hasSuc" variant="success" :text="response.success" />
-        <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+        <AlertBox :show="hasSuc" :text="response.success" variant="success" />
+        <AlertBox :show="hasErr" :text="response.error" variant="danger" />
       </b-row>
     </b-container>
     <b-modal id="submitModal" title="Service Pre-Registration">
@@ -192,12 +192,12 @@
         <b-container>
           <b-row align-h="between">
             <b-col cols="6">
-              <b-button block variant="info" @click="onReset">
+              <b-button @click="onReset" block variant="info">
                 Add another Service
               </b-button>
             </b-col>
             <b-col cols="6">
-              <b-button block variant="success" @click="expandSID">
+              <b-button @click="expandSID" block variant="success">
                 Expand SID# {{ response.sid }}
               </b-button>
             </b-col>

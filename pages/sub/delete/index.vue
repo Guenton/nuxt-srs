@@ -13,15 +13,15 @@
       <b-row>
         <b-col>
           <b-table
+            :items="tableData"
+            :fields="tableFields"
+            @row-selected="onRowSelected"
             striped
             selectable
             hover
             sticky-header
             select-mode="single"
             selected-variant="danger"
-            :items="tableData"
-            :fields="tableFields"
-            @row-selected="onRowSelected"
           >
           </b-table>
         </b-col>
@@ -29,7 +29,7 @@
       <!-- Delete Selected Position Confirmation Alert -->
       <b-row v-show="deleteSelected">
         <b-col>
-          <b-form novalidate @submit="onSubmit">
+          <b-form @submit="onSubmit" novalidate>
             <H3header h3text="Selected Subsidiary" />
             <b-form-row>
               <b-col class="text-center">
@@ -50,12 +50,12 @@
     </b-container>
     <b-container>
       <!-- Success & Error Alert Containers -->
-      <AlertBox :show="hasResult" variant="info" :text="result" />
-      <AlertBox :show="hasError" variant="danger" :text="error" />
+      <AlertBox :show="hasResult" :text="result" variant="info" />
+      <AlertBox :show="hasError" :text="error" variant="danger" />
       <!-- Show Option Buttons After Deletion -->
       <b-row v-if="!showDeleteMenu" class="mt-4">
         <b-col class="text-center">
-          <b-button variant="danger" @click="resetPage()">
+          <b-button @click="resetPage()" variant="danger">
             Delete Another Subsidiary
           </b-button>
         </b-col>

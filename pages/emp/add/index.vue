@@ -5,7 +5,7 @@
       <!-- Header with Return to Employee Page -->
       <H3withButton h3text="Add new Employee" button-text="Return to Employees" link-to="/emp" />
       <!-- Add Employee Form -->
-      <b-form novalidate @submit="onSubmit" @reset="onReset">
+      <b-form @submit="onSubmit" @reset="onReset" novalidate>
         <!-- Name Box -->
         <b-card bg-variant="light">
           <b-form-group
@@ -17,12 +17,12 @@
           >
             <!-- First Name Input - Validates with 2 characters -->
             <b-form-group
+              :state="validation.firstname"
+              :invalid-feedback="invalidFirstname()"
               label="First Name:"
               label-cols-sm="3"
               label-align-sm="right"
               class="mb-2"
-              :state="validation.firstname"
-              :invalid-feedback="invalidFirstname()"
             >
               <b-form-input
                 v-model="form.firstname"
@@ -38,12 +38,12 @@
             </b-form-group>
             <!-- Last Name Input - Validates with 2 characters -->
             <b-form-group
+              :state="validation.lastname"
+              :invalid-feedback="invalidLastname()"
               label="Last Name:"
               label-cols-sm="3"
               label-align-sm="right"
               class="mb-2"
-              :state="validation.lastname"
-              :invalid-feedback="invalidLastname()"
             >
               <b-form-input
                 v-model="form.lastname"
@@ -91,11 +91,11 @@
             </b-form-group>
             <!-- Email Name Input - Validates with Regex -->
             <b-form-group
+              :state="validation.email"
               label="Email:"
               label-cols-sm="3"
               label-align-sm="right"
               class="mb-2"
-              :state="validation.email"
               invalid-feedback="Please enter a valid Email Address"
             >
               <b-form-input
@@ -119,26 +119,26 @@
           >
             <!-- Date of Birth Input - Validates with not required -->
             <b-form-group
+              :state="validation.dob"
               label="Date of Birth:"
               label-cols-sm="3"
               label-align-sm="right"
               class="mb-2"
-              :state="validation.dob"
             >
               <b-form-input
                 v-model="form.dob"
-                type="date"
                 :state="validation.dob"
                 @change="dateValidator"
+                type="date"
               ></b-form-input>
             </b-form-group>
             <!-- Passport Input - Validates with 2 characters -->
             <b-form-group
+              :state="validation.passport"
               label="Passport:"
               label-cols-sm="3"
               label-align-sm="right"
               class="mb-2"
-              :state="validation.passport"
               invalid-feedback="System only accepts 9-character passports"
             >
               <b-form-input
@@ -188,7 +188,7 @@
         <!-- Submit & Reset Buttons -->
         <b-form-row class="mt-3">
           <b-col class="text-right">
-            <b-button type="submit" variant="success" class="px-4" :disabled="incompleteValidation">
+            <b-button :disabled="incompleteValidation" type="submit" variant="success" class="px-4">
               Submit Employee
             </b-button>
           </b-col>
@@ -200,8 +200,8 @@
         </b-form-row>
       </b-form>
       <!-- Success & Error Alert Containers -->
-      <AlertBox :show="hasSuc" variant="success" :text="response.success" />
-      <AlertBox :show="hasErr" variant="danger" :text="response.error" />
+      <AlertBox :show="hasSuc" :text="response.success" variant="success" />
+      <AlertBox :show="hasErr" :text="response.error" variant="danger" />
     </b-container>
   </div>
 </template>
