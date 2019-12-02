@@ -23,28 +23,28 @@ export default {
     return {
       ds: {
         name: "Willem Teuben",
-        title: "CSO",
-        children: [
-          { name: "Winoca Casilio", title: "Adm.Cord" },
-          { name: "Marlon Richardson", title: "Proj.Man" },
-          {
-            name: "Carlos Martha",
-            title: "GIM",
-            children: [
-              {
-                name: "Dubberlysse Merce",
-                title: "IM",
-                children: [
-                  { name: "Dudley Liberia", title: "IB" },
-                  { name: "Julio Flanders", title: "IA" },
-                  { name: "Rodrick Candelaria", title: "IA" },
-                  { name: "Dyron Cleofa", title: "IA" }
-                ]
-              },
-              { name: "Hendrik Kroon", title: "IE" }
-            ]
-          }
-        ]
+        title: "CSO"
+        // children: [
+        //   { name: "Winoca Casilio", title: "Adm.Cord" },
+        //   { name: "Marlon Richardson", title: "Proj.Man" },
+        //   {
+        //     name: "Carlos Martha",
+        //     title: "GIM",
+        //     children: [
+        //       {
+        //         name: "Dubberlysse Merce",
+        //         title: "IM",
+        //         children: [
+        //           { name: "Dudley Liberia", title: "IB" },
+        //           { name: "Julio Flanders", title: "IA" },
+        //           { name: "Rodrick Candelaria", title: "IA" },
+        //           { name: "Dyron Cleofa", title: "IA" }
+        //         ]
+        //       },
+        //       { name: "Hendrik Kroon", title: "IE" }
+        //     ]
+        //   }
+        // ]
       }
     };
   }
