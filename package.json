@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.8.0",
+    "@nuxtjs/eslint-module": "^1.1.0",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.1.0",
     "chart.js": "^2.9.3",
@@ -28,7 +29,6 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
-    "@nuxtjs/eslint-module": "^1.1.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
