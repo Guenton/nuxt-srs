@@ -1,0 +1,1 @@
+exports.ids=[1],exports.modules={60:function(t,e,n){"use strict";n.r(e);var r={},o=n(1);var component=Object(o.a)(r,(function(){var t=this.$createElement;return(this._self._c||t)("div",[this._ssrNode("<h1>\n    No Documentation created yet\n  </h1>")])}),[],!1,(function(t){}),null,"09705296");e.default=component.exports}};
