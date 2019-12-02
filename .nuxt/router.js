@@ -3,29 +3,29 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _c66d60b0 = () => interopDefault(import('..\\pages\\docs\\index.vue' /* webpackChunkName: "pages_docs_index" */))
-const _4bd08429 = () => interopDefault(import('..\\pages\\emp\\index.vue' /* webpackChunkName: "pages_emp_index" */))
-const _2cc3a2f8 = () => interopDefault(import('..\\pages\\home\\index.vue' /* webpackChunkName: "pages_home_index" */))
-const _10a8442d = () => interopDefault(import('..\\pages\\log\\index.vue' /* webpackChunkName: "pages_log_index" */))
-const _1719a9c6 = () => interopDefault(import('..\\pages\\pos\\index.vue' /* webpackChunkName: "pages_pos_index" */))
-const _1c6d649c = () => interopDefault(import('..\\pages\\service\\index.vue' /* webpackChunkName: "pages_service_index" */))
-const _74a511ef = () => interopDefault(import('..\\pages\\stat\\index.vue' /* webpackChunkName: "pages_stat_index" */))
-const _a35a989e = () => interopDefault(import('..\\pages\\sub\\index.vue' /* webpackChunkName: "pages_sub_index" */))
-const _37dd6d4a = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
-const _14f10b1e = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
-const _ea9de074 = () => interopDefault(import('..\\pages\\log\\add\\index.vue' /* webpackChunkName: "pages_log_add_index" */))
-const _ed5e0254 = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
-const _a67103dc = () => interopDefault(import('..\\pages\\pos\\delete\\index.vue' /* webpackChunkName: "pages_pos_delete_index" */))
-const _45ce45be = () => interopDefault(import('..\\pages\\stat\\org\\index.vue' /* webpackChunkName: "pages_stat_org_index" */))
-const _662f0add = () => interopDefault(import('..\\pages\\stat\\test\\index.vue' /* webpackChunkName: "pages_stat_test_index" */))
-const _3273b2c2 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
-const _2a2f32a6 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
-const _55018ea7 = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
-const _0c5c3972 = () => interopDefault(import('..\\pages\\emp\\edit\\_id.vue' /* webpackChunkName: "pages_emp_edit__id" */))
-const _4588136a = () => interopDefault(import('..\\pages\\log\\add\\_sid.vue' /* webpackChunkName: "pages_log_add__sid" */))
-const _9bc01f8a = () => interopDefault(import('..\\pages\\pos\\edit\\_id.vue' /* webpackChunkName: "pages_pos_edit__id" */))
-const _4ce91904 = () => interopDefault(import('..\\pages\\log\\_sid.vue' /* webpackChunkName: "pages_log__sid" */))
-const _2fed4703 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
+const _1af66a08 = () => interopDefault(import('..\\pages\\docs\\index.vue' /* webpackChunkName: "pages_docs_index" */))
+const _35ce4e55 = () => interopDefault(import('..\\pages\\emp\\index.vue' /* webpackChunkName: "pages_emp_index" */))
+const _3f59a9d8 = () => interopDefault(import('..\\pages\\home\\index.vue' /* webpackChunkName: "pages_home_index" */))
+const _0ab3e34e = () => interopDefault(import('..\\pages\\log\\index.vue' /* webpackChunkName: "pages_log_index" */))
+const _431e156e = () => interopDefault(import('..\\pages\\pos\\index.vue' /* webpackChunkName: "pages_pos_index" */))
+const _3e3b8e70 = () => interopDefault(import('..\\pages\\service\\index.vue' /* webpackChunkName: "pages_service_index" */))
+const _6b3ee57a = () => interopDefault(import('..\\pages\\stat\\index.vue' /* webpackChunkName: "pages_stat_index" */))
+const _cf5f0446 = () => interopDefault(import('..\\pages\\sub\\index.vue' /* webpackChunkName: "pages_sub_index" */))
+const _02031e9e = () => interopDefault(import('..\\pages\\emp\\add\\index.vue' /* webpackChunkName: "pages_emp_add_index" */))
+const _2d47e94a = () => interopDefault(import('..\\pages\\emp\\delete\\index.vue' /* webpackChunkName: "pages_emp_delete_index" */))
+const _54d6c11a = () => interopDefault(import('..\\pages\\log\\add\\index.vue' /* webpackChunkName: "pages_log_add_index" */))
+const _5376b02a = () => interopDefault(import('..\\pages\\pos\\add\\index.vue' /* webpackChunkName: "pages_pos_add_index" */))
+const _75c34784 = () => interopDefault(import('..\\pages\\pos\\delete\\index.vue' /* webpackChunkName: "pages_pos_delete_index" */))
+const _57a9564d = () => interopDefault(import('..\\pages\\stat\\org\\index.vue' /* webpackChunkName: "pages_stat_org_index" */))
+const _3dadb731 = () => interopDefault(import('..\\pages\\stat\\test\\index.vue' /* webpackChunkName: "pages_stat_test_index" */))
+const _06cd37d4 = () => interopDefault(import('..\\pages\\sub\\add\\index.vue' /* webpackChunkName: "pages_sub_add_index" */))
+const _428610d2 = () => interopDefault(import('..\\pages\\sub\\delete\\index.vue' /* webpackChunkName: "pages_sub_delete_index" */))
+const _60dbf05a = () => interopDefault(import('..\\pages\\sub\\edit\\index.vue' /* webpackChunkName: "pages_sub_edit_index" */))
+const _8372911a = () => interopDefault(import('..\\pages\\emp\\edit\\_id.vue' /* webpackChunkName: "pages_emp_edit__id" */))
+const _bc9e6b12 = () => interopDefault(import('..\\pages\\log\\add\\_sid.vue' /* webpackChunkName: "pages_log_add__sid" */))
+const _7694c467 = () => interopDefault(import('..\\pages\\pos\\edit\\_id.vue' /* webpackChunkName: "pages_pos_edit__id" */))
+const _4c335958 = () => interopDefault(import('..\\pages\\log\\_sid.vue' /* webpackChunkName: "pages_log__sid" */))
+const _696cd157 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
 
@@ -38,95 +38,95 @@ export const routerOptions = {
 
   routes: [{
     path: "/docs",
-    component: _c66d60b0,
+    component: _1af66a08,
     name: "docs"
   }, {
     path: "/emp",
-    component: _4bd08429,
+    component: _35ce4e55,
     name: "emp"
   }, {
     path: "/home",
-    component: _2cc3a2f8,
+    component: _3f59a9d8,
     name: "home"
   }, {
     path: "/log",
-    component: _10a8442d,
+    component: _0ab3e34e,
     name: "log"
   }, {
     path: "/pos",
-    component: _1719a9c6,
+    component: _431e156e,
     name: "pos"
   }, {
     path: "/service",
-    component: _1c6d649c,
+    component: _3e3b8e70,
     name: "service"
   }, {
     path: "/stat",
-    component: _74a511ef,
+    component: _6b3ee57a,
     name: "stat"
   }, {
     path: "/sub",
-    component: _a35a989e,
+    component: _cf5f0446,
     name: "sub"
   }, {
     path: "/emp/add",
-    component: _37dd6d4a,
+    component: _02031e9e,
     name: "emp-add"
   }, {
     path: "/emp/delete",
-    component: _14f10b1e,
+    component: _2d47e94a,
     name: "emp-delete"
   }, {
     path: "/log/add",
-    component: _ea9de074,
+    component: _54d6c11a,
     name: "log-add"
   }, {
     path: "/pos/add",
-    component: _ed5e0254,
+    component: _5376b02a,
     name: "pos-add"
   }, {
     path: "/pos/delete",
-    component: _a67103dc,
+    component: _75c34784,
     name: "pos-delete"
   }, {
     path: "/stat/org",
-    component: _45ce45be,
+    component: _57a9564d,
     name: "stat-org"
   }, {
     path: "/stat/test",
-    component: _662f0add,
+    component: _3dadb731,
     name: "stat-test"
   }, {
     path: "/sub/add",
-    component: _3273b2c2,
+    component: _06cd37d4,
     name: "sub-add"
   }, {
     path: "/sub/delete",
-    component: _2a2f32a6,
+    component: _428610d2,
     name: "sub-delete"
   }, {
     path: "/sub/edit",
-    component: _55018ea7,
+    component: _60dbf05a,
     name: "sub-edit"
   }, {
     path: "/emp/edit/:id?",
-    component: _0c5c3972,
+    component: _8372911a,
     name: "emp-edit-id"
   }, {
     path: "/log/add/:sid",
-    component: _4588136a,
+    component: _bc9e6b12,
     name: "log-add-sid"
   }, {
     path: "/pos/edit/:id?",
-    component: _9bc01f8a,
+    component: _7694c467,
     name: "pos-edit-id"
   }, {
     path: "/log/:sid",
-    component: _4ce91904,
+    component: _4c335958,
     name: "log-sid"
   }, {
     path: "/",
-    component: _2fed4703,
+    component: _696cd157,
     name: "index"
   }],
 

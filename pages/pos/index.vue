@@ -4,11 +4,11 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
-        @refresh="resetPage"
         h3text="Positions"
         button-text="Add Positions"
         link-to="/pos/add"
         variant="success"
+        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-row>
@@ -16,12 +16,12 @@
           <b-table
             :items="tableData"
             :fields="tableFields"
-            @row-clicked="onRowClicked"
             striped
             selectable
             hover
             sticky-header="65vh"
             select-mode="single"
+            @row-clicked="onRowClicked"
           >
             <template v-slot:row-details="">
               <b-card>

@@ -7,7 +7,7 @@
       <!-- Pre Registration Details with Button -->
       <b-row align-h="between" align-v="center">
         <b-col>
-          <b-collapse id="preRegInfo" v-show="regTableHasData" v-model="show.preReg">
+          <b-collapse v-show="regTableHasData" id="preRegInfo" v-model="show.preReg">
             <b-alert show class="p-2">
               <!-- General SID Info -->
               <b-card>
@@ -41,37 +41,37 @@
         </b-col>
       </b-row>
       <!-- SID Expansion Form -->
-      <b-form @submit="onSubmit" @reset="onReset" novalidate>
+      <b-form novalidate @submit="onSubmit" @reset="onReset">
         <!-- Row of Form Buttons -->
         <b-row>
           <!-- Toggle SID Pre-Reg Information -->
           <b-col cols="3">
-            <b-button @click="preRegToggle" block variant="info" size="sm">
+            <b-button block variant="info" size="sm" @click="preRegToggle">
               {{ togglePreRegBtn }} SID Details
             </b-button>
           </b-col>
           <!-- Show Assignees Button -->
           <b-col cols="3">
-            <b-button :pressed="show.assignees" @click="empToggle" block size="sm" variant="info">
+            <b-button :pressed="show.assignees" block size="sm" variant="info" @click="empToggle">
               {{ toggleAssigneesBtn }} Assignees
             </b-button>
           </b-col>
           <!-- Show Timeline Button -->
           <b-col cols="3">
-            <b-button :variant="btnVariant.timeline" @click="tlToggle" block size="sm">
+            <b-button :variant="btnVariant.timeline" block size="sm" @click="tlToggle">
               {{ toggleTlBtn }}
             </b-button>
           </b-col>
           <!-- Show Expenses Button -->
           <b-col cols="3">
-            <b-button :variant="btnVariant.expenses" @click="finToggle" block size="sm">
+            <b-button :variant="btnVariant.expenses" block size="sm" @click="finToggle">
               {{ toggleFinBtn }}
             </b-button>
           </b-col>
         </b-row>
         <!-- Assignees with Dynamic Employee Input -->
         <b-collapse id="assigneesMenu" v-model="show.assignees">
-          <b-card @mouseleave="empValidator" bg-variant="light" class="mt-3">
+          <b-card bg-variant="light" class="mt-3" @mouseleave="empValidator">
             <b-form-group
               label-cols-lg="3"
               label="Assignees"
@@ -111,15 +111,15 @@
             <!-- Employee Box Expansion & Reduction Buttons -->
             <b-row align-h="start">
               <b-col cols="2">
-                <b-button @click="addEmployeeDropdown" block size="sm" variant="info">Add</b-button>
+                <b-button block size="sm" variant="info" @click="addEmployeeDropdown">Add</b-button>
               </b-col>
               <b-col cols="2">
-                <b-button @click="remEmployeeDropdown" block size="sm" variant="secondary">
+                <b-button block size="sm" variant="secondary" @click="remEmployeeDropdown">
                   Remove
                 </b-button>
               </b-col>
               <b-col cols="2" offset-md="6">
-                <b-button @click="show.assignees = false" block size="sm" variant="secondary">
+                <b-button block size="sm" variant="secondary" @click="show.assignees = false">
                   Hide Assignees
                 </b-button>
               </b-col>
@@ -146,14 +146,14 @@
                 <b-form-input
                   v-model="dateTime.requestDate"
                   :state="validation.request"
-                  @change="tlRequest"
                   type="date"
+                  @change="tlRequest"
                 />
                 <b-form-input
                   v-model="dateTime.requestTime"
                   :state="validation.request"
-                  @change="tlRequest"
                   type="time"
+                  @change="tlRequest"
                 />
               </b-form-group>
               <!-- Start Date/Time Selectors -->
@@ -161,14 +161,14 @@
                 <b-form-input
                   v-model="dateTime.startDate"
                   :state="validation.start"
-                  @change="tlStart"
                   type="date"
+                  @change="tlStart"
                 />
                 <b-form-input
                   v-model="dateTime.startTime"
                   :state="validation.start"
-                  @change="tlStart"
                   type="time"
+                  @change="tlStart"
                 />
               </b-form-group>
               <!-- Finish Date/Time Selectors -->
@@ -176,14 +176,14 @@
                 <b-form-input
                   v-model="dateTime.finishDate"
                   :state="validation.finish"
-                  @change="tlFinish"
                   type="date"
+                  @change="tlFinish"
                 />
                 <b-form-input
                   v-model="dateTime.finishTime"
                   :state="validation.finish"
-                  @change="tlFinish"
                   type="time"
+                  @change="tlFinish"
                 />
               </b-form-group>
               <hr />
@@ -193,7 +193,7 @@
             </b-form-invalid-feedback>
             <b-row align-h="end">
               <b-col cols="2" offset-md="6">
-                <b-button @click="closeTimeline" block size="sm" variant="danger">
+                <b-button block size="sm" variant="danger" @click="closeTimeline">
                   Discard
                 </b-button>
               </b-col>
@@ -202,7 +202,7 @@
         </b-collapse>
         <!-- Expenses with Dynamic Financial Input -->
         <b-collapse id="expensesMenu" v-model="show.expenses">
-          <b-card @mouseleave="finValidator" bg-variant="light" class="mt-3">
+          <b-card bg-variant="light" class="mt-3" @mouseleave="finValidator">
             <b-form-group
               label-cols-lg="3"
               label="Expenses"
@@ -315,13 +315,13 @@
             <!-- Expence Box Expansion, Reduction and Discard Buttons -->
             <b-row align-h="start">
               <b-col cols="2">
-                <b-button @click="addExpense" block size="sm" variant="info">Add</b-button>
+                <b-button block size="sm" variant="info" @click="addExpense">Add</b-button>
               </b-col>
               <b-col cols="2">
-                <b-button @click="remExpense" block size="sm" variant="secondary">Remove</b-button>
+                <b-button block size="sm" variant="secondary" @click="remExpense">Remove</b-button>
               </b-col>
               <b-col cols="2" offset-md="6">
-                <b-button @click="closeFin" block size="sm" variant="danger">
+                <b-button block size="sm" variant="danger" @click="closeFin">
                   Discard
                 </b-button>
               </b-col>

@@ -1,6 +1,6 @@
 {
   "name": "sibox",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Redifining Statistical Reports",
   "author": "Guenton Brooks",
   "private": true,
@@ -12,29 +12,29 @@
     "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
   },
   "engines": {
-    "node": "12.9.1"
+    "node": "12.13.1",
+    "npm": "6.12.1"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.8.0",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.1.0",
     "chart.js": "^2.9.3",
-    "cross-env": "^5.2.1",
+    "cross-env": "^6.0.3",
     "express": "^4.16.4",
-    "mssql": "^5.1.0",
     "mysql": "^2.17.1",
     "nuxt": "^2.10.2",
     "vue-organization-chart": "^1.1.6"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config": "^1.1.2",
+    "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.1.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^6.7.1",
+    "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-nuxt": "^0.5.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-vue": "^5.2.3",
-    "nodemon": "^1.19.4"
+    "eslint-plugin-vue": "^6.0.1",
+    "nodemon": "^2.0.1"
   }
 }

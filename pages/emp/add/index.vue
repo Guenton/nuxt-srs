@@ -5,7 +5,7 @@
       <!-- Header with Return to Employee Page -->
       <H3withButton h3text="Add new Employee" button-text="Return to Employees" link-to="/emp" />
       <!-- Add Employee Form -->
-      <b-form @submit="onSubmit" @reset="onReset" novalidate>
+      <b-form novalidate @submit="onSubmit" @reset="onReset">
         <!-- Name Box -->
         <b-card bg-variant="light">
           <b-form-group
@@ -128,8 +128,8 @@
               <b-form-input
                 v-model="form.dob"
                 :state="validation.dob"
-                @change="dateValidator"
                 type="date"
+                @change="dateValidator"
               ></b-form-input>
             </b-form-group>
             <!-- Passport Input - Validates with 2 characters -->

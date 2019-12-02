@@ -11,13 +11,13 @@
           <b-table
             :items="tableData"
             :fields="tableFields"
-            @row-selected="onRowSelected"
             striped
             selectable
             hover
             sticky-header
             select-mode="single"
             selected-variant="danger"
+            @row-selected="onRowSelected"
           >
           </b-table>
         </b-col>
@@ -25,7 +25,7 @@
       <!-- Delete Selected Employee Confirmation Alert -->
       <b-row v-show="deleteSelected">
         <b-col>
-          <b-form @submit="onSubmit" novalidate>
+          <b-form novalidate @submit="onSubmit">
             <H3header h3text="Selected Employee" />
             <b-form-row>
               <b-col class="text-center">
@@ -53,7 +53,7 @@
       <!-- Show Option Buttons After Deletion -->
       <b-row v-if="!showDeleteMenu" class="mt-4">
         <b-col class="text-center">
-          <b-button @click="resetPage()" variant="danger">
+          <b-button variant="danger" @click="resetPage()">
             Delete Another Employee
           </b-button>
         </b-col>

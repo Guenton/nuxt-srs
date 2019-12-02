@@ -4,10 +4,10 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
-        @refresh="onReset"
         h3text="Recent Logs"
         button-text="Add Log"
         link-to="/log/add"
+        @refresh="onReset"
       />
       <!-- Async table with get request -->
       <b-row>
@@ -15,11 +15,11 @@
           <b-table
             :items="tableData"
             :fields="tableFields"
-            @row-selected="onRowSelected"
             striped
             selectable
             hover
             sticky-header="80vh"
+            @row-selected="onRowSelected"
           >
           </b-table>
         </b-col>

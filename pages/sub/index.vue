@@ -4,11 +4,11 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
-        @refresh="resetPage"
         h3text="Subsidiaries"
         button-text="Add Subsidiary"
         link-to="/sub/add"
         variant="success"
+        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-collapse id="scopeSubTable" :visible="hasTable">
@@ -17,11 +17,11 @@
             <b-table
               :items="tableData"
               :fields="tableFields"
-              @row-selected="onRowSelected"
               striped
               selectable
               hover
               sticky-header
+              @row-selected="onRowSelected"
             >
             </b-table>
           </b-col>

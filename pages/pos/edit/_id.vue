@@ -7,7 +7,7 @@
       <!-- Add new Position Form -->
       <b-row>
         <b-col>
-          <b-form @submit="onSubmit" @reset="onReset" novalidate>
+          <b-form novalidate @submit="onSubmit" @reset="onReset">
             <!-- Position Box -->
             <b-card bg-variant="light">
               <b-form-group

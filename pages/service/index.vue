@@ -8,7 +8,7 @@
       <div role="tablist">
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-1 @click="serviceByArch(1)" variant="success" block
+            <b-button v-b-toggle.arch-1 variant="success" block @click="serviceByArch(1)"
               >Security Leadership</b-button
             >
           </b-card-header>
@@ -18,11 +18,11 @@
                 <b-table
                   :items="serviceData"
                   :fields="serviceFields"
-                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
+                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -31,7 +31,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-2 @click="serviceByArch(2)" variant="success" block
+            <b-button v-b-toggle.arch-2 variant="success" block @click="serviceByArch(2)"
               >Investigations</b-button
             >
           </b-card-header>
@@ -41,11 +41,11 @@
                 <b-table
                   :items="serviceData"
                   :fields="serviceFields"
-                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
+                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -54,7 +54,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-3 @click="serviceByArch(3)" variant="success" block
+            <b-button v-b-toggle.arch-3 variant="success" block @click="serviceByArch(3)"
               >Security Equipment</b-button
             >
           </b-card-header>
@@ -64,11 +64,11 @@
                 <b-table
                   :items="serviceData"
                   :fields="serviceFields"
-                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
+                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -77,7 +77,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-4 @click="serviceByArch(4)" variant="success" block
+            <b-button v-b-toggle.arch-4 variant="success" block @click="serviceByArch(4)"
               >Asset Protection</b-button
             >
           </b-card-header>
@@ -87,11 +87,11 @@
                 <b-table
                   :items="serviceData"
                   :fields="serviceFields"
-                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
+                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>
@@ -100,7 +100,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button v-b-toggle.arch-5 @click="serviceByArch(5)" variant="success" block
+            <b-button v-b-toggle.arch-5 variant="success" block @click="serviceByArch(5)"
               >Exectutive Protection</b-button
             >
           </b-card-header>
@@ -110,11 +110,11 @@
                 <b-table
                   :items="serviceData"
                   :fields="serviceFields"
-                  @row-selected="onRowSelected"
                   striped
                   selectable
                   hover
                   sticky-header
+                  @row-selected="onRowSelected"
                 ></b-table>
               </b-card-text>
             </b-card-body>

@@ -4,10 +4,10 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
-        @refresh="resetPage"
         h3text="Edit Subsidiaries"
         button-text="Add Subsidiary"
         link-to="/sub/add"
+        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-row>
@@ -15,11 +15,11 @@
           <b-table
             :items="tableData"
             :fields="tableFields"
-            @row-selected="onRowSelected"
             striped
             selectable
             hover
             sticky-header
+            @row-selected="onRowSelected"
           >
           </b-table>
         </b-col>
@@ -35,7 +35,7 @@
       <!-- Edit table hidden until selection was made -->
       <b-row v-show="showtable">
         <b-col>
-          <b-form @submit="onSubmit" @reset="resetPage" novalidate>
+          <b-form novalidate @submit="onSubmit" @reset="resetPage">
             <H3header h3text="Edit Subsidiaries" />
             <b-form-row v-for="(sub, index) in form" :key="sub.pos_id">
               <b-col sm="2" align-v="center" class="text-center">

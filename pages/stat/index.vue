@@ -4,11 +4,11 @@
     <b-container>
       <!-- Header with Buttons -->
       <H3withRefresh
-        @refresh="resetPage"
         h3text="Statistic Summary"
         button-text="Add Logs"
         link-to="/log/add"
         variant="success"
+        @refresh="resetPage"
       />
       <!-- Async table with get request -->
       <b-collapse id="summaryChart" :visible="!isLoading">
@@ -16,16 +16,16 @@
         <b-row v-show="!isLoading">
           <b-col class="text-center">
             <b-button-group v-show="hasLabels" class="mx-1">
-              <b-button :pressed="isArch" @click="selectHandler('arch')" variant="info">
+              <b-button :pressed="isArch" variant="info" @click="selectHandler('arch')">
                 Archtype
               </b-button>
-              <b-button :pressed="isType" @click="selectHandler('type')" variant="info">
+              <b-button :pressed="isType" variant="info" @click="selectHandler('type')">
                 Type
               </b-button>
-              <b-button :pressed="isDept" @click="selectHandler('dept')" variant="info">
+              <b-button :pressed="isDept" variant="info" @click="selectHandler('dept')">
                 Department
               </b-button>
-              <b-button :pressed="isLocat" @click="selectHandler('locat')" variant="info">
+              <b-button :pressed="isLocat" variant="info" @click="selectHandler('locat')">
                 Location
               </b-button>
             </b-button-group>

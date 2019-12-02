@@ -5,7 +5,7 @@
       <!-- Header with Return to Log Page -->
       <H3withButton h3text="Add new Service Log" button-text="Return to Logs" link-to="/log" />
       <!-- Add Log Form -->
-      <b-form @submit="onSubmit" @reset="onReset" class="mt-3" novalidate>
+      <b-form class="mt-3" novalidate @submit="onSubmit" @reset="onReset">
         <!-- Specification Box -->
         <b-card bg-variant="light">
           <b-form-group
@@ -85,8 +85,8 @@
                 :state="validation.footprint"
                 :invalid-feedback="invalidFootprint"
                 :valid-feedback="validFeedback"
-                @keyup="footprintValidator"
                 placeholder="Enter Footprint Number"
+                @keyup="footprintValidator"
               >
               </b-form-input>
             </b-form-group>
@@ -103,18 +103,18 @@
                     v-model="form.cmYear"
                     :options="cmYearOptions"
                     :state="validation.cmYear"
+                    class="mr-3 pr-5 pl-3"
                     @focus="cmValidator"
                     @change="cmValidator"
-                    class="mr-3 pr-5 pl-3"
                   >
                   </b-form-select>
                 </template>
                 <b-form-input
                   v-model="form.cmSeq"
                   :state="validation.cmSeq"
+                  placeholder="Select Year and Enter Number"
                   @focus="cmValidator"
                   @keyup="cmValidator"
-                  placeholder="Select Year and Enter Number"
                 >
                 </b-form-input>
               </b-input-group>
@@ -153,11 +153,11 @@
               :state="validation.description"
               :invalid-feedback="invalidDescription"
               :valid-feedback="validFeedback"
-              @focus="descriptionValidator"
-              @keyup="descriptionValidator"
               placeholder="Enter a short description for this service..."
               rows="3"
               max-rows="6"
+              @focus="descriptionValidator"
+              @keyup="descriptionValidator"
             ></b-form-textarea>
             <b-form-invalid-feedback :state="validation.description">
               {{ invalidDescription() }}
@@ -192,12 +192,12 @@
         <b-container>
           <b-row align-h="between">
             <b-col cols="6">
-              <b-button @click="onReset" block variant="info">
+              <b-button block variant="info" @click="onReset">
                 Add another Service
               </b-button>
             </b-col>
             <b-col cols="6">
-              <b-button @click="expandSID" block variant="success">
+              <b-button block variant="success" @click="expandSID">
                 Expand SID# {{ response.sid }}
               </b-button>
             </b-col>
